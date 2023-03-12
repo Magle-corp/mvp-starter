@@ -1,0 +1,61 @@
+version: "3"
+services:
+  db:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    command: --default-authentication-plugin=mysql_native_password
+    cap_add:
+      - SYS_NICE
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      dev:
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    links:
+      - db
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - dev
+
+  php:
+    build: php
+    ports:
+      - "8080:80"
+    env_file:
+      - .env
+    volumes:
+      - ./php/vhosts:/etc/apache2/sites-enabled
+      - ./:/var/www
+    restart: always
+    networks:
+      - dev
+
+  next:
+    build:
+      context: next
+      args:
+        WAIT_VERSION: ${WAIT_VERSION}
+    volumes:
+      - ./next:/app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    networks:
+      - dev
+
+networks:
+  dev:
+
+volumes:
+  db-data:

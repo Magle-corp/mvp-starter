@@ -1,0 +1,41 @@
+###> root ###
+.idea
+
+###> symfony - framework-bundle ###
+symfony/config/secrets/prod/prod.decrypt.private.php
+symfony/public/bundles/
+symfony/var/
+symfony/vendor/
+
+###> symfony - phpunit ###
+symfony/phpunit.xml
+symfony/.phpunit.result.cache
+
+###> next - dependencies ###
+next/node_modules
+next/.pnp
+next/.pnp.js
+
+###> next - next.js ###
+next/.next/
+next/out/
+
+###> next - production ###
+next/build
+
+###> next - typescript ###
+next/*.tsbuildinfo
+next/next-env.d.ts
+
+###> next - misc ###
+next/.DS_Store
+next/*.pem
+
+###> next - testing ###
+next/coverage
+
+###> next - debug ###
+next/npm-debug.log*
+next/yarn-debug.log*
+next/yarn-error.log*
+next/.pnpm-debug.log*
