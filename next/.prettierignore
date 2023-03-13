@@ -1,0 +1,13 @@
+.next
+node_modules
+public
+.eslintrc.json
+.prettierrc.json
+Dockerfile
+next.config.js
+next-env.d.ts
+package.json
+tsconfig.json
+tsconfig.tsbuildinfo
+yarn.lock
+yarn-error.log
