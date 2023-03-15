@@ -1,12 +1,17 @@
 import { ReactNode } from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import breakpoints from '@/theme/breakpoints';
+import colors from '@/theme/colors';
 
 type ThemeWrapper = {
   children: ReactNode;
 };
 
 const ThemeWrapper = ({ children }: ThemeWrapper) => {
-  let theme = {};
+  let theme = {
+    breakpoints,
+    colors,
+  };
 
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };
@@ -17,10 +22,6 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
     
-  html {
-    font-size: 1rem;
-  }
-
   body {
     background-color: var(--surface-ground);
     font-family: var(--font-family);
@@ -28,6 +29,10 @@ const GlobalStyle = createGlobalStyle`
     color: var(--text-color);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  
+  main {
+    padding: 0 10px;
   }
 `;
 
