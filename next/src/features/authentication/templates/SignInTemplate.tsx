@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
+import { AppPages } from '@/cdn/enums/AppPages';
 import SignIn from '@/features/authentication/types/SignIn';
 import SignInForm from '@/ui/organisms/forms/SignInForm';
 import Card from '@/ui/atoms/Card';
@@ -17,8 +18,10 @@ const SignInTemplate = () => {
         <Title>Connexion</Title>
         <SignInForm onSubmit={onSubmit} submitError={submitError} />
         <LinksWrapper>
-          <StyledLink href="#">Mot de passe oublié</StyledLink>
-          <StyledLink href="#">Créer un compte</StyledLink>
+          <StyledLink href={AppPages.AUTH_FORGOT_PASSWORD}>
+            Mot de passe oublié
+          </StyledLink>
+          <StyledLink href={AppPages.AUTH_SIGN_UP}>Créer un compte</StyledLink>
         </LinksWrapper>
       </Section>
     </StyledCard>

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
+import { AppPages } from '@/cdn/enums/AppPages';
 import ForgotPassword from '@/features/authentication/types/ForgotPassword';
 import ForgotPasswordForm from '@/ui/organisms/forms/ForgotPasswordForm';
 import Card from '@/ui/atoms/Card';
@@ -23,8 +24,10 @@ const ForgotPasswordTemplate = () => {
         </Help>
         <ForgotPasswordForm onSubmit={onSubmit} submitError={submitError} />
         <LinksWrapper>
-          <StyledLink href="#">J&apos;ai déjà un compte</StyledLink>
-          <StyledLink href="#">Créer un compte</StyledLink>
+          <StyledLink href={AppPages.AUTH_SIGN_IN}>
+            J&apos;ai déjà un compte
+          </StyledLink>
+          <StyledLink href={AppPages.AUTH_SIGN_UP}>Créer un compte</StyledLink>
         </LinksWrapper>
       </Section>
     </StyledCard>
