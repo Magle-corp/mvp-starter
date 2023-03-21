@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
+import { AppPages } from '@/cdn/enums/AppPages';
 import SignUp from '@/features/authentication/types/SignUp';
 import SignUpForm from '@/ui/organisms/forms/SignUpForm';
 import Card from '@/ui/atoms/Card';
@@ -17,7 +18,9 @@ const SignUpTemplate = () => {
         <Title>Inscription</Title>
         <SignUpForm onSubmit={onSubmit} submitError={submitError} />
         <LinksWrapper>
-          <StyledLink href="#">J&apos;ai déjà un compte</StyledLink>
+          <StyledLink href={AppPages.AUTH_SIGN_IN}>
+            J&apos;ai déjà un compte
+          </StyledLink>
           <StyledLink href="#">
             Conditions générales d&apos;utilisation
           </StyledLink>
