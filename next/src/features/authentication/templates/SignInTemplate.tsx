@@ -5,7 +5,7 @@ import AppPages from '@/cdn/enums/AppPages';
 import MockHttpStatusRoutes from '@/cdn/enums/MockHttpStatusRoutes';
 import usePost from '@/cdn/queries/usePost';
 import SignIn from '@/features/authentication/types/SignIn';
-import SignInForm from '@/ui/organisms/forms/SignInForm';
+import SignInForm from '@/features/authentication/forms/SignInForm';
 import Card from '@/ui/atoms/Card';
 import Link from '@/ui/atoms/Link';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
