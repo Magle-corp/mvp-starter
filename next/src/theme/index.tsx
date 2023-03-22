@@ -34,6 +34,10 @@ const GlobalStyle = createGlobalStyle`
   main {
     padding: 0 10px;
   }
+  
+  p {
+    line-height: 1.5rem;
+  }
 `;
 
 export { GlobalStyle, ThemeWrapper };
