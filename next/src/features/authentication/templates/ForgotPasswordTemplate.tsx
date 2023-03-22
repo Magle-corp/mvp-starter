@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
-import MockHttpStatusRoutes from '@/cdn/enums/MockHttpStatusRoutes';
 import usePost from '@/cdn/queries/usePost';
 import ForgotPassword from '@/features/authentication/types/ForgotPassword';
 import ForgotPasswordForm from '@/features/authentication/forms/ForgotPasswordForm';
@@ -11,7 +10,7 @@ import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
 const ForgotPasswordTemplate = () => {
   const forgotPasswordMutation = usePost<ForgotPassword>(
-    MockHttpStatusRoutes.OK
+    '/api/mockHttpRequest?status=200'
   );
 
   const onSubmit: SubmitHandler<ForgotPassword> = (
