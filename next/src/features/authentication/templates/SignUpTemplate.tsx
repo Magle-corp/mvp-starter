@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
-import MockHttpStatusRoutes from '@/cdn/enums/MockHttpStatusRoutes';
 import usePost from '@/cdn/queries/usePost';
 import SignUp from '@/features/authentication/types/SignUp';
 import SignUpForm from '@/features/authentication/forms/SignUpForm';
@@ -10,7 +9,7 @@ import Link from '@/ui/atoms/Link';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
 const SignUpTemplate = () => {
-  const signUpMutation = usePost<SignUp>(MockHttpStatusRoutes.OK);
+  const signUpMutation = usePost<SignUp>('/api/mockHttpRequest?status=200');
 
   const onSubmit: SubmitHandler<SignUp> = (fieldValues: SignUp) => {
     signUpMutation.mutate(fieldValues);

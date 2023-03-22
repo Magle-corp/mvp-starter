@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
-import MockHttpStatusRoutes from '@/cdn/enums/MockHttpStatusRoutes';
 import usePost from '@/cdn/queries/usePost';
 import SignIn from '@/features/authentication/types/SignIn';
 import SignInForm from '@/features/authentication/forms/SignInForm';
@@ -13,8 +12,9 @@ import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 const SignInTemplate = () => {
   const router = useRouter();
 
-  const signInMutation = usePost<SignIn>(MockHttpStatusRoutes.OK, () =>
-    router.push('/')
+  const signInMutation = usePost<SignIn>(
+    '/api/mockHttpRequest?status=200',
+    () => router.push('/')
   );
 
   const onSubmit: SubmitHandler<SignIn> = (fieldValues: SignIn) => {
@@ -28,7 +28,7 @@ const SignInTemplate = () => {
     <StyledCard>
       <Section>
         <Title>Connexion</Title>
-        {!signInMutation.isLoading && (
+        {!signInMutation.isLoading && !signInMutation.isSuccess && (
           <>
             <SignInForm
               onSubmit={onSubmit}
