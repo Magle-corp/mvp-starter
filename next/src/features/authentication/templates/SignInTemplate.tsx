@@ -1,28 +1,52 @@
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
-import { AppPages } from '@/cdn/enums/AppPages';
+import AppPages from '@/cdn/enums/AppPages';
+import MockHttpStatusRoutes from '@/cdn/enums/MockHttpStatusRoutes';
+import usePost from '@/cdn/queries/usePost';
 import SignIn from '@/features/authentication/types/SignIn';
 import SignInForm from '@/ui/organisms/forms/SignInForm';
 import Card from '@/ui/atoms/Card';
 import Link from '@/ui/atoms/Link';
+import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
 const SignInTemplate = () => {
+  const router = useRouter();
+
+  const signInMutation = usePost<SignIn>(MockHttpStatusRoutes.OK, () =>
+    router.push('/')
+  );
+
   const onSubmit: SubmitHandler<SignIn> = (fieldValues: SignIn) => {
-    console.log(fieldValues);
+    signInMutation.mutate(fieldValues);
   };
-  const submitError = undefined;
+
+  const mutationErrorMsg =
+    'Un problème technique nous empêche de vous connecter';
 
   return (
     <StyledCard>
       <Section>
         <Title>Connexion</Title>
-        <SignInForm onSubmit={onSubmit} submitError={submitError} />
-        <LinksWrapper>
-          <StyledLink href={AppPages.AUTH_FORGOT_PASSWORD}>
-            Mot de passe oublié
-          </StyledLink>
-          <StyledLink href={AppPages.AUTH_SIGN_UP}>Créer un compte</StyledLink>
-        </LinksWrapper>
+        {!signInMutation.isLoading && (
+          <>
+            <SignInForm
+              onSubmit={onSubmit}
+              submitError={
+                signInMutation.isError ? mutationErrorMsg : undefined
+              }
+            />
+            <LinksWrapper>
+              <StyledLink href={AppPages.AUTH_FORGOT_PASSWORD}>
+                Mot de passe oublié
+              </StyledLink>
+              <StyledLink href={AppPages.AUTH_SIGN_UP}>
+                Créer un compte
+              </StyledLink>
+            </LinksWrapper>
+          </>
+        )}
+        {signInMutation.isLoading && <ProgressSpinner />}
       </Section>
     </StyledCard>
   );
@@ -51,7 +75,7 @@ const LinksWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
 `;
 
 const StyledLink = styled(Link)`
