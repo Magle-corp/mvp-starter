@@ -1,5 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import api from '@/cdn/utils/api';
+import ApiError from '@/cdn/types/ApiError';
 
 const usePost = <T>(url: string, onSuccess?: Function, onError?: Function) => {
   return useMutation(
@@ -10,12 +12,8 @@ const usePost = <T>(url: string, onSuccess?: Function, onError?: Function) => {
       onSuccess: () => {
         onSuccess && onSuccess();
       },
-      onError: (error, variables, context) => {
-        onError ? onError() : console.group(`[ERROR] usePost on : ${url}`);
-        console.log(error);
-        console.log(variables);
-        console.log(context);
-        console.groupEnd();
+      onError: (error: AxiosError<ApiError>, variables, context) => {
+        onError && onError();
       },
     }
   );
