@@ -5,4 +5,9 @@ type ApiError = {
   'hydra:title': string;
 };
 
-export default ApiError;
+type ApiUnauthorized = {
+  code: number;
+  message: string;
+};
+
+export type { ApiError, ApiUnauthorized };

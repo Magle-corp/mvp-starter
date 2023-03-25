@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import api from '@/cdn/utils/api';
-import ApiError from '@/cdn/types/ApiError';
+import { ApiError, ApiUnauthorized } from '@/cdn/types/ApiResponse';
 
 const usePost = <T>(url: string, onSuccess?: Function, onError?: Function) => {
   return useMutation(
@@ -12,7 +12,11 @@ const usePost = <T>(url: string, onSuccess?: Function, onError?: Function) => {
       onSuccess: () => {
         onSuccess && onSuccess();
       },
-      onError: (error: AxiosError<ApiError>, variables, context) => {
+      onError: (
+        error: AxiosError<ApiError & ApiUnauthorized>,
+        variables,
+        context
+      ) => {
         onError && onError();
       },
     }
