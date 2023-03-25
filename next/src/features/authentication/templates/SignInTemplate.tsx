@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
+import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/queries/usePost';
 import SignIn from '@/features/authentication/types/SignIn';
 import SignInForm from '@/features/authentication/forms/SignInForm';
@@ -12,17 +13,13 @@ import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 const SignInTemplate = () => {
   const router = useRouter();
 
-  const signInMutation = usePost<SignIn>(
-    '/api/mockHttpRequest?status=200',
-    () => router.push('/')
+  const signInMutation = usePost<SignIn>(ApiRoutes.SIGN_IN, () =>
+    router.push('/')
   );
 
   const onSubmit: SubmitHandler<SignIn> = (fieldValues: SignIn) => {
     signInMutation.mutate(fieldValues);
   };
-
-  const mutationErrorMsg =
-    'Un problème technique nous empêche de vous connecter';
 
   return (
     <StyledCard>
@@ -32,9 +29,7 @@ const SignInTemplate = () => {
           <>
             <SignInForm
               onSubmit={onSubmit}
-              submitError={
-                signInMutation.isError ? mutationErrorMsg : undefined
-              }
+              submitError={signInMutation.error?.response?.data.message}
             />
             <LinksWrapper>
               <StyledLink href={AppPages.AUTH_FORGOT_PASSWORD}>

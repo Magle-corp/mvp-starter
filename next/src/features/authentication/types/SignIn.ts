@@ -1,5 +1,5 @@
 type SignIn = {
-  email: string;
+  username: string;
   password: string;
 };
 
