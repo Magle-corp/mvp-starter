@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 
-final class ExceptionManager implements EventSubscriberInterface
+final class ExceptionSubscriber implements EventSubscriberInterface
 {
 
     public static function getSubscribedEvents(): array
