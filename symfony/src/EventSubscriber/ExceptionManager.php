@@ -22,6 +22,9 @@ final class ExceptionManager implements EventSubscriberInterface
 
     public function customKernelEventExceptions(ExceptionEvent $event)
     {
+        dump($event);
+        die();
+
         $exceptionThrowable = $event->getThrowable();
 
         if (!$exceptionThrowable instanceof ApiExceptionCustom409)

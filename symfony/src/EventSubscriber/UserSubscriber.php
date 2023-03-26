@@ -5,20 +5,20 @@ namespace App\EventSubscriber;
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\User;
 use App\Exception\ApiExceptionCustom409;
-use App\Repository\UserRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 final class UserSubscriber implements EventSubscriberInterface
 {
-    private UserRepository $userRepository;
+    private UserProviderInterface $userProvider;
     private UserPasswordHasherInterface $passwordHasher;
 
-    public function __construct(UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(UserProviderInterface $userProvider, UserPasswordHasherInterface $passwordHasher)
     {
-        $this->userRepository = $userRepository;
+        $this->userProvider = $userProvider;
         $this->passwordHasher = $passwordHasher;
     }
 
@@ -27,9 +27,16 @@ final class UserSubscriber implements EventSubscriberInterface
         return [
             KernelEvents::VIEW => [
                 ['userEmailAlreadyRegistered', EventPriorities::PRE_VALIDATE],
-                ['UserHashPassword', EventPriorities::POST_VALIDATE],
+                ['userHashPassword', EventPriorities::POST_VALIDATE],
+                ['test', EventPriorities::POST_WRITE],
             ]
         ];
+    }
+
+    public function test(ViewEvent $event)
+    {
+        dump($event);
+        die();
     }
 
     public function userEmailAlreadyRegistered(ViewEvent $event): void
@@ -41,17 +48,17 @@ final class UserSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->userRepository->findOneBy(['email' => $user->getEmail()])) {
+        if ($this->userProvider->loadUserByIdentifier($user->getEmail())) {
             throw new ApiExceptionCustom409(sprintf('Adresse email déjà enregistrée'));
         }
     }
 
-    public function UserHashPassword(ViewEvent $event): void
+    public function userHashPassword(ViewEvent $event): void
     {
         /** @var User $user */
         $user = $event->getControllerResult();
 
-        if (!$user instanceof User || !$user->getPassword()) {
+        if (!$user instanceof User || !$user->getPassword() || $user->getId()) {
             return;
         }
 
