@@ -20,7 +20,11 @@ final class ExceptionManager implements EventSubscriberInterface
         ];
     }
 
-    public function customKernelEventExceptions(ExceptionEvent $event)
+    /**
+     * @param ExceptionEvent $event
+     * @return void
+     */
+    public function customKernelEventExceptions(ExceptionEvent $event): void
     {
         $exceptionThrowable = $event->getThrowable();
 
@@ -33,7 +37,11 @@ final class ExceptionManager implements EventSubscriberInterface
         }
     }
 
-    public function customLoginFailureEventException(LoginFailureEvent $event)
+    /**
+     * @param LoginFailureEvent $event
+     * @return void
+     */
+    public function customLoginFailureEventException(LoginFailureEvent $event): void
     {
         if ($event->getException() instanceof BadCredentialsException)
         {
