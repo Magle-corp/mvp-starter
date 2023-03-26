@@ -50,7 +50,7 @@ final class UserSubscriber implements EventSubscriberInterface
     {
         $user = $event->getControllerResult();
 
-        if (!$user instanceof User || !$user->getEmail()) {
+        if (!$user instanceof User || !$user->getEmail() || $user->getId()) {
             return;
         }
 
