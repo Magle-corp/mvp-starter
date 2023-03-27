@@ -43,7 +43,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE )]
-    private ?DateTimeInterface $created = null;
+    private ?DateTimeInterface $created;
+
+    #[ORM\Column]
+    private ?bool $verified = false;
 
     public function getId(): ?int
     {
@@ -123,6 +126,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreated(DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    public function isVerified(): ?bool
+    {
+        return $this->verified;
+    }
+
+    public function setVerified(bool $verified): self
+    {
+        $this->verified = $verified;
 
         return $this;
     }
