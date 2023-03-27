@@ -25,6 +25,7 @@ const SignUpTemplate = () => {
             <SignUpForm
               onSubmit={onSubmit}
               submitError={
+                signUpMutation.error?.response?.data.message ||
                 signUpMutation.error?.response?.data['hydra:description']
               }
             />

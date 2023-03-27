@@ -14,12 +14,12 @@ type SignInForm = {
 
 const SignInForm = (props: SignInForm) => {
   const schema: Schema<SignIn> = object({
-    username: string().email('Format invalide').required('Champ requis'),
+    email: string().email('Format invalide').required('Champ requis'),
     password: string().required('Champ requis'),
   });
 
   const defaultValues: SignIn = {
-    username: '',
+    email: '',
     password: '',
   };
 
@@ -35,9 +35,9 @@ const SignInForm = (props: SignInForm) => {
       <InputsWrapper>
         <FormFieldText<SignIn>
           label="Adresse email"
-          name="username"
+          name="email"
           control={form.control}
-          error={form.formState.errors.username}
+          error={form.formState.errors.email}
         />
         <FormFieldPassword<SignIn>
           label="Mot de passe"
