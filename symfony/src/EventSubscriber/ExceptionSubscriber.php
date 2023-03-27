@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Exception\ApiExceptionCustom401;
 use App\Exception\ApiExceptionCustom409;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -11,7 +12,9 @@ use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 
 final class ExceptionSubscriber implements EventSubscriberInterface
 {
-
+    /**
+     * @return array[]
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -28,7 +31,10 @@ final class ExceptionSubscriber implements EventSubscriberInterface
     {
         $exceptionThrowable = $event->getThrowable();
 
-        if (!$exceptionThrowable instanceof ApiExceptionCustom409)
+        if (
+            !$exceptionThrowable instanceof ApiExceptionCustom409 &&
+            !$exceptionThrowable instanceof ApiExceptionCustom401
+        )
         {
             $exceptionThrowableClass = get_class($exceptionThrowable);
             $event->setThrowable(new $exceptionThrowableClass(
