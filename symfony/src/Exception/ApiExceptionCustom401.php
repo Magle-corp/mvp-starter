@@ -4,7 +4,7 @@ namespace App\Exception;
 
 use Exception;
 
-final class ApiExceptionCustom409 extends Exception
+final class ApiExceptionCustom401 extends Exception
 {
     /**
      * @param string $message
