@@ -11,6 +11,10 @@ class MailService
     private MailerInterface $mailer;
     private JWTService $JWTService;
 
+    /**
+     * @param MailerInterface $mailer
+     * @param JWTService $JWTService
+     */
     public function __construct(
         MailerInterface $mailer,
         JWTService $JWTService,

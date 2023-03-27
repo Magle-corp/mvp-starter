@@ -46,16 +46,16 @@ class JWTService
     public function isValid(string $token): bool
     {
         return preg_match(
-                '/^[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+$/',
-                $token
-            ) === 1;
+            '/^[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+$/',
+            $token
+        ) === 1;
     }
 
     /**
      * @param string $token
-     * @return array
+     * @return array|null
      */
-    public function getPayload(string $token): array
+    public function getPayload(string $token): array | null
     {
         $array = explode('.', $token);
         return json_decode(base64_decode($array[1]), true);
@@ -63,9 +63,9 @@ class JWTService
 
     /**
      * @param string $token
-     * @return array
+     * @return array|null
      */
-    public function getHeader(string $token): array
+    public function getHeader(string $token): array | null
     {
         $array = explode('.', $token);
         return json_decode(base64_decode($array[0]), true);
@@ -92,6 +92,10 @@ class JWTService
     {
         $header = $this->getHeader($token);
         $payload = $this->getPayload($token);
+
+        if ($header === null || $payload === null) {
+            return false;
+        }
 
         $verifToken = $this->generate($header, $payload, $secret, 0);
 
