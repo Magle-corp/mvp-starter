@@ -19,6 +19,11 @@ final class UserSubscriber implements EventSubscriberInterface
     private UserPasswordHasherInterface $passwordHasher;
     private MailService $mailService;
 
+    /**
+     * @param UserRepository $userRepository
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param MailService $mailService
+     */
     public function __construct(
         UserRepository $userRepository,
         UserPasswordHasherInterface $passwordHasher,
@@ -30,6 +35,9 @@ final class UserSubscriber implements EventSubscriberInterface
         $this->mailService = $mailService;
     }
 
+    /**
+     * @return array[]
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -55,7 +63,10 @@ final class UserSubscriber implements EventSubscriberInterface
         }
 
         if ($this->userRepository->findOneBy(['email' => $user->getEmail()])) {
-            throw new ApiExceptionCustom409(sprintf('Adresse email déjà enregistrée'));
+            $exception = new ApiExceptionCustom409();
+            $exception->setErrorMessage('Adresse email déjà enregistrée');
+
+            throw $exception;
         }
     }
 
@@ -85,7 +96,7 @@ final class UserSubscriber implements EventSubscriberInterface
     {
         $user = $event->getControllerResult();
 
-        if (!$user instanceof User || !$user->getId()) {
+        if (!$user instanceof User || !$user->getId() || $user->isVerified()) {
             return;
         }
 
