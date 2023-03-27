@@ -43,7 +43,7 @@ const SignUpTemplate = () => {
         {signUpMutation.isSuccess && (
           <>
             <CongratsWrapper>
-              <Congrats>Inscription validée 🎉</Congrats>
+              <Congrats>Inscription enregistrée 👍</Congrats>
               <p>
                 Finalisez votre inscription en consultant le mail que nous
                 venons de vous envoyer
