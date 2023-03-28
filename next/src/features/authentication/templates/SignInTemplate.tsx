@@ -29,10 +29,7 @@ const SignInTemplate = () => {
           <>
             <SignInForm
               onSubmit={onSubmit}
-              submitError={
-                signInMutation.error?.response?.data.message ||
-                signInMutation.error?.response?.data['hydra:description']
-              }
+              submitError={signInMutation.error?.response?.data.message}
             />
             <LinksWrapper>
               <StyledLink href={AppPages.AUTH_FORGOT_PASSWORD}>
