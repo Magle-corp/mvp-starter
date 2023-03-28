@@ -5,7 +5,7 @@ namespace App\EventSubscriber;
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Service\MailService;
+use App\Service\EmailService;
 use App\Service\ResponseService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -17,19 +17,19 @@ final class UserSubscriber implements EventSubscriberInterface
     private ResponseService $responseService;
     private UserRepository $userRepository;
     private UserPasswordHasherInterface $passwordHasher;
-    private MailService $mailService;
+    private EmailService $emailService;
 
     public function __construct(
         ResponseService             $responseService,
         UserRepository              $userRepository,
         UserPasswordHasherInterface $passwordHasher,
-        MailService                 $mailService,
+        EmailService                $emailService,
     )
     {
         $this->responseService = $responseService;
         $this->userRepository = $userRepository;
         $this->passwordHasher = $passwordHasher;
-        $this->mailService = $mailService;
+        $this->emailService = $emailService;
     }
 
     public static function getSubscribedEvents(): array
@@ -78,6 +78,6 @@ final class UserSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->mailService->sendRegistrationEmail($user);
+        $this->emailService->sendRegistrationEmail($user);
     }
 }

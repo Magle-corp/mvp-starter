@@ -7,7 +7,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
-class MailService
+class EmailService
 {
     private MailerInterface $mailer;
     private JWTService $JWTService;
@@ -36,7 +36,7 @@ class MailService
         $header = ['typ' => 'JWT', 'alg' => 'HS256'];
         $payload = ['user_id' => $user->getId()];
 
-        $token = $this->JWTService->generate($header, $payload, getenv('JWT_REGISTRATION_SECRET'));
+        $token = $this->JWTService->generate($header, $payload, getenv('JWT_SIGNUP_SECRET'));
 
         $email = (new TemplatedEmail())
             ->to($user->getEmail())
