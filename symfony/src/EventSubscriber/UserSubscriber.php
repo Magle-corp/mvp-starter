@@ -6,24 +6,27 @@ use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\MailService;
+use App\Service\ResponseService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UserSubscriber implements EventSubscriberInterface
 {
+    private ResponseService $responseService;
     private UserRepository $userRepository;
     private UserPasswordHasherInterface $passwordHasher;
     private MailService $mailService;
 
     public function __construct(
+        ResponseService             $responseService,
         UserRepository              $userRepository,
         UserPasswordHasherInterface $passwordHasher,
         MailService                 $mailService,
     )
     {
+        $this->responseService = $responseService;
         $this->userRepository = $userRepository;
         $this->passwordHasher = $passwordHasher;
         $this->mailService = $mailService;
@@ -45,12 +48,12 @@ final class UserSubscriber implements EventSubscriberInterface
         $user = $event->getControllerResult();
 
         if (!$user instanceof User || !$user->getEmail() || $user->getId()) {
-            $event->setResponse(new Response('{"message":"Un problème technique est survenu, veuillez réessayer ultérieurement"}', 500));
+            $event->setResponse($this->responseService->error());
             return;
         }
 
         if ($this->userRepository->findOneBy(['email' => $user->getEmail()])) {
-            $event->setResponse(new Response('{"message":"Adresse email déjà enregistrée"}', 409));
+            $event->setResponse($this->responseService->create('Adresse email déjà enregistrée', 409));
         }
     }
 
@@ -59,7 +62,7 @@ final class UserSubscriber implements EventSubscriberInterface
         $user = $event->getControllerResult();
 
         if (!$user instanceof User || !$user->getPassword() || $user->getId()) {
-            $event->setResponse(new Response('{"message":"Un problème technique est survenu, veuillez réessayer ultérieurement"}', 500));
+            $event->setResponse($this->responseService->error());
             return;
         }
 
@@ -71,7 +74,7 @@ final class UserSubscriber implements EventSubscriberInterface
         $user = $event->getControllerResult();
 
         if (!$user instanceof User || !$user->getId() || $user->isVerified()) {
-            $event->setResponse(new Response('{"message":"Un problème technique est survenu, veuillez réessayer ultérieurement"}', 500));
+            $event->setResponse($this->responseService->error());
             return;
         }
 
