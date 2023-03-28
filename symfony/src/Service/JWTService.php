@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use DateTimeImmutable;
@@ -14,7 +15,7 @@ class JWTService
      */
     public function generate(array $header, array $payload, string $secret, int $validity = 10800): string
     {
-        if($validity > 0){
+        if ($validity > 0) {
             $now = new DateTimeImmutable();
             $exp = $now->getTimestamp() + $validity;
 
@@ -46,29 +47,39 @@ class JWTService
     public function isValid(string $token): bool
     {
         return preg_match(
-            '/^[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+$/',
-            $token
-        ) === 1;
+                '/^[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+$/',
+                $token
+            ) === 1;
     }
 
     /**
      * @param string $token
      * @return array|null
      */
-    public function getPayload(string $token): array | null
+    public function getPayload(string $token): array|null
     {
         $array = explode('.', $token);
-        return json_decode(base64_decode($array[1]), true);
+
+        if (count($array) > 1) {
+            return json_decode(base64_decode($array[1]), true);
+        } else {
+            return null;
+        }
     }
 
     /**
      * @param string $token
      * @return array|null
      */
-    public function getHeader(string $token): array | null
+    public function getHeader(string $token): array|null
     {
         $array = explode('.', $token);
-        return json_decode(base64_decode($array[0]), true);
+
+        if (count($array) > 0) {
+            return json_decode(base64_decode($array[0]), true);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -80,7 +91,11 @@ class JWTService
         $payload = $this->getPayload($token);
         $now = new DateTimeImmutable();
 
-        return $payload['exp'] < $now->getTimestamp();
+        if (!$payload || !array_key_exists('exp', $payload)) {
+            return false;
+        } else {
+            return $payload['exp'] < $now->getTimestamp();
+        }
     }
 
     /**
