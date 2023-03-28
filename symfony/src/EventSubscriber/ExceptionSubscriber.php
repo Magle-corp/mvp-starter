@@ -2,57 +2,24 @@
 
 namespace App\EventSubscriber;
 
-use App\Exception\ApiExceptionCustom401;
-use App\Exception\ApiExceptionCustom409;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 
 final class ExceptionSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @return array[]
-     */
     public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::EXCEPTION => ['customKernelEventExceptions'],
-            LoginFailureEvent::class => ['customLoginFailureEventException']
         ];
     }
 
-    /**
-     * @param ExceptionEvent $event
-     * @return void
-     */
     public function customKernelEventExceptions(ExceptionEvent $event): void
     {
-        $exceptionThrowable = $event->getThrowable();
-
-        if (
-            !$exceptionThrowable instanceof ApiExceptionCustom409 &&
-            !$exceptionThrowable instanceof ApiExceptionCustom401
-        )
-        {
-            $exceptionThrowableClass = get_class($exceptionThrowable);
-            $event->setThrowable(new $exceptionThrowableClass(
-                'Un problème technique est survenu, veuillez réessayer ultérieurement'
-            ));
-        }
-    }
-
-    /**
-     * @param LoginFailureEvent $event
-     * @return void
-     */
-    public function customLoginFailureEventException(LoginFailureEvent $event): void
-    {
-        if ($event->getException() instanceof BadCredentialsException)
-        {
-            $customResponse = $event->getResponse()->setContent('{"code":401,"message":"Identifiants invalides"}');
-            $event->setResponse($customResponse);
-        }
+        $eventThrowableClass = get_class($event->getThrowable());
+        $event->setThrowable(new $eventThrowableClass(
+            'Un problème technique est survenu, veuillez réessayer ultérieurement'
+        ));
     }
 }
