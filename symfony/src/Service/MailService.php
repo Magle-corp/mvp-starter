@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use App\Entity\User;
@@ -11,13 +12,9 @@ class MailService
     private MailerInterface $mailer;
     private JWTService $JWTService;
 
-    /**
-     * @param MailerInterface $mailer
-     * @param JWTService $JWTService
-     */
     public function __construct(
         MailerInterface $mailer,
-        JWTService $JWTService,
+        JWTService      $JWTService,
     )
     {
         $this->mailer = $mailer;
