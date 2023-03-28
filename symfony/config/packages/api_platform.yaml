@@ -9,7 +9,3 @@ api_platform:
 
     # Validation exception
     ApiPlatform\Validator\Exception\ValidationException: !php/const Symfony\Component\HttpFoundation\Response::HTTP_UNPROCESSABLE_ENTITY
-
-    # Custom mapping
-    App\Exception\ApiExceptionCustom401: 401
-    App\Exception\ApiExceptionCustom409: 409

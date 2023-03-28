@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Exception\ApiExceptionCustom401;
 use App\Service\JWTService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,12 +16,8 @@ class SignUpValidationController extends AbstractController
     private JWTService $JWTService;
     private EntityManagerInterface $entityManager;
 
-    /**
-     * @param JWTService $JWTService
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(
-        JWTService $JWTService,
+        JWTService             $JWTService,
         EntityManagerInterface $entityManager
     )
     {
@@ -30,33 +25,48 @@ class SignUpValidationController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     * @throws ApiExceptionCustom401
-     */
     public function __invoke(Request $request): Response
     {
-        $validationToken = $request->query->get('token');
+        $requestContent = json_decode($request->getContent(), true);
+
+        if (!array_key_exists('token', $requestContent)) {
+            return new Response('{"message":"Un problème technique est survenu, veuillez réessayer ultérieurement"}', 500);
+        }
+
+        $validationToken = $requestContent['token'];
 
         $isExpiredToken = $this->JWTService->isExpired($validationToken);
         $isValidToken = $this->JWTService->isValid($validationToken);
         $isValidSecret = $this->JWTService->check($validationToken, getenv('JWT_REGISTRATION_SECRET'));
 
         if ($isExpiredToken || !$isValidToken || !$isValidSecret) {
-            $exception = new ApiExceptionCustom401();
-            $exception->setErrorMessage('Token invalide');
-
-            throw $exception;
-        } else {
-            $userRepository = $this->entityManager->getRepository(User::class);
-            $user = $userRepository->findOneBy(['id' => $this->JWTService->getPayload($validationToken)['user_id']]);
-            $user->setVerified(true);
-
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-
-            return new Response('OK');
+            return new Response('{"message":"Le token n\'est pas valide"}', 401);
         }
+
+        $tokenPayload = $this->JWTService->getPayload($validationToken);
+
+        if (!array_key_exists('user_id', $tokenPayload)) {
+            return new Response('{"message":"Un problème technique est survenu, veuillez réessayer ultérieurement"}', 500);
+        }
+
+        $userId = $tokenPayload['user_id'];
+
+        $userRepository = $this->entityManager->getRepository(User::class);
+        $user = $userRepository->findOneBy(['id' => $userId]);
+
+        if (!$user) {
+            return new Response('{"message":"Aucun compte correspondant"}', 409);
+        }
+
+        if ($user->isVerified()) {
+            return new Response('{"message":"Compte déjà vérifié"}', 409);
+        }
+
+        $user->setVerified(true);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return new Response('{"message":"OK"}', 200);
     }
 }
