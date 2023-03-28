@@ -4,13 +4,12 @@ namespace App\EventSubscriber;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\User;
-use App\Exception\ApiExceptionCustom409;
 use App\Repository\UserRepository;
 use App\Service\MailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UserSubscriber implements EventSubscriberInterface
@@ -19,15 +18,10 @@ final class UserSubscriber implements EventSubscriberInterface
     private UserPasswordHasherInterface $passwordHasher;
     private MailService $mailService;
 
-    /**
-     * @param UserRepository $userRepository
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @param MailService $mailService
-     */
     public function __construct(
-        UserRepository $userRepository,
+        UserRepository              $userRepository,
         UserPasswordHasherInterface $passwordHasher,
-        MailService $mailService,
+        MailService                 $mailService,
     )
     {
         $this->userRepository = $userRepository;
@@ -35,9 +29,6 @@ final class UserSubscriber implements EventSubscriberInterface
         $this->mailService = $mailService;
     }
 
-    /**
-     * @return array[]
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -49,54 +40,38 @@ final class UserSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param ViewEvent $event
-     * @return void
-     * @throws ApiExceptionCustom409
-     */
-    public function userCheckEmail(ViewEvent $event): void
+    public function userCheckEmail(ViewEvent $event)
     {
         $user = $event->getControllerResult();
 
         if (!$user instanceof User || !$user->getEmail() || $user->getId()) {
+            $event->setResponse(new Response('{"message":"Un problème technique est survenu, veuillez réessayer ultérieurement"}', 500));
             return;
         }
 
         if ($this->userRepository->findOneBy(['email' => $user->getEmail()])) {
-            $exception = new ApiExceptionCustom409();
-            $exception->setErrorMessage('Adresse email déjà enregistrée');
-
-            throw $exception;
+            $event->setResponse(new Response('{"message":"Adresse email déjà enregistrée"}', 409));
         }
     }
 
-    /**
-     * @param ViewEvent $event
-     * @return void
-     */
     public function userHashPassword(ViewEvent $event): void
     {
         $user = $event->getControllerResult();
 
         if (!$user instanceof User || !$user->getPassword() || $user->getId()) {
+            $event->setResponse(new Response('{"message":"Un problème technique est survenu, veuillez réessayer ultérieurement"}', 500));
             return;
         }
 
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
-
-        $user->setPassword($hashedPassword);
+        $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPassword()));
     }
 
-    /**
-     * @param ViewEvent $event
-     * @return void
-     * @throws TransportExceptionInterface
-     */
     public function userSendRegistrationEmail(ViewEvent $event): void
     {
         $user = $event->getControllerResult();
 
         if (!$user instanceof User || !$user->getId() || $user->isVerified()) {
+            $event->setResponse(new Response('{"message":"Un problème technique est survenu, veuillez réessayer ultérieurement"}', 500));
             return;
         }
 
