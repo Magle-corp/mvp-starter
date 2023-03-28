@@ -14,48 +14,66 @@ const SignUpValidationTemplate = () => {
   const router = useRouter();
   const { token } = router.query;
 
-  const SignUpValidationMutation = usePost<SignUpValidation>(
+  const signUpValidationMutation = usePost<SignUpValidation>(
     ApiRoutes.SIGN_UP_VALIDATION
   );
 
   useEffect(() => {
     if (token && typeof token === 'string') {
-      SignUpValidationMutation.mutate({
+      signUpValidationMutation.mutate({
         token,
       });
     }
-  }, [token, SignUpValidationMutation]);
+  }, [token]);
 
   return (
     <StyledCard>
       <Section>
         <Title>Inscription</Title>
-        {SignUpValidationMutation.isLoading && <ProgressSpinner />}
-        {SignUpValidationMutation.isError &&
-          SignUpValidationMutation.error?.response?.data.message && (
-            <Wrapper>
-              <Error>
-                {SignUpValidationMutation.error?.response?.data.message}
-              </Error>
-              <Button label="Recevoir un nouveau code" />
-            </Wrapper>
+        {signUpValidationMutation.isLoading && <ProgressSpinner />}
+        {signUpValidationMutation.isError &&
+          signUpValidationMutation.error?.response && (
+            <>
+              {signUpValidationMutation.error.response.status === 409 && (
+                <>
+                  <Wrapper>
+                    <Error>
+                      {signUpValidationMutation.error.response.data.message}
+                    </Error>
+                    <p>
+                      Nous avons déjà validé votre inscription, vous pouvez
+                      dorénavant vous connecter
+                    </p>
+                  </Wrapper>
+                  <StyledLink href={AppPages.AUTH_SIGN_IN}>
+                    Se connecter
+                  </StyledLink>
+                </>
+              )}
+              {signUpValidationMutation.error.response.status === 401 && (
+                <>
+                  <Wrapper>
+                    <Error>
+                      {signUpValidationMutation.error.response.data.message}
+                    </Error>
+                    <p>
+                      La validité du lieu a expiré, cliquer sur le bouton
+                      suivant pour recevoir un nouveau lien
+                    </p>
+                  </Wrapper>
+                  <Button label="Recevoir un nouveau lien" />
+                </>
+              )}
+            </>
           )}
-        {SignUpValidationMutation.isError &&
-          SignUpValidationMutation.error?.response?.data[
-            'hydra:description'
-          ] && (
-            <Error>
-              {
-                SignUpValidationMutation.error?.response?.data[
-                  'hydra:description'
-                ]
-              }
-            </Error>
-          )}
-        {SignUpValidationMutation.isSuccess && (
+        {signUpValidationMutation.isSuccess && (
           <>
             <Wrapper>
               <Congrats>Inscription validée 🎉</Congrats>
+              <p>
+                Vous pouvez dorénavent vous connecter et profiter de nos
+                services
+              </p>
             </Wrapper>
             <StyledLink href={AppPages.AUTH_SIGN_IN}>Se connecter</StyledLink>
           </>
@@ -89,11 +107,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
+  text-align: center;
 `;
 
 const Error = styled.p`
   color: ${({ theme }) => theme.colors.error};
-  text-align: center;
 `;
 
 const StyledLink = styled(Link)`
