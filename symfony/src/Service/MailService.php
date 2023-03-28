@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
@@ -21,18 +21,7 @@ class MailService
         $this->JWTService = $JWTService;
     }
 
-    /**
-     * @param string $to
-     * @param string $subject
-     * @param string $text
-     * @return void
-     * @throws TransportExceptionInterface
-     */
-    public function send(
-        string $to,
-        string $subject,
-        string $text,
-    ): void
+    public function send(string $to, string $subject, string $text): void
     {
         $email = (new Email())
             ->to($to)
@@ -42,24 +31,23 @@ class MailService
         $this->mailer->send($email);
     }
 
-    /**
-     * @param User $user
-     * @return void
-     * @throws TransportExceptionInterface
-     */
     public function sendRegistrationEmail(User $user): void
     {
-        $header = [
-            'typ' => 'JWT',
-            'alg' => 'HS256'
-        ];
-
-        $payload = [
-            'user_id' => $user->getId()
-        ];
+        $header = ['typ' => 'JWT', 'alg' => 'HS256'];
+        $payload = ['user_id' => $user->getId()];
 
         $token = $this->JWTService->generate($header, $payload, getenv('JWT_REGISTRATION_SECRET'));
 
-        $this->send($user->getEmail(), 'Finaliser votre inscription', $token);
+        $email = (new TemplatedEmail())
+            ->to($user->getEmail())
+            ->subject('Finaliser votre inscription')
+            ->htmlTemplate('emails/signUpValidation.html.twig')
+            ->context([
+                'front_base_url' => getenv('FRONT_BASE_URL'),
+                'front_auth_uri' => '/authentication/signUpValidation?token=',
+                'token' => $token
+            ]);
+
+        $this->mailer->send($email);
     }
 }
