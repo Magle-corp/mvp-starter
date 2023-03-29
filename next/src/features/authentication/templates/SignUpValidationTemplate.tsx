@@ -18,6 +18,10 @@ const SignUpValidationTemplate = () => {
     ApiRoutes.SIGN_UP_VALIDATION
   );
 
+  const reSendEmailSignUpValidationMutation = usePost<SignUpValidation>(
+    ApiRoutes.SIGN_UP_VALIDATION_EMAIL
+  );
+
   useEffect(() => {
     if (token && typeof token === 'string') {
       signUpValidationMutation.mutate({
@@ -26,56 +30,113 @@ const SignUpValidationTemplate = () => {
     }
   }, [token]);
 
+  const reSendEmailSignUpValidation = () => {
+    if (token && typeof token === 'string') {
+      reSendEmailSignUpValidationMutation.mutate({
+        token,
+      });
+    }
+  };
+
+  const SignUpValidationSuccess = () => {
+    return (
+      <>
+        <Wrapper>
+          <Congrats>Inscription validée 🎉</Congrats>
+          <p>
+            Vous pouvez dorénavent vous connecter et profiter de nos services
+          </p>
+        </Wrapper>
+        <StyledLink href={AppPages.AUTH_SIGN_IN}>Se connecter</StyledLink>
+      </>
+    );
+  };
+
+  const SignUpValidationError = () => {
+    return (
+      <>
+        <Error>{signUpValidationMutation.error?.response?.data.message}</Error>
+        <StyledLink href={AppPages.AUTH_SIGN_IN}>Se connecter</StyledLink>
+      </>
+    );
+  };
+
+  const SignUpValidationExpiredToken = () => {
+    return (
+      <>
+        <Wrapper>
+          <Error>
+            {signUpValidationMutation.error?.response?.data.message}
+          </Error>
+          <p>
+            La validité du lien a expiré, cliquer sur le bouton suivant pour
+            recevoir un nouveau lien
+          </p>
+        </Wrapper>
+        <Button
+          onClick={reSendEmailSignUpValidation}
+          loading={reSendEmailSignUpValidationMutation.isLoading}
+          disabled={
+            reSendEmailSignUpValidationMutation.isLoading ||
+            reSendEmailSignUpValidationMutation.isSuccess
+          }
+          label="Recevoir un nouveau lien"
+        />
+      </>
+    );
+  };
+
+  const ReSendEmailSignUpValidation = () => {
+    return (
+      <Wrapper>
+        <Congrats>Email envoyé 👍</Congrats>
+        <p>
+          Finalisez votre inscription en consultant le mail que nous venons de
+          vous envoyer
+        </p>
+      </Wrapper>
+    );
+  };
+
+  const ReSendSignUpValidationEmailError = () => {
+    return (
+      <Wrapper>
+        <Error>
+          {reSendEmailSignUpValidationMutation.error?.response?.data.message}
+        </Error>
+      </Wrapper>
+    );
+  };
+
   return (
     <StyledCard>
       <Section>
         <Title>Inscription</Title>
-        {signUpValidationMutation.isLoading && <ProgressSpinner />}
-        {signUpValidationMutation.isError &&
-          signUpValidationMutation.error?.response && (
-            <>
-              {signUpValidationMutation.error.response.status === 409 && (
-                <>
-                  <Wrapper>
-                    <Error>
-                      {signUpValidationMutation.error.response.data.message}
-                    </Error>
-                    <p>
-                      Nous avons déjà validé votre inscription, vous pouvez
-                      dorénavant vous connecter
-                    </p>
-                  </Wrapper>
-                  <StyledLink href={AppPages.AUTH_SIGN_IN}>
-                    Se connecter
-                  </StyledLink>
-                </>
-              )}
-              {signUpValidationMutation.error.response.status === 401 && (
-                <>
-                  <Wrapper>
-                    <Error>
-                      {signUpValidationMutation.error.response.data.message}
-                    </Error>
-                    <p>
-                      La validité du lieu a expiré, cliquer sur le bouton
-                      suivant pour recevoir un nouveau lien
-                    </p>
-                  </Wrapper>
-                  <Button label="Recevoir un nouveau lien" />
-                </>
-              )}
-            </>
-          )}
-        {signUpValidationMutation.isSuccess && (
+        {(reSendEmailSignUpValidationMutation.isIdle ||
+          reSendEmailSignUpValidationMutation.isLoading) && (
           <>
-            <Wrapper>
-              <Congrats>Inscription validée 🎉</Congrats>
-              <p>
-                Vous pouvez dorénavent vous connecter et profiter de nos
-                services
-              </p>
-            </Wrapper>
-            <StyledLink href={AppPages.AUTH_SIGN_IN}>Se connecter</StyledLink>
+            {signUpValidationMutation.isLoading && <ProgressSpinner />}
+            {signUpValidationMutation.isSuccess && <SignUpValidationSuccess />}
+            {signUpValidationMutation.isError && (
+              <>
+                {signUpValidationMutation.error?.response?.status === 409 && (
+                  <SignUpValidationError />
+                )}
+                {signUpValidationMutation.error?.response?.status === 401 && (
+                  <SignUpValidationExpiredToken />
+                )}
+              </>
+            )}
+          </>
+        )}
+        {signUpValidationMutation.isError && (
+          <>
+            {reSendEmailSignUpValidationMutation.isSuccess && (
+              <ReSendEmailSignUpValidation />
+            )}
+            {reSendEmailSignUpValidationMutation.isError && (
+              <ReSendSignUpValidationEmailError />
+            )}
           </>
         )}
       </Section>
