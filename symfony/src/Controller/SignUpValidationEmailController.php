@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\EmailService;
 use App\Service\JWTService;
 use App\Service\ResponseService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,21 +13,24 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
-class SignUpValidationController extends AbstractController
+class SignUpValidationEmailController extends AbstractController
 {
     private JWTService $JWTService;
     private ResponseService $responseService;
     private EntityManagerInterface $entityManager;
+    private EmailService $emailService;
 
     public function __construct(
         JWTService             $JWTService,
         ResponseService        $responseService,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        EmailService           $emailService
     )
     {
         $this->JWTService = $JWTService;
         $this->responseService = $responseService;
         $this->entityManager = $entityManager;
+        $this->emailService = $emailService;
     }
 
     public function __invoke(Request $request): Response
@@ -39,13 +43,8 @@ class SignUpValidationController extends AbstractController
 
         $validationToken = $requestContent['token'];
 
-        $isExpiredToken = $this->JWTService->isExpired($validationToken);
         $isValidToken = $this->JWTService->isValid($validationToken);
         $isValidSecret = $this->JWTService->check($validationToken, getenv('JWT_SIGNUP_SECRET'));
-
-        if ($isExpiredToken) {
-            return $this->responseService->create('Le token n\'est plus valide', 401);
-        }
 
         if (!$isValidToken || !$isValidSecret) {
             return $this->responseService->create('Le token n\'est pas valide', 409);
@@ -70,10 +69,7 @@ class SignUpValidationController extends AbstractController
             return $this->responseService->create('Compte déjà vérifié', 409);
         }
 
-        $user->setVerified(true);
-
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $this->emailService->sendRegistrationEmail($user);
 
         return $this->responseService->create('OK', 200);
     }
