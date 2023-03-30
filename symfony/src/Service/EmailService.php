@@ -33,19 +33,16 @@ class EmailService
 
     public function sendRegistrationEmail(User $user): void
     {
-        $header = ['typ' => 'JWT', 'alg' => 'HS256'];
         $payload = ['user_id' => $user->getId()];
-
-        $token = $this->JWTService->generate($header, $payload, getenv('JWT_SIGNUP_SECRET'));
+        $token = $this->JWTService->generate($payload, getenv('JWT_SIGNUP_SECRET'));
+        $linkForValidateEmail = getenv('FRONT_BASE_URL') . '/authentication/signUpValidation?token=' . $token;
 
         $email = (new TemplatedEmail())
             ->to($user->getEmail())
             ->subject('Finaliser votre inscription')
             ->htmlTemplate('emails/signUpValidation.html.twig')
             ->context([
-                'front_base_url' => getenv('FRONT_BASE_URL'),
-                'front_auth_uri' => '/authentication/signUpValidation?token=',
-                'token' => $token
+                'link_for_validate_email' => $linkForValidateEmail,
             ]);
 
         $this->mailer->send($email);

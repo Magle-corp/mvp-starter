@@ -14,7 +14,7 @@ class ResponseService
         );
     }
 
-    public function error()
+    public function error(): Response
     {
         return $this->create('Un problème technique est survenu, veuillez réessayer ultérieurement', 500);
     }

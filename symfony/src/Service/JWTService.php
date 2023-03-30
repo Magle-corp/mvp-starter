@@ -6,15 +6,10 @@ use DateTimeImmutable;
 
 class JWTService
 {
-    /**
-     * @param array $header
-     * @param array $payload
-     * @param string $secret
-     * @param int $validity
-     * @return string
-     */
-    public function generate(array $header, array $payload, string $secret, int $validity = 10800): string
+    public function generate(array $payload, string $secret, int $validity = 10800): string
     {
+        $header = ['typ' => 'JWT', 'alg' => 'HS256'];
+
         if ($validity > 0) {
             $now = new DateTimeImmutable();
             $exp = $now->getTimestamp() + $validity;
@@ -40,10 +35,6 @@ class JWTService
         return $base64Header . '.' . $base64Payload . '.' . $base64Signature;
     }
 
-    /**
-     * @param string $token
-     * @return bool
-     */
     public function isValid(string $token): bool
     {
         return preg_match(
@@ -52,10 +43,6 @@ class JWTService
             ) === 1;
     }
 
-    /**
-     * @param string $token
-     * @return array|null
-     */
     public function getPayload(string $token): array|null
     {
         $array = explode('.', $token);
@@ -67,10 +54,6 @@ class JWTService
         }
     }
 
-    /**
-     * @param string $token
-     * @return array|null
-     */
     public function getHeader(string $token): array|null
     {
         $array = explode('.', $token);
@@ -82,10 +65,6 @@ class JWTService
         }
     }
 
-    /**
-     * @param string $token
-     * @return bool
-     */
     public function isExpired(string $token): bool
     {
         $payload = $this->getPayload($token);
@@ -98,21 +77,15 @@ class JWTService
         }
     }
 
-    /**
-     * @param string $token
-     * @param string $secret
-     * @return bool
-     */
     public function check(string $token, string $secret): bool
     {
-        $header = $this->getHeader($token);
         $payload = $this->getPayload($token);
 
-        if ($header === null || $payload === null) {
+        if ($payload === null) {
             return false;
         }
 
-        $verifToken = $this->generate($header, $payload, $secret, 0);
+        $verifToken = $this->generate($payload, $secret, 0);
 
         return $token === $verifToken;
     }
