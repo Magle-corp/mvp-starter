@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use App\Controller\ForgotPasswordController;
 use App\Controller\SignUpValidationController;
-use App\Controller\SignUpValidationEmailController;
+use App\Controller\ReSendValidationEmailController;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
@@ -23,8 +23,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
         controller: SignUpValidationController::class,
     ),
     new Post(
-        uriTemplate: '/signUpValidationEmail',
-        controller: SignUpValidationEmailController::class,
+        uriTemplate: '/reSendValidationEmailController',
+        controller: ReSendValidationEmailController::class,
     ),
     new Post(
         uriTemplate: '/forgotPassword',
