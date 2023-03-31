@@ -8,6 +8,7 @@ import Button from '@/ui/atoms/Button';
 
 type ForgotPasswordForm = {
   onSubmit: SubmitHandler<ForgotPassword>;
+  submitLoading: boolean;
   submitError: string | undefined;
 };
 
@@ -40,6 +41,7 @@ const ForgotPasswordForm = (props: ForgotPasswordForm) => {
       <Button
         label="Changer mot de passe"
         onClick={form.handleSubmit(props.onSubmit)}
+        loading={props.submitLoading}
       />
     </Form>
   );

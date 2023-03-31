@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
+import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/queries/usePost';
 import ForgotPassword from '@/features/authentication/types/ForgotPassword';
 import ForgotPasswordForm from '@/features/authentication/forms/ForgotPasswordForm';
 import Card from '@/ui/atoms/Card';
 import Link from '@/ui/atoms/Link';
-import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
 const ForgotPasswordTemplate = () => {
   const forgotPasswordMutation = usePost<ForgotPassword>(
-    '/api/mockHttpRequest?status=200'
+    ApiRoutes.FORGOT_PASSWORD
   );
 
   const onSubmit: SubmitHandler<ForgotPassword> = (
@@ -19,37 +19,31 @@ const ForgotPasswordTemplate = () => {
     forgotPasswordMutation.mutate(fieldValues);
   };
 
-  const mutationErrorMsg =
-    'Un problème technique nous empêche de procéder au changement de votre mot de passe';
-
   return (
     <StyledCard>
       <Section>
         <Title>Mot de passe oublié</Title>
-        {!forgotPasswordMutation.isLoading &&
-          !forgotPasswordMutation.isSuccess && (
-            <>
-              <Help>
-                Saisissez l&apos;adresse email liée à votre compte pour changer
-                votre mot de passe
-              </Help>
-              <ForgotPasswordForm
-                onSubmit={onSubmit}
-                submitError={
-                  forgotPasswordMutation.isError ? mutationErrorMsg : undefined
-                }
-              />
-              <LinksWrapper>
-                <StyledLink href={AppPages.AUTH_SIGN_IN}>
-                  J&apos;ai déjà un compte
-                </StyledLink>
-                <StyledLink href={AppPages.AUTH_SIGN_UP}>
-                  Créer un compte
-                </StyledLink>
-              </LinksWrapper>
-            </>
-          )}
-        {forgotPasswordMutation.isLoading && <ProgressSpinner />}
+        {!forgotPasswordMutation.isSuccess && (
+          <>
+            <Help>
+              Saisissez l&apos;adresse email liée à votre compte pour changer
+              votre mot de passe
+            </Help>
+            <ForgotPasswordForm
+              onSubmit={onSubmit}
+              submitLoading={forgotPasswordMutation.isLoading}
+              submitError={forgotPasswordMutation.error?.response?.data.message}
+            />
+            <LinksWrapper>
+              <StyledLink href={AppPages.AUTH_SIGN_IN}>
+                J&apos;ai déjà un compte
+              </StyledLink>
+              <StyledLink href={AppPages.AUTH_SIGN_UP}>
+                Créer un compte
+              </StyledLink>
+            </LinksWrapper>
+          </>
+        )}
         {forgotPasswordMutation.isSuccess && (
           <>
             <CongratsWrapper>
