@@ -14,7 +14,7 @@ const ResetPasswordTemplate = () => {
   const { token } = router.query;
 
   const resetPasswordMutation = usePost<ResetPassword>(
-    ApiRoutes.RESET_PASSWORD
+    ApiRoutes.AUTH_RESET_PASSWORD
   );
 
   const onSubmit: SubmitHandler<ResetPassword> = (

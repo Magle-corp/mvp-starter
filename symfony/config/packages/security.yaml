@@ -9,10 +9,10 @@ security:
                 property: email
     firewalls:
         login:
-            pattern: ^/api/signIn
+            pattern: ^/api/auth/signIn
             stateless: true
             json_login:
-                check_path: /api/signIn
+                check_path: /api/auth/signIn
                 username_path: email
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
@@ -33,10 +33,7 @@ security:
         - { path: ^/api/$, roles: PUBLIC_ACCESS }
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, roles: PUBLIC_ACCESS }
-        - { path: ^/api/signIn, roles: PUBLIC_ACCESS }
-        - { path: ^/api/signUpValidation, roles: PUBLIC_ACCESS }
-        - { path: ^/api/forgotPassword, roles: PUBLIC_ACCESS }
-        - { path: ^/api/resetPassword, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
