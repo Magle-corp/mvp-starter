@@ -45,7 +45,7 @@ class ForgotPasswordController extends AbstractController
             return $this->responseService->create('Aucun compte corresponsant', 409);
         }
 
-        $this->emailService->sendForgotPasswordEmail($user);
+        $this->emailService->sendResetPasswordEmail($user);
 
         return $this->responseService->create('OK', 200);
     }
