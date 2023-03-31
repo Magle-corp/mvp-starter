@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 
 class EmailService
 {
@@ -21,12 +20,13 @@ class EmailService
         $this->JWTService = $JWTService;
     }
 
-    public function send(string $to, string $subject, string $text): void
+    public function sendTemplateEmail(string $email, string $subject, string $template, array $context): void
     {
-        $email = (new Email())
-            ->to($to)
+        $email = (new TemplatedEmail())
+            ->to($email)
             ->subject($subject)
-            ->text($text);
+            ->htmlTemplate($template)
+            ->context($context);
 
         $this->mailer->send($email);
     }
@@ -37,14 +37,29 @@ class EmailService
         $token = $this->JWTService->generate($payload, getenv('JWT_SIGNUP_SECRET'));
         $linkForValidateEmail = getenv('FRONT_BASE_URL') . '/authentication/signUpValidation?token=' . $token;
 
-        $email = (new TemplatedEmail())
-            ->to($user->getEmail())
-            ->subject('Finaliser votre inscription')
-            ->htmlTemplate('emails/signUpValidation.html.twig')
-            ->context([
+        $this->sendTemplateEmail(
+            $user->getEmail(),
+            'Finaliser votre inscription',
+            'emails/signUpValidation.html.twig',
+            [
                 'link_for_validate_email' => $linkForValidateEmail,
-            ]);
+            ]
+        );
+    }
 
-        $this->mailer->send($email);
+    public function sendForgotPasswordEmail(User $user): void
+    {
+        $payload = ['user_id' => $user->getId()];
+        $token = $this->JWTService->generate($payload, getenv('JWT_SIGNUP_SECRET'));
+        $linkForResetPassword = getenv('FRONT_BASE_URL') . '/authentication/signUpValidation?token=' . $token;
+
+        $this->sendTemplateEmail(
+            $user->getEmail(),
+            'Changer votre mot de passe',
+            'emails/forgotPassword.html.twig',
+            [
+                'link_for_reset_password' => $linkForResetPassword,
+            ]
+        );
     }
 }

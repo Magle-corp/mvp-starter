@@ -35,6 +35,7 @@ security:
         - { path: ^/api/users, roles: PUBLIC_ACCESS }
         - { path: ^/api/signIn, roles: PUBLIC_ACCESS }
         - { path: ^/api/signUpValidation, roles: PUBLIC_ACCESS }
+        - { path: ^/api/forgotPassword, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
