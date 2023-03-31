@@ -7,7 +7,6 @@ import SignUp from '@/features/authentication/types/SignUp';
 import SignUpForm from '@/features/authentication/forms/SignUpForm';
 import Card from '@/ui/atoms/Card';
 import Link from '@/ui/atoms/Link';
-import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
 const SignUpTemplate = () => {
   const signUpMutation = usePost<SignUp>(ApiRoutes.USER);
@@ -20,10 +19,11 @@ const SignUpTemplate = () => {
     <StyledCard>
       <Section>
         <Title>Inscription</Title>
-        {!signUpMutation.isLoading && !signUpMutation.isSuccess && (
+        {!signUpMutation.isSuccess && (
           <>
             <SignUpForm
               onSubmit={onSubmit}
+              submitLoading={signUpMutation.isLoading}
               submitError={signUpMutation.error?.response?.data.message}
             />
             <LinksWrapper>
@@ -36,7 +36,6 @@ const SignUpTemplate = () => {
             </LinksWrapper>
           </>
         )}
-        {signUpMutation.isLoading && <ProgressSpinner />}
         {signUpMutation.isSuccess && (
           <>
             <CongratsWrapper>

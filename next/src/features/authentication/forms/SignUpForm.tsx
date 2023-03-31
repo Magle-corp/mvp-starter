@@ -10,6 +10,7 @@ import Button from '@/ui/atoms/Button';
 
 type SignUpForm = {
   onSubmit: SubmitHandler<SignUp>;
+  submitLoading: boolean;
   submitError: string | undefined;
 };
 
@@ -66,7 +67,11 @@ const SignUpForm = (props: SignUpForm) => {
           error={form.formState.errors.acceptCGU}
         />
       </InputsWrapper>
-      <Button label="S'inscrire" onClick={form.handleSubmit(props.onSubmit)} />
+      <Button
+        label="S'inscrire"
+        onClick={form.handleSubmit(props.onSubmit)}
+        loading={props.submitLoading}
+      />
     </Form>
   );
 };
