@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
+import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/queries/usePost';
 import ResetPassword from '@/features/authentication/types/ResetPassword';
 import ResetPasswordForm from '@/features/authentication/forms/ResetPasswordForm';
@@ -13,7 +14,7 @@ const ResetPasswordTemplate = () => {
   const { token } = router.query;
 
   const resetPasswordMutation = usePost<ResetPassword>(
-    'http://localhost:3000/api/mockHttpRequest?status=401'
+    ApiRoutes.RESET_PASSWORD
   );
 
   const onSubmit: SubmitHandler<ResetPassword> = (
