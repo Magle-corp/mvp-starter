@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
-class SignUpValidationEmailController extends AbstractController
+class ReSendValidationEmailController extends AbstractController
 {
     private JWTService $JWTService;
     private ResponseService $responseService;
