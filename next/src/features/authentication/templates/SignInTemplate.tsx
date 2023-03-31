@@ -12,7 +12,7 @@ import Link from '@/ui/atoms/Link';
 const SignInTemplate = () => {
   const router = useRouter();
 
-  const signInMutation = usePost<SignIn>(ApiRoutes.SIGN_IN, () =>
+  const signInMutation = usePost<SignIn>(ApiRoutes.AUTH_SIGN_IN, () =>
     router.push('/')
   );
 

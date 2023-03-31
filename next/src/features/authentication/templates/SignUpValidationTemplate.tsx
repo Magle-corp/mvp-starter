@@ -15,11 +15,11 @@ const SignUpValidationTemplate = () => {
   const { token } = router.query;
 
   const signUpValidationMutation = usePost<SignUpValidation>(
-    ApiRoutes.SIGN_UP_VALIDATION
+    ApiRoutes.AUTH_SIGN_UP_VALIDATION
   );
 
   const reSendEmailSignUpValidationMutation = usePost<SignUpValidation>(
-    ApiRoutes.SIGN_UP_VALIDATION_EMAIL
+    ApiRoutes.AUTH_RE_SEND_VALIDATION_EMAIL
   );
 
   useEffect(() => {

@@ -1,10 +1,10 @@
 enum ApiRoutes {
   USER = '/users',
-  SIGN_IN = '/signIn',
-  SIGN_UP_VALIDATION = '/signUpValidation',
-  SIGN_UP_VALIDATION_EMAIL = '/reSendValidationEmailController',
-  FORGOT_PASSWORD = '/forgotPassword',
-  RESET_PASSWORD = '/resetPassword',
+  AUTH_SIGN_IN = '/auth/signIn',
+  AUTH_SIGN_UP_VALIDATION = '/auth/signUpValidation',
+  AUTH_RE_SEND_VALIDATION_EMAIL = '/auth/reSendValidationEmail',
+  AUTH_FORGOT_PASSWORD = '/auth/forgotPassword',
+  AUTH_RESET_PASSWORD = '/auth/resetPassword',
 }
 
 export default ApiRoutes;

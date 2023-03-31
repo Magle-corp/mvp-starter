@@ -10,7 +10,7 @@ import Link from '@/ui/atoms/Link';
 
 const ForgotPasswordTemplate = () => {
   const forgotPasswordMutation = usePost<ForgotPassword>(
-    ApiRoutes.FORGOT_PASSWORD
+    ApiRoutes.AUTH_FORGOT_PASSWORD
   );
 
   const onSubmit: SubmitHandler<ForgotPassword> = (

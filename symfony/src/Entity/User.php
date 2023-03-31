@@ -20,19 +20,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ApiResource(operations: [
     new Post(),
     new Post(
-        uriTemplate: '/signUpValidation',
+        uriTemplate: '/auth/signUpValidation',
         controller: SignUpValidationController::class,
     ),
     new Post(
-        uriTemplate: '/reSendValidationEmailController',
+        uriTemplate: '/auth/reSendValidationEmail',
         controller: ReSendValidationEmailController::class,
     ),
     new Post(
-        uriTemplate: '/forgotPassword',
+        uriTemplate: '/auth/forgotPassword',
         controller: ForgotPasswordController::class,
     ),
     new Post(
-        uriTemplate: '/resetPassword',
+        uriTemplate: '/auth/resetPassword',
         controller: ResetPasswordController::class,
     )
 ])]
