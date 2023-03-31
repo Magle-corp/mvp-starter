@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use App\Controller\ForgotPasswordController;
+use App\Controller\ResetPasswordController;
 use App\Controller\SignUpValidationController;
 use App\Controller\ReSendValidationEmailController;
 use App\Repository\UserRepository;
@@ -29,6 +30,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
     new Post(
         uriTemplate: '/forgotPassword',
         controller: ForgotPasswordController::class,
+    ),
+    new Post(
+        uriTemplate: '/resetPassword',
+        controller: ResetPasswordController::class,
     )
 ])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
