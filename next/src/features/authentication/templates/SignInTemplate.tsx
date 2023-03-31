@@ -8,7 +8,6 @@ import SignIn from '@/features/authentication/types/SignIn';
 import SignInForm from '@/features/authentication/forms/SignInForm';
 import Card from '@/ui/atoms/Card';
 import Link from '@/ui/atoms/Link';
-import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
 const SignInTemplate = () => {
   const router = useRouter();
@@ -25,10 +24,11 @@ const SignInTemplate = () => {
     <StyledCard>
       <Section>
         <Title>Connexion</Title>
-        {!signInMutation.isLoading && !signInMutation.isSuccess && (
+        {!signInMutation.isSuccess && (
           <>
             <SignInForm
               onSubmit={onSubmit}
+              submitLoading={signInMutation.isLoading}
               submitError={signInMutation.error?.response?.data.message}
             />
             <LinksWrapper>
@@ -41,7 +41,6 @@ const SignInTemplate = () => {
             </LinksWrapper>
           </>
         )}
-        {signInMutation.isLoading && <ProgressSpinner />}
       </Section>
     </StyledCard>
   );

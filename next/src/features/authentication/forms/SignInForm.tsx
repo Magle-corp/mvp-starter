@@ -9,6 +9,7 @@ import Button from '@/ui/atoms/Button';
 
 type SignInForm = {
   onSubmit: SubmitHandler<SignIn>;
+  submitLoading: boolean;
   submitError: string | undefined;
 };
 
@@ -50,6 +51,7 @@ const SignInForm = (props: SignInForm) => {
       <Button
         label="Se connecter"
         onClick={form.handleSubmit(props.onSubmit)}
+        loading={props.submitLoading}
       />
     </Form>
   );
