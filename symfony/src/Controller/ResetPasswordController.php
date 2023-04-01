@@ -49,7 +49,7 @@ class ResetPasswordController extends AbstractController
 
         $isExpiredToken = $this->JWTService->isExpired($resetPasswordToken);
         $isValidToken = $this->JWTService->isValid($resetPasswordToken);
-        $isValidSecret = $this->JWTService->check($resetPasswordToken, getenv('JWT_SIGNUP_SECRET'));
+        $isValidSecret = $this->JWTService->check($resetPasswordToken, getenv('JWT_RESET_PASSWORD_SECRET'));
 
         if ($isExpiredToken) {
             return $this->responseService->create('Le token n\'est plus valide', 401);

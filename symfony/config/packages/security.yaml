@@ -19,7 +19,10 @@ security:
         api:
             pattern: ^/api
             stateless: true
+            entry_point: jwt
             jwt: ~
+            refresh_jwt:
+                check_path: /api/auth/refreshToken
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -30,7 +33,6 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/$, roles: PUBLIC_ACCESS }
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth, roles: PUBLIC_ACCESS }

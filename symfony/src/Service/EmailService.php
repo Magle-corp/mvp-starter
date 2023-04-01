@@ -50,7 +50,7 @@ class EmailService
     public function sendResetPasswordEmail(User $user): void
     {
         $payload = ['user_id' => $user->getId()];
-        $token = $this->JWTService->generate($payload, getenv('JWT_SIGNUP_SECRET'));
+        $token = $this->JWTService->generate($payload, getenv('JWT_RESET_PASSWORD_SECRET'));
         $linkForResetPassword = getenv('FRONT_BASE_URL') . '/authentication/resetPassword?token=' . $token;
 
         $this->sendTemplateEmail(
