@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
-class ReSendValidationEmailController extends AbstractController
+class ReSendSignUpValidationEmailController extends AbstractController
 {
     private JWTService $JWTService;
     private ResponseService $responseService;
@@ -69,7 +69,7 @@ class ReSendValidationEmailController extends AbstractController
             return $this->responseService->create('Compte déjà vérifié', 409);
         }
 
-        $this->emailService->sendRegistrationEmail($user);
+        $this->emailService->sendSignUpValidationEmail($user);
 
         return $this->responseService->create('OK', 200);
     }
