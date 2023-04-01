@@ -23,34 +23,36 @@ const ForgotPasswordTemplate = () => {
     <StyledCard>
       <Section>
         <Title>Mot de passe oublié</Title>
-        {!forgotPasswordMutation.isSuccess && (
-          <>
-            <Help>
-              Saisissez l&apos;adresse email liée à votre compte pour changer
-              votre mot de passe
-            </Help>
-            <ForgotPasswordForm
-              onSubmit={onSubmit}
-              submitLoading={forgotPasswordMutation.isLoading}
-              submitError={forgotPasswordMutation.error?.response?.data.message}
-            />
-            <LinksWrapper>
-              <StyledLink href={AppPages.AUTH_SIGN_IN}>
-                J&apos;ai déjà un compte
-              </StyledLink>
-              <StyledLink href={AppPages.AUTH_SIGN_UP}>
-                Créer un compte
-              </StyledLink>
-            </LinksWrapper>
-          </>
-        )}
-        {forgotPasswordMutation.isSuccess && (
+        {!forgotPasswordMutation.isSuccess &&
+          !forgotPasswordMutation.isError && (
+            <>
+              <Help>
+                Saisissez l&apos;adresse email liée à votre compte pour changer
+                votre mot de passe
+              </Help>
+              <ForgotPasswordForm
+                onSubmit={onSubmit}
+                submitLoading={forgotPasswordMutation.isLoading}
+                submitError={undefined}
+              />
+              <LinksWrapper>
+                <StyledLink href={AppPages.AUTH_SIGN_IN}>
+                  J&apos;ai déjà un compte
+                </StyledLink>
+                <StyledLink href={AppPages.AUTH_SIGN_UP}>
+                  Créer un compte
+                </StyledLink>
+              </LinksWrapper>
+            </>
+          )}
+        {(forgotPasswordMutation.isSuccess ||
+          forgotPasswordMutation.isError) && (
           <>
             <CongratsWrapper>
               <Congrats>Demande enregistrée ✅</Congrats>
               <p>
-                Finalisez le changement de votre mot de passe en consultant
-                l&apos;email que nous venons de vous envoyer
+                Si nous connaissons cette adresse email vous recevrez un email
+                contenant un lien pour changer votre mot de passe
               </p>
             </CongratsWrapper>
             <StyledLink href={AppPages.AUTH_SIGN_IN}>Se connecter</StyledLink>

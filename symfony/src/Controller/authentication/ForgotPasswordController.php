@@ -20,7 +20,7 @@ class ForgotPasswordController extends AbstractController
     public function __construct(
         ResponseService        $responseService,
         EntityManagerInterface $entityManager,
-        EmailService $emailService
+        EmailService           $emailService
     )
     {
         $this->responseService = $responseService;
@@ -41,8 +41,9 @@ class ForgotPasswordController extends AbstractController
         $userRepository = $this->entityManager->getRepository(User::class);
         $user = $userRepository->findOneBy(['email' => $userEmail]);
 
+        /* Returns an HTTP response with status 200 to not communicate confidential information  */
         if (!$user) {
-            return $this->responseService->create('Aucun compte corresponsant', 409);
+            return $this->responseService->create('OK', 200);
         }
 
         $this->emailService->sendResetPasswordEmail($user);
