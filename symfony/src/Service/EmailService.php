@@ -31,18 +31,23 @@ class EmailService
         $this->mailer->send($email);
     }
 
-    public function sendRegistrationEmail(User $user): void
+    public function sendSignUpValidationEmail(User $user): void
     {
         $payload = ['user_id' => $user->getId()];
         $token = $this->JWTService->generate($payload, getenv('JWT_SIGNUP_VALIDATION_SECRET'));
-        $linkForValidateEmail = getenv('FRONT_BASE_URL') . '/authentication/signUpValidation?token=' . $token;
+        $linkForSignUpValidation = getenv('FRONT_BASE_URL') . '/authentication/signUpValidation?token=' . $token;
+
+        $tokenExpirationDate = $this->JWTService->getExpirationDate($token);
+        $tokenExpirationDelay = $this->JWTService->getExpirationDelay($token,'h');
 
         $this->sendTemplateEmail(
             $user->getEmail(),
             'Finaliser votre inscription',
             'emails/signUpValidation.html.twig',
             [
-                'link_for_validate_email' => $linkForValidateEmail,
+                'link_for_sign_up_validation' => $linkForSignUpValidation,
+                'token_expiration_date' => $tokenExpirationDate,
+                'token_expiration_delay' => $tokenExpirationDelay,
             ]
         );
     }
@@ -53,12 +58,17 @@ class EmailService
         $token = $this->JWTService->generate($payload, getenv('JWT_RESET_PASSWORD_SECRET'));
         $linkForResetPassword = getenv('FRONT_BASE_URL') . '/authentication/resetPassword?token=' . $token;
 
+        $tokenExpirationDate = $this->JWTService->getExpirationDate($token);
+        $tokenExpirationDelay = $this->JWTService->getExpirationDelay($token,'h');
+
         $this->sendTemplateEmail(
             $user->getEmail(),
             'Changer votre mot de passe',
             'emails/forgotPassword.html.twig',
             [
                 'link_for_reset_password' => $linkForResetPassword,
+                'token_expiration_date' => $tokenExpirationDate,
+                'token_expiration_delay' => $tokenExpirationDelay,
             ]
         );
     }

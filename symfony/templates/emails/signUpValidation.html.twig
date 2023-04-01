@@ -1,13 +1,13 @@
-<h1>Bienvenue !</h1>
+<h1>Bienvenue</h1>
 
 <p>
 	Pour accéder à nos services merci de valider votre adresse email en cliquant sur le lien suivant :
 </p>
 
 <p>
-	<a href="{{ link_for_validate_email }}">Cliquer pour valider votre adresse email</a>
+	<a href="{{ link_for_sign_up_validation }}">Cliquer pour valider votre adresse email</a>
 </p>
 
-{# <p> #}
-{#    (this link is valid until {{ expiration_date|date('F jS') }}) #}
-{# </p> #}
+ <p>
+	 Ce lien est valable {{ token_expiration_delay }} heures, soit jusqu'au {{ token_expiration_date }}
+ </p>

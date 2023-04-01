@@ -5,7 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use App\Controller\authentication\ForgotPasswordController;
-use App\Controller\authentication\ReSendValidationEmailController;
+use App\Controller\authentication\ReSendSignUpValidationEmailController;
 use App\Controller\authentication\ResetPasswordController;
 use App\Controller\authentication\SignUpValidationController;
 use App\Repository\UserRepository;
@@ -24,8 +24,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
         controller: SignUpValidationController::class,
     ),
     new Post(
-        uriTemplate: '/auth/reSendValidationEmail',
-        controller: ReSendValidationEmailController::class,
+        uriTemplate: '/auth/reSendSignUpValidationEmail',
+        controller: ReSendSignUpValidationEmailController::class,
     ),
     new Post(
         uriTemplate: '/auth/forgotPassword',

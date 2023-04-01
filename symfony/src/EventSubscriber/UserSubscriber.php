@@ -78,6 +78,6 @@ final class UserSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->emailService->sendRegistrationEmail($user);
+        $this->emailService->sendSignUpValidationEmail($user);
     }
 }

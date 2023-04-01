@@ -6,7 +6,7 @@ use DateTimeImmutable;
 
 class JWTService
 {
-    public function generate(array $payload, string $secret, int $validity = 10800): string
+    public function generate(array $payload, string $secret, int $validity = 21600): string
     {
         $header = ['typ' => 'JWT', 'alg' => 'HS256'];
 
@@ -62,6 +62,31 @@ class JWTService
             return json_decode(base64_decode($array[0]), true);
         } else {
             return null;
+        }
+    }
+
+    public function getExpirationDate(string $token, string $format = 'd/m/y H:i'): string|null
+    {
+        $tokenPayload = $this->getPayload($token);
+
+        if (!$tokenPayload || !array_key_exists('exp', $tokenPayload)) {
+            return null;
+        } else {
+            return date($format, $tokenPayload['exp']);
+        }
+    }
+
+    public function getExpirationDelay(string $token, string $format = 'H:i'): string|null
+    {
+        $tokenPayload = $this->getPayload($token);
+
+        if (!$tokenPayload || !array_key_exists('exp', $tokenPayload)) {
+            return null;
+        } else {
+            $now = new DateTimeImmutable();
+            $tokenExpirationDelay = $tokenPayload['exp'] - $now->getTimestamp();
+
+            return date($format, $tokenExpirationDelay);
         }
     }
 

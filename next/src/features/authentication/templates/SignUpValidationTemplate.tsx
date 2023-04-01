@@ -18,8 +18,8 @@ const SignUpValidationTemplate = () => {
     ApiRoutes.AUTH_SIGN_UP_VALIDATION
   );
 
-  const reSendEmailSignUpValidationMutation = usePost<SignUpValidation>(
-    ApiRoutes.AUTH_RE_SEND_VALIDATION_EMAIL
+  const reSendSignUpValidationEmailMutation = usePost<SignUpValidation>(
+    ApiRoutes.AUTH_RE_SEND_SIGN_UP_VALIDATION_EMAIL
   );
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const SignUpValidationTemplate = () => {
 
   const reSendEmailSignUpValidation = () => {
     if (token && typeof token === 'string') {
-      reSendEmailSignUpValidationMutation.mutate({
+      reSendSignUpValidationEmailMutation.mutate({
         token,
       });
     }
@@ -75,10 +75,10 @@ const SignUpValidationTemplate = () => {
         </Wrapper>
         <Button
           onClick={reSendEmailSignUpValidation}
-          loading={reSendEmailSignUpValidationMutation.isLoading}
+          loading={reSendSignUpValidationEmailMutation.isLoading}
           disabled={
-            reSendEmailSignUpValidationMutation.isLoading ||
-            reSendEmailSignUpValidationMutation.isSuccess
+            reSendSignUpValidationEmailMutation.isLoading ||
+            reSendSignUpValidationEmailMutation.isSuccess
           }
           label="Recevoir un nouveau lien"
         />
@@ -102,7 +102,7 @@ const SignUpValidationTemplate = () => {
     return (
       <Wrapper>
         <Error>
-          {reSendEmailSignUpValidationMutation.error?.response?.data.message}
+          {reSendSignUpValidationEmailMutation.error?.response?.data.message}
         </Error>
       </Wrapper>
     );
@@ -112,8 +112,8 @@ const SignUpValidationTemplate = () => {
     <StyledCard>
       <Section>
         <Title>Inscription</Title>
-        {(reSendEmailSignUpValidationMutation.isIdle ||
-          reSendEmailSignUpValidationMutation.isLoading) && (
+        {(reSendSignUpValidationEmailMutation.isIdle ||
+          reSendSignUpValidationEmailMutation.isLoading) && (
           <>
             {signUpValidationMutation.isLoading && <ProgressSpinner />}
             {signUpValidationMutation.isSuccess && <SignUpValidationSuccess />}
@@ -131,10 +131,10 @@ const SignUpValidationTemplate = () => {
         )}
         {signUpValidationMutation.isError && (
           <>
-            {reSendEmailSignUpValidationMutation.isSuccess && (
+            {reSendSignUpValidationEmailMutation.isSuccess && (
               <ReSendEmailSignUpValidation />
             )}
-            {reSendEmailSignUpValidationMutation.isError && (
+            {reSendSignUpValidationEmailMutation.isError && (
               <ReSendSignUpValidationEmailError />
             )}
           </>
