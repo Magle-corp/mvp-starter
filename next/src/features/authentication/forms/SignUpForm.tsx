@@ -16,8 +16,15 @@ type SignUpForm = {
 
 const SignUpForm = (props: SignUpForm) => {
   const schema: Schema<SignUp> = object({
-    email: string().email('Format invalide').required('Champ requis'),
-    password: string().required('Champ requis'),
+    email: string()
+      .min(5, 'Minimum 5 caractères')
+      .max(80, 'Maximum 80 caractères')
+      .email('Format invalide')
+      .required('Champ requis'),
+    password: string()
+      .min(8, 'Minimum 8 caractères')
+      .max(25, 'Maximum 25 caractères')
+      .required('Champ requis'),
     confirmPassword: string()
       .oneOf([ref('password')], 'Les mots de passes ne correspondent pas')
       .required('Champ requis'),
@@ -52,6 +59,7 @@ const SignUpForm = (props: SignUpForm) => {
           name="password"
           control={form.control}
           error={form.formState.errors.password}
+          help="Minimum 8 caractères, maximum 25"
         />
         <FormFieldPassword<SignUp>
           label="Confirmer mot de passe"

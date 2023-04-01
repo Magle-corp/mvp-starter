@@ -24,6 +24,7 @@ const FormFieldText = <T extends FieldValues>(props: FormFieldText<T>) => {
           )}
         />
       </FloatLabel>
+      {!props.error && props.help && <InputHelp>{props.help}</InputHelp>}
       {props.error && <InputError>{props.error.message}</InputError>}
     </FieldWrapper>
   );
@@ -36,7 +37,13 @@ const FieldWrapper = styled.div`
   width: 100%;
 `;
 
+const InputHelp = styled.p`
+  padding-left: 0.25rem;
+  font-size: 0.75rem;
+`;
+
 const InputError = styled.p`
+  padding-left: 0.25rem;
   color: ${({ theme }) => theme.colors.error};
 `;
 

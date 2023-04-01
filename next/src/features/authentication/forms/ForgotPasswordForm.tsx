@@ -14,7 +14,11 @@ type ForgotPasswordForm = {
 
 const ForgotPasswordForm = (props: ForgotPasswordForm) => {
   const schema: Schema<ForgotPassword> = object({
-    email: string().email('Format invalide').required('Champ requis'),
+    email: string()
+      .min(5, 'Minimum 5 caractères')
+      .max(80, 'Maximum 80 caractères')
+      .email('Format invalide')
+      .required('Champ requis'),
   });
 
   const defaultValues: ForgotPassword = {

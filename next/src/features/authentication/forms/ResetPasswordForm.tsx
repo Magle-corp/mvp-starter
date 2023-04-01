@@ -14,7 +14,10 @@ type ResetPasswordForm = {
 
 const ResetPasswordForm = (props: ResetPasswordForm) => {
   const schema: Schema<ResetPassword> = object({
-    password: string().required('Champ requis'),
+    password: string()
+      .min(8, 'Minimum 8 caractères')
+      .max(25, 'Maximum 25 caractères')
+      .required('Champ requis'),
     confirmPassword: string()
       .oneOf([ref('password')], 'Les mots de passes ne correspondent pas')
       .required('Champ requis'),
@@ -40,6 +43,7 @@ const ResetPasswordForm = (props: ResetPasswordForm) => {
           name="password"
           control={form.control}
           error={form.formState.errors.password}
+          help="Minimum 8 caractères, maximum 25"
         />
         <FormFieldPassword<ResetPassword>
           label="Confirmer mot de passe"
