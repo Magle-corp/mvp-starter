@@ -5,6 +5,7 @@ type FormField<T extends FieldValues> = {
   name: Path<T>;
   control: Control<T>;
   error: FieldError | undefined;
+  help?: string;
 };
 
 export default FormField;

@@ -15,8 +15,15 @@ type SignInForm = {
 
 const SignInForm = (props: SignInForm) => {
   const schema: Schema<SignIn> = object({
-    email: string().email('Format invalide').required('Champ requis'),
-    password: string().required('Champ requis'),
+    email: string()
+      .min(5, 'Minimum 5 caractères')
+      .max(80, 'Maximum 80 caractères')
+      .email('Format invalide')
+      .required('Champ requis'),
+    password: string()
+      .min(8, 'Minimum 8 caractères')
+      .max(25, 'Maximum 25 caractères')
+      .required('Champ requis'),
   });
 
   const defaultValues: SignIn = {
