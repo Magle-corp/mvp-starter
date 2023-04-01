@@ -3,7 +3,6 @@
 namespace App\Controller\authentication;
 
 use App\Entity\User;
-use App\Service\EmailService;
 use App\Service\JWTService;
 use App\Service\ResponseService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,21 +18,18 @@ class ResetPasswordController extends AbstractController
     private ResponseService $responseService;
     private EntityManagerInterface $entityManager;
     private UserPasswordHasherInterface $passwordHasher;
-    private EmailService $emailService;
 
     public function __construct(
         JWTService                  $JWTService,
         ResponseService             $responseService,
         EntityManagerInterface      $entityManager,
         UserPasswordHasherInterface $passwordHasher,
-        EmailService                $emailService
     )
     {
         $this->JWTService = $JWTService;
         $this->responseService = $responseService;
         $this->entityManager = $entityManager;
         $this->passwordHasher = $passwordHasher;
-        $this->emailService = $emailService;
     }
 
     public function __invoke(Request $request)
@@ -52,11 +48,11 @@ class ResetPasswordController extends AbstractController
         $isValidSecret = $this->JWTService->check($resetPasswordToken, getenv('JWT_RESET_PASSWORD_SECRET'));
 
         if ($isExpiredToken) {
-            return $this->responseService->create('Le token n\'est plus valide', 401);
+            return $this->responseService->create('Le lien n\'est plus valide', 401);
         }
 
         if (!$isValidToken || !$isValidSecret) {
-            return $this->responseService->create('Le token n\'est pas valide', 409);
+            return $this->responseService->create('Le lien n\'est pas valide', 409);
         }
 
         $tokenPayload = $this->JWTService->getPayload($resetPasswordToken);
@@ -70,8 +66,9 @@ class ResetPasswordController extends AbstractController
         $userRepository = $this->entityManager->getRepository(User::class);
         $user = $userRepository->findOneBy(['id' => $userId]);
 
+        /* Returns an HTTP response with status 200 to not communicate confidential information */
         if (!$user) {
-            return $this->responseService->create('Aucun compte correspondant', 409);
+            return $this->responseService->create('OK', 200);
         }
 
         $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));

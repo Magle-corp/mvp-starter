@@ -47,7 +47,7 @@ class ReSendValidationEmailController extends AbstractController
         $isValidSecret = $this->JWTService->check($validationToken, getenv('JWT_SIGNUP_SECRET'));
 
         if (!$isValidToken || !$isValidSecret) {
-            return $this->responseService->create('Le token n\'est pas valide', 409);
+            return $this->responseService->create('Le lien n\'est pas valide', 409);
         }
 
         $tokenPayload = $this->JWTService->getPayload($validationToken);

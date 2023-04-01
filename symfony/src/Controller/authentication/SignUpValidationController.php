@@ -44,11 +44,11 @@ class SignUpValidationController extends AbstractController
         $isValidSecret = $this->JWTService->check($validationToken, getenv('JWT_SIGNUP_SECRET'));
 
         if ($isExpiredToken) {
-            return $this->responseService->create('Le token n\'est plus valide', 401);
+            return $this->responseService->create('Le lien n\'est plus valide', 401);
         }
 
         if (!$isValidToken || !$isValidSecret) {
-            return $this->responseService->create('Le token n\'est pas valide', 409);
+            return $this->responseService->create('Le lien n\'est pas valide', 409);
         }
 
         $tokenPayload = $this->JWTService->getPayload($validationToken);
@@ -62,8 +62,9 @@ class SignUpValidationController extends AbstractController
         $userRepository = $this->entityManager->getRepository(User::class);
         $user = $userRepository->findOneBy(['id' => $userId]);
 
+        /* Returns an HTTP response with status 200 to not communicate confidential information */
         if (!$user) {
-            return $this->responseService->create('Aucun compte correspondant', 409);
+            return $this->responseService->create('OK', 200);
         }
 
         if ($user->isVerified()) {
