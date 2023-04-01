@@ -49,27 +49,27 @@ const SignUpForm = (props: SignUpForm) => {
       {props.submitError && <FormError>{props.submitError}</FormError>}
       <InputsWrapper>
         <FormFieldText<SignUp>
-          label="Adresse email"
+          label="Adresse email *"
           name="email"
           control={form.control}
           error={form.formState.errors.email}
         />
         <FormFieldPassword<SignUp>
-          label="Mot de passe"
+          label="Mot de passe *"
           name="password"
           control={form.control}
           error={form.formState.errors.password}
           help="Minimum 8 caractères, maximum 25"
         />
         <FormFieldPassword<SignUp>
-          label="Confirmer mot de passe"
+          label="Confirmer mot de passe *"
           name="confirmPassword"
           control={form.control}
           error={form.formState.errors.confirmPassword}
           feedback={false}
         />
         <FormFieldCheckbox<SignUp>
-          label="J'accepte les conditions générales d'utilisation"
+          label="J'accepte les conditions générales d'utilisation *"
           name="acceptCGU"
           control={form.control}
           error={form.formState.errors.acceptCGU}

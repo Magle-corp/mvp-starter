@@ -39,14 +39,14 @@ const ResetPasswordForm = (props: ResetPasswordForm) => {
       {props.submitError && <FormError>{props.submitError}</FormError>}
       <InputsWrapper>
         <FormFieldPassword<ResetPassword>
-          label="Mot de passe"
+          label="Mot de passe *"
           name="password"
           control={form.control}
           error={form.formState.errors.password}
           help="Minimum 8 caractères, maximum 25"
         />
         <FormFieldPassword<ResetPassword>
-          label="Confirmer mot de passe"
+          label="Confirmer mot de passe *"
           name="confirmPassword"
           control={form.control}
           error={form.formState.errors.confirmPassword}

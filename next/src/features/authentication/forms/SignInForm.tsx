@@ -42,13 +42,13 @@ const SignInForm = (props: SignInForm) => {
       {props.submitError && <FormError>{props.submitError}</FormError>}
       <InputsWrapper>
         <FormFieldText<SignIn>
-          label="Adresse email"
+          label="Adresse email *"
           name="email"
           control={form.control}
           error={form.formState.errors.email}
         />
         <FormFieldPassword<SignIn>
-          label="Mot de passe"
+          label="Mot de passe *"
           name="password"
           control={form.control}
           error={form.formState.errors.password}
