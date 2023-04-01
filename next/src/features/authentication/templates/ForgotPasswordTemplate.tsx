@@ -82,7 +82,6 @@ const Title = styled.h1`
 `;
 
 const Help = styled.p`
-  width: 80%;
   text-align: center;
 `;
 
