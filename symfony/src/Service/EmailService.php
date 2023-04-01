@@ -34,7 +34,7 @@ class EmailService
     public function sendRegistrationEmail(User $user): void
     {
         $payload = ['user_id' => $user->getId()];
-        $token = $this->JWTService->generate($payload, getenv('JWT_SIGNUP_SECRET'));
+        $token = $this->JWTService->generate($payload, getenv('JWT_SIGNUP_VALIDATION_SECRET'));
         $linkForValidateEmail = getenv('FRONT_BASE_URL') . '/authentication/signUpValidation?token=' . $token;
 
         $this->sendTemplateEmail(

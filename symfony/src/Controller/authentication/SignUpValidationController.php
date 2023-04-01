@@ -41,7 +41,7 @@ class SignUpValidationController extends AbstractController
 
         $isExpiredToken = $this->JWTService->isExpired($validationToken);
         $isValidToken = $this->JWTService->isValid($validationToken);
-        $isValidSecret = $this->JWTService->check($validationToken, getenv('JWT_SIGNUP_SECRET'));
+        $isValidSecret = $this->JWTService->check($validationToken, getenv('JWT_SIGNUP_VALIDATION_SECRET'));
 
         if ($isExpiredToken) {
             return $this->responseService->create('Le lien n\'est plus valide', 401);
