@@ -44,7 +44,7 @@ const SignUpValidationTemplate = () => {
         <Wrapper>
           <Congrats>Inscription validée 🎉</Congrats>
           <p>
-            Vous pouvez dorénavent vous connecter et profiter de nos services
+            Vous pouvez dorénavant vous connecter et profiter de nos services
           </p>
         </Wrapper>
         <StyledLink href={AppPages.AUTH_SIGN_IN}>Se connecter</StyledLink>
@@ -69,7 +69,7 @@ const SignUpValidationTemplate = () => {
             {signUpValidationMutation.error?.response?.data.message}
           </Error>
           <p>
-            La validité du lien a expiré, cliquer sur le bouton suivant pour
+            La validité du lien a expiré, cliquez sur le bouton suivant pour
             recevoir un nouveau lien
           </p>
         </Wrapper>
