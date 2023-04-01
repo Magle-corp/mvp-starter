@@ -41,8 +41,8 @@ const SignUpTemplate = () => {
             <CongratsWrapper>
               <Congrats>Inscription enregistrée 👍</Congrats>
               <p>
-                Finalisez votre inscription en consultant le mail que nous
-                venons de vous envoyer
+                Finalisez votre inscription en cliquant sur le lien que nous
+                venons de vous envoyer par email
               </p>
             </CongratsWrapper>
             <StyledLink href={AppPages.AUTH_SIGN_IN}>Se connecter</StyledLink>
