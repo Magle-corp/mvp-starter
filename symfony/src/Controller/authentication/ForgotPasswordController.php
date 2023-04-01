@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Service\EmailService;
 use App\Service\ResponseService;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -46,13 +45,8 @@ class ForgotPasswordController extends AbstractController
             return $this->responseService->create('Aucun compte corresponsant', 409);
         }
 
-        try {
-            $this->emailService->sendResetPasswordEmail($user);
+        $this->emailService->sendResetPasswordEmail($user);
 
-            return $this->responseService->create('OK', 200);
-        } catch (Exception $exception) {
-            return $this->responseService->create($exception->getMessage(), 200);
-        }
-
+        return $this->responseService->create('OK', 200);
     }
 }
