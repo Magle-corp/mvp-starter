@@ -2,8 +2,10 @@
 
 namespace App\Controller\authentication;
 
+use App\Entity\TokenSignUp;
 use App\Entity\User;
 use App\Service\EmailService;
+use App\Service\JWTService;
 use App\Service\ResponseService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,18 +20,21 @@ class SignUpController extends AbstractController
     private ResponseService $responseService;
     private UserPasswordHasherInterface $passwordHasher;
     private EmailService $emailService;
+    private JWTService $JWTService;
 
     public function __construct(
         EntityManagerInterface      $entityManager,
         ResponseService             $responseService,
         UserPasswordHasherInterface $passwordHasher,
         EmailService                $emailService,
+        JWTService                  $JWTService,
     )
     {
         $this->entityManager = $entityManager;
         $this->responseService = $responseService;
         $this->passwordHasher = $passwordHasher;
         $this->emailService = $emailService;
+        $this->JWTService = $JWTService;
     }
 
     public function __invoke(Request $request)
@@ -53,11 +58,19 @@ class SignUpController extends AbstractController
         $newUser = new User();
         $newUser->setEmail($userEmail);
         $newUser->setPassword($this->passwordHasher->hashPassword($newUser, $userPassword));
-
         $this->entityManager->persist($newUser);
+
+        $tokenPayload = ['user_id' => $newUser->getId()];
+        $token = $this->JWTService->generate($tokenPayload, getenv('JWT_SIGNUP_VALIDATION_SECRET'));
+
+        $tokenSignUp = new TokenSignUp();
+        $tokenSignUp->setSignUpToken($token);
+        $tokenSignUp->setUsername($newUser->getEmail());
+        $this->entityManager->persist($tokenSignUp);
+
         $this->entityManager->flush();
 
-        $this->emailService->sendSignUpValidationEmail($newUser);
+        $this->emailService->sendSignUpValidationEmail($newUser, $token);
 
         return $this->responseService->create('OK', 200);
     }
