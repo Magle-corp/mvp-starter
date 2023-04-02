@@ -2,6 +2,7 @@
 
 namespace App\Controller\authentication;
 
+use App\Entity\TokenSignUp;
 use App\Entity\User;
 use App\Service\JWTService;
 use App\Service\ResponseService;
@@ -51,6 +52,17 @@ class SignUpValidationController extends AbstractController
             return $this->responseService->create('Le lien n\'est pas valide', 409);
         }
 
+        $tokenSignUpRepository = $this->entityManager->getRepository(TokenSignUp::class);
+        $latestRegisteredTokenSignUp = $tokenSignUpRepository->findOneBy(['signUpToken' => $validationToken]);
+
+        if (!$latestRegisteredTokenSignUp) {
+            return $this->responseService->error();
+        }
+
+        if ($latestRegisteredTokenSignUp->isUsed()) {
+            return $this->responseService->create('Le lien a déjà été utilisé', 409);
+        }
+
         $tokenPayload = $this->JWTService->getPayload($validationToken);
 
         if (!array_key_exists('user_id', $tokenPayload)) {
@@ -71,9 +83,12 @@ class SignUpValidationController extends AbstractController
             return $this->responseService->create('Compte déjà vérifié', 409);
         }
 
-        $user->setVerified(true);
+        $latestRegisteredTokenSignUp->setUsed(true);
+        $this->entityManager->persist($latestRegisteredTokenSignUp);
 
+        $user->setVerified(true);
         $this->entityManager->persist($user);
+
         $this->entityManager->flush();
 
         return $this->responseService->create('OK', 200);

@@ -31,23 +31,18 @@ class EmailService
         $this->mailer->send($email);
     }
 
-    public function sendSignUpValidationEmail(User $user): void
+    public function sendSignUpValidationEmail(User $user, string $token): void
     {
-        $payload = ['user_id' => $user->getId()];
-        $token = $this->JWTService->generate($payload, getenv('JWT_SIGNUP_VALIDATION_SECRET'));
         $linkForSignUpValidation = getenv('FRONT_BASE_URL') . '/authentication/signUpValidation?token=' . $token;
-
-        $tokenExpirationDate = $this->JWTService->getExpirationDate($token);
-        $tokenExpirationDelay = $this->JWTService->getExpirationDelay($token,'h');
 
         $this->sendTemplateEmail(
             $user->getEmail(),
-            'Finaliser votre inscription',
+            'Finalisez votre inscription',
             'emails/signUpValidation.html.twig',
             [
                 'link_for_sign_up_validation' => $linkForSignUpValidation,
-                'token_expiration_date' => $tokenExpirationDate,
-                'token_expiration_delay' => $tokenExpirationDelay,
+                'token_expiration_date' => $this->JWTService->getExpirationDate($token),
+                'token_expiration_delay' => $this->JWTService->getExpirationDelay($token,'H'),
             ]
         );
     }
