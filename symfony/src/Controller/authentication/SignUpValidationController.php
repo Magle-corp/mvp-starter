@@ -52,17 +52,6 @@ class SignUpValidationController extends AbstractController
             return $this->responseService->create('Le lien n\'est pas valide', 409);
         }
 
-        $tokenSignUpRepository = $this->entityManager->getRepository(TokenSignUp::class);
-        $latestRegisteredTokenSignUp = $tokenSignUpRepository->findOneBy(['signUpToken' => $validationToken]);
-
-        if (!$latestRegisteredTokenSignUp) {
-            return $this->responseService->error();
-        }
-
-        if ($latestRegisteredTokenSignUp->isUsed()) {
-            return $this->responseService->create('Le lien a déjà été utilisé', 409);
-        }
-
         $tokenPayload = $this->JWTService->getPayload($validationToken);
 
         if (!array_key_exists('user_id', $tokenPayload)) {
@@ -81,6 +70,21 @@ class SignUpValidationController extends AbstractController
 
         if ($user->isVerified()) {
             return $this->responseService->create('Compte déjà vérifié', 409);
+        }
+
+        $tokenSignUpRepository = $this->entityManager->getRepository(TokenSignUp::class);
+        $latestRegisteredTokenSignUp = $tokenSignUpRepository->findOneBy(['username' => $user->getEmail()], ['id' => 'DESC']);
+
+        if (!$latestRegisteredTokenSignUp) {
+            return $this->responseService->error();
+        }
+
+        if ($latestRegisteredTokenSignUp->isUsed()) {
+            return $this->responseService->create('Le lien a déjà été utilisé', 409);
+        }
+
+        if ($latestRegisteredTokenSignUp->getSignUpToken() !== $validationToken) {
+            return $this->responseService->create('Le lien n\'est pas valide', 409);
         }
 
         $latestRegisteredTokenSignUp->setUsed(true);
