@@ -2,6 +2,7 @@
 
 namespace App\Controller\authentication;
 
+use App\Entity\TokenResetPassword;
 use App\Entity\User;
 use App\Service\JWTService;
 use App\Service\ResponseService;
@@ -71,9 +72,27 @@ class ResetPasswordController extends AbstractController
             return $this->responseService->create('OK', 200);
         }
 
-        $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
+        $tokenResetPasswordRepository = $this->entityManager->getRepository(TokenResetPassword::class);
+        $latestRegisteredTokenResetPassword = $tokenResetPasswordRepository->findOneBy(['username' => $user->getEmail()], ['id' => 'DESC']);
 
+        if (!$latestRegisteredTokenResetPassword) {
+            return $this->responseService->error();
+        }
+
+        if ($latestRegisteredTokenResetPassword->isUsed()) {
+            return $this->responseService->create('Le lien a déjà été utilisé', 409);
+        }
+
+        if ($latestRegisteredTokenResetPassword->getResetPasswordToken() !== $resetPasswordToken) {
+            return $this->responseService->create('Le lien n\'est pas valide', 409);
+        }
+
+        $latestRegisteredTokenResetPassword->setUsed(true);
+        $this->entityManager->persist($latestRegisteredTokenResetPassword);
+
+        $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
         $this->entityManager->persist($user);
+
         $this->entityManager->flush();
 
         return $this->responseService->create('OK', 200);

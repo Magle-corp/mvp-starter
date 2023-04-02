@@ -47,14 +47,9 @@ class EmailService
         );
     }
 
-    public function sendResetPasswordEmail(User $user): void
+    public function sendResetPasswordEmail(User $user, string $token): void
     {
-        $payload = ['user_id' => $user->getId()];
-        $token = $this->JWTService->generate($payload, getenv('JWT_RESET_PASSWORD_SECRET'));
         $linkForResetPassword = getenv('FRONT_BASE_URL') . '/authentication/resetPassword?token=' . $token;
-
-        $tokenExpirationDate = $this->JWTService->getExpirationDate($token);
-        $tokenExpirationDelay = $this->JWTService->getExpirationDelay($token,'h');
 
         $this->sendTemplateEmail(
             $user->getEmail(),
@@ -62,8 +57,8 @@ class EmailService
             'emails/forgotPassword.html.twig',
             [
                 'link_for_reset_password' => $linkForResetPassword,
-                'token_expiration_date' => $tokenExpirationDate,
-                'token_expiration_delay' => $tokenExpirationDelay,
+                'token_expiration_date' => $this->JWTService->getExpirationDate($token),
+                'token_expiration_delay' => $this->JWTService->getExpirationDelay($token,'H'),
             ]
         );
     }
