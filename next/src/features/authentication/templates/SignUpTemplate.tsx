@@ -9,7 +9,7 @@ import Card from '@/ui/atoms/Card';
 import Link from '@/ui/atoms/Link';
 
 const SignUpTemplate = () => {
-  const signUpMutation = usePost<SignUp>(ApiRoutes.USER);
+  const signUpMutation = usePost<SignUp>(ApiRoutes.AUTH_SIGN_UP);
 
   const onSubmit: SubmitHandler<SignUp> = (fieldValues: SignUp) => {
     signUpMutation.mutate(fieldValues);

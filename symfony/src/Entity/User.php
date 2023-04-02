@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Post;
 use App\Controller\authentication\ForgotPasswordController;
 use App\Controller\authentication\ReSendSignUpValidationEmailController;
 use App\Controller\authentication\ResetPasswordController;
+use App\Controller\authentication\SignUpController;
 use App\Controller\authentication\SignUpValidationController;
 use App\Repository\UserRepository;
 use DateTime;
@@ -18,7 +19,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(operations: [
-    new Post(),
+    new Post(
+        uriTemplate: '/auth/signUp',
+        controller: SignUpController::class,
+    ),
     new Post(
         uriTemplate: '/auth/signUpValidation',
         controller: SignUpValidationController::class,
