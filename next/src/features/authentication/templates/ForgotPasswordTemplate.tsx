@@ -5,7 +5,9 @@ import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/queries/usePost';
 import ForgotPassword from '@/features/authentication/types/ForgotPassword';
 import ForgotPasswordForm from '@/features/authentication/forms/ForgotPasswordForm';
-import Card from '@/ui/atoms/Card';
+import AuthCard from '@/features/authentication/components/AuthCard';
+import LinksWrapper from '@/features/authentication/components/LinksWrapper';
+import CongratsWrapper from '@/features/authentication/components/CongratsWrapper';
 import Link from '@/ui/atoms/Link';
 
 const ForgotPasswordTemplate = () => {
@@ -20,94 +22,44 @@ const ForgotPasswordTemplate = () => {
   };
 
   return (
-    <StyledCard>
-      <Section>
-        <Title>Mot de passe oublié</Title>
-        {!forgotPasswordMutation.isSuccess &&
-          !forgotPasswordMutation.isError && (
-            <>
-              <Help>
-                Saisissez l&apos;adresse email liée à votre compte pour changer
-                votre mot de passe
-              </Help>
-              <ForgotPasswordForm
-                onSubmit={onSubmit}
-                submitLoading={forgotPasswordMutation.isLoading}
-                submitError={undefined}
-              />
-              <LinksWrapper>
-                <StyledLink href={AppPages.AUTH_SIGN_IN}>
-                  J&apos;ai déjà un compte
-                </StyledLink>
-                <StyledLink href={AppPages.AUTH_SIGN_UP}>
-                  Créer un compte
-                </StyledLink>
-              </LinksWrapper>
-            </>
-          )}
-        {(forgotPasswordMutation.isSuccess ||
-          forgotPasswordMutation.isError) && (
-          <>
-            <CongratsWrapper>
-              <Congrats>Demande enregistrée ✅</Congrats>
-              <p>
-                Si nous connaissons cette adresse email vous recevrez un email
-                contenant un lien pour changer votre mot de passe
-              </p>
-            </CongratsWrapper>
-            <StyledLink href={AppPages.AUTH_SIGN_IN}>Se connecter</StyledLink>
-          </>
-        )}
-      </Section>
-    </StyledCard>
+    <AuthCard title="Mot de passe oublié">
+      {!forgotPasswordMutation.isSuccess && !forgotPasswordMutation.isError && (
+        <>
+          <Help>
+            Saisissez l&apos;adresse email liée à votre compte pour changer
+            votre mot de passe
+          </Help>
+          <ForgotPasswordForm
+            onSubmit={onSubmit}
+            submitLoading={forgotPasswordMutation.isLoading}
+            submitError={undefined}
+          />
+          <LinksWrapper>
+            <Link href={AppPages.AUTH_SIGN_IN}>J&apos;ai déjà un compte</Link>
+            <Link href={AppPages.AUTH_SIGN_UP}>Créer un compte</Link>
+          </LinksWrapper>
+        </>
+      )}
+      {(forgotPasswordMutation.isSuccess || forgotPasswordMutation.isError) && (
+        <>
+          <CongratsWrapper>
+            <p>Demande enregistrée ✅</p>
+            <p>
+              Si nous connaissons cette adresse email vous recevrez un email
+              contenant un lien pour changer votre mot de passe
+            </p>
+          </CongratsWrapper>
+          <LinksWrapper>
+            <Link href={AppPages.AUTH_SIGN_IN}>Se connecter</Link>
+          </LinksWrapper>
+        </>
+      )}
+    </AuthCard>
   );
 };
 
-const StyledCard = styled(Card)`
-  width: 100%;
-  max-width: 360px;
-  margin: 3rem auto 0;
-`;
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4rem;
-`;
-
-const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.25;
-  text-align: center;
-`;
-
 const Help = styled.p`
   text-align: center;
-`;
-
-const LinksWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-`;
-
-const StyledLink = styled(Link)`
-  font-weight: 600;
-`;
-
-const CongratsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  text-align: center;
-`;
-
-const Congrats = styled.p`
-  font-weight: 600;
 `;
 
 export default ForgotPasswordTemplate;

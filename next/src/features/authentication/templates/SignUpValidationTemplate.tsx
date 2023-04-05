@@ -5,8 +5,10 @@ import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/queries/usePost';
 import SignUpValidation from '@/features/authentication/types/SignUpValidation';
+import AuthCard from '@/features/authentication/components/AuthCard';
+import CongratsWrapper from '@/features/authentication/components/CongratsWrapper';
+import LinksWrapper from '@/features/authentication/components/LinksWrapper';
 import Button from '@/ui/atoms/Button';
-import Card from '@/ui/atoms/Card';
 import Link from '@/ui/atoms/Link';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
@@ -41,13 +43,15 @@ const SignUpValidationTemplate = () => {
   const SignUpValidationSuccess = () => {
     return (
       <>
-        <Wrapper>
-          <Congrats>Inscription validée 🎉</Congrats>
+        <CongratsWrapper>
+          <p>Inscription validée 🎉</p>
           <p>
             Vous pouvez dorénavant vous connecter et profiter de nos services
           </p>
-        </Wrapper>
-        <StyledLink href={AppPages.AUTH_SIGN_IN}>Se connecter</StyledLink>
+        </CongratsWrapper>
+        <LinksWrapper>
+          <Link href={AppPages.AUTH_SIGN_IN}>Se connecter</Link>
+        </LinksWrapper>
       </>
     );
   };
@@ -56,7 +60,9 @@ const SignUpValidationTemplate = () => {
     return (
       <>
         <Error>{signUpValidationMutation.error?.response?.data.message}</Error>
-        <StyledLink href={AppPages.AUTH_SIGN_IN}>Se connecter</StyledLink>
+        <LinksWrapper>
+          <Link href={AppPages.AUTH_SIGN_IN}>Se connecter</Link>
+        </LinksWrapper>
       </>
     );
   };
@@ -88,13 +94,13 @@ const SignUpValidationTemplate = () => {
 
   const ReSendEmailSignUpValidation = () => {
     return (
-      <Wrapper>
-        <Congrats>Email envoyé 👍</Congrats>
+      <CongratsWrapper>
+        <p>Email envoyé 👍</p>
         <p>
           Finalisez votre inscription en consultant le mail que nous venons de
           vous envoyer
         </p>
-      </Wrapper>
+      </CongratsWrapper>
     );
   };
 
@@ -109,59 +115,37 @@ const SignUpValidationTemplate = () => {
   };
 
   return (
-    <StyledCard>
-      <Section>
-        <Title>Inscription</Title>
-        {(reSendSignUpValidationEmailMutation.isIdle ||
-          reSendSignUpValidationEmailMutation.isLoading) && (
-          <>
-            {signUpValidationMutation.isLoading && <ProgressSpinner />}
-            {signUpValidationMutation.isSuccess && <SignUpValidationSuccess />}
-            {signUpValidationMutation.isError && (
-              <>
-                {signUpValidationMutation.error?.response?.status === 409 && (
-                  <SignUpValidationError />
-                )}
-                {signUpValidationMutation.error?.response?.status === 401 && (
-                  <SignUpValidationExpiredToken />
-                )}
-              </>
-            )}
-          </>
-        )}
-        {signUpValidationMutation.isError && (
-          <>
-            {reSendSignUpValidationEmailMutation.isSuccess && (
-              <ReSendEmailSignUpValidation />
-            )}
-            {reSendSignUpValidationEmailMutation.isError && (
-              <ReSendSignUpValidationEmailError />
-            )}
-          </>
-        )}
-      </Section>
-    </StyledCard>
+    <AuthCard title="Inscription">
+      {(reSendSignUpValidationEmailMutation.isIdle ||
+        reSendSignUpValidationEmailMutation.isLoading) && (
+        <>
+          {signUpValidationMutation.isLoading && <ProgressSpinner />}
+          {signUpValidationMutation.isSuccess && <SignUpValidationSuccess />}
+          {signUpValidationMutation.isError && (
+            <>
+              {signUpValidationMutation.error?.response?.status === 409 && (
+                <SignUpValidationError />
+              )}
+              {signUpValidationMutation.error?.response?.status === 401 && (
+                <SignUpValidationExpiredToken />
+              )}
+            </>
+          )}
+        </>
+      )}
+      {signUpValidationMutation.isError && (
+        <>
+          {reSendSignUpValidationEmailMutation.isSuccess && (
+            <ReSendEmailSignUpValidation />
+          )}
+          {reSendSignUpValidationEmailMutation.isError && (
+            <ReSendSignUpValidationEmailError />
+          )}
+        </>
+      )}
+    </AuthCard>
   );
 };
-
-const StyledCard = styled(Card)`
-  width: 100%;
-  max-width: 360px;
-  margin: 3rem auto 0;
-`;
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4rem;
-`;
-
-const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.25;
-`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -173,14 +157,6 @@ const Wrapper = styled.div`
 
 const Error = styled.p`
   color: ${({ theme }) => theme.colors.error};
-`;
-
-const StyledLink = styled(Link)`
-  font-weight: 600;
-`;
-
-const Congrats = styled.p`
-  font-weight: 600;
 `;
 
 export default SignUpValidationTemplate;
