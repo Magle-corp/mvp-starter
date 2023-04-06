@@ -4,6 +4,7 @@ import { Avatar } from 'primereact/avatar';
 import { InputText } from 'primereact/inputtext';
 import { Menu } from 'primereact/menu';
 import { Sidebar } from 'primereact/sidebar';
+import AppPages from '@/cdn/enums/AppPages';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import Icon from '@/ui/atoms/Icon';
 
@@ -17,7 +18,7 @@ const AdminLayout = (props: AdminLayout) => {
   const { breakpointSM, breakpointMD } = useBreakpoints();
 
   const SideMenuItems = [
-    { label: 'Accueil', icon: 'pi pi-home', url: '/dashboard' },
+    { label: 'Accueil', icon: 'pi pi-home', url: AppPages.DASHBOARD },
     {
       label: 'Animaux',
       icon: 'pi pi-table',

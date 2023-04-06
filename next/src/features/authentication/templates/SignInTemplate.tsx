@@ -13,7 +13,7 @@ const SignInTemplate = () => {
   const router = useRouter();
 
   const signInMutation = usePost<SignIn>(ApiRoutes.AUTH_SIGN_IN, () =>
-    router.push('/')
+    router.push(AppPages.DASHBOARD)
   );
 
   const onSubmit: SubmitHandler<SignIn> = (fieldValues: SignIn) => {
