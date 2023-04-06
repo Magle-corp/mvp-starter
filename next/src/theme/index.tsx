@@ -23,16 +23,12 @@ const GlobalStyle = createGlobalStyle`
   }
     
   body {
-    background-color: var(--surface-ground);
+    background-color: #EFF3F8;
     font-family: var(--font-family);
     font-weight: normal;
     color: var(--text-color);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-  
-  main {
-    padding: 0 10px;
   }
   
   p {
