@@ -8,11 +8,11 @@ const usePost = <T>(url: string, onSuccess?: Function, onError?: Function) => {
     mutationFn: async (payload: T) => {
       return api.post(url, payload);
     },
-    onSuccess: () => {
-      onSuccess && onSuccess();
+    onSuccess: (data, variables) => {
+      onSuccess && onSuccess(data, variables);
     },
-    onError: (error: AxiosError<ApiError>, variables, context) => {
-      onError && onError();
+    onError: (error: AxiosError<ApiError>, variables) => {
+      onError && onError(error, variables);
     },
   });
 };

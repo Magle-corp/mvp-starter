@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
-import usePost from '@/cdn/queries/usePost';
+import usePost from '@/cdn/hooks/usePost';
 import ResetPassword from '@/features/authentication/types/ResetPassword';
 import ResetPasswordForm from '@/features/authentication/forms/ResetPasswordForm';
 import AuthCard from '@/features/authentication/components/AuthCard';

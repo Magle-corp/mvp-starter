@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
-import usePost from '@/cdn/queries/usePost';
+import usePost from '@/cdn/hooks/usePost';
 import SignUpValidation from '@/features/authentication/types/SignUpValidation';
 import AuthCard from '@/features/authentication/components/AuthCard';
 import CongratsWrapper from '@/features/authentication/components/CongratsWrapper';
