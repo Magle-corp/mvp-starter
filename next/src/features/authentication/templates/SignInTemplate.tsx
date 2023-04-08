@@ -6,7 +6,7 @@ import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import { AuthToken } from '@/features/authentication/types/AuthToken';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import SignIn from '@/features/authentication/types/SignIn';
+import { SignIn } from '@/features/authentication/types/AuthFormSchema';
 import SignInForm from '@/features/authentication/forms/SignInForm';
 import AuthCard from '@/features/authentication/components/AuthCard';
 import LinksWrapper from '@/features/authentication/components/LinksWrapper';

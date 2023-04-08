@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, Schema, string, ref, boolean } from 'yup';
-import SignUp from '@/features/authentication/types/SignUp';
+import { SignUp } from '@/features/authentication/types/AuthFormSchema';
 import FormFieldCheckbox from '@/ui/molecules/formFields/FormFieldCheckbox';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';

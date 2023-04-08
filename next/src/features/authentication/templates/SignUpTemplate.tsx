@@ -2,7 +2,7 @@ import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
-import SignUp from '@/features/authentication/types/SignUp';
+import { SignUp } from '@/features/authentication/types/AuthFormSchema';
 import SignUpForm from '@/features/authentication/forms/SignUpForm';
 import AuthCard from '@/features/authentication/components/AuthCard';
 import LinksWrapper from '@/features/authentication/components/LinksWrapper';

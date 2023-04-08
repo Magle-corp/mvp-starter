@@ -3,7 +3,7 @@ import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
-import ResetPassword from '@/features/authentication/types/ResetPassword';
+import { ResetPassword } from '@/features/authentication/types/AuthFormSchema';
 import ResetPasswordForm from '@/features/authentication/forms/ResetPasswordForm';
 import AuthCard from '@/features/authentication/components/AuthCard';
 import CongratsWrapper from '@/features/authentication/components/CongratsWrapper';
