@@ -1,8 +1,11 @@
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
+import { AxiosResponse } from 'axios';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
-import usePost from '@/cdn/queries/usePost';
+import { AuthToken } from '@/features/authentication/types/AuthToken';
+import usePost from '@/cdn/hooks/usePost';
+import { useAuthContext } from '@/features/authentication/AuthContext';
 import SignIn from '@/features/authentication/types/SignIn';
 import SignInForm from '@/features/authentication/forms/SignInForm';
 import AuthCard from '@/features/authentication/components/AuthCard';
@@ -11,9 +14,14 @@ import Link from '@/ui/atoms/Link';
 
 const SignInTemplate = () => {
   const router = useRouter();
+  const { login } = useAuthContext();
 
-  const signInMutation = usePost<SignIn>(ApiRoutes.AUTH_SIGN_IN, () =>
-    router.push(AppPages.DASHBOARD)
+  const signInMutation = usePost<SignIn>(
+    ApiRoutes.AUTH_SIGN_IN,
+    ({ data }: AxiosResponse<AuthToken>) => {
+      login(data);
+      router.push(AppPages.DASHBOARD);
+    }
   );
 
   const onSubmit: SubmitHandler<SignIn> = (fieldValues: SignIn) => {

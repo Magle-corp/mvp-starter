@@ -6,6 +6,8 @@ import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { GlobalStyle, ThemeWrapper } from '@/theme';
+import { AuthContextWrapper } from '@/features/authentication/AuthContext';
+import AuthGuard from '@/features/authentication/AuthGuard';
 
 export default function App({ Component, pageProps }: AppProps) {
   addLocale('fr', primeLocaleFr);
@@ -17,7 +19,11 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ThemeWrapper>
         <GlobalStyle />
-        <Component {...pageProps} />
+        <AuthContextWrapper>
+          <AuthGuard>
+            <Component {...pageProps} />
+          </AuthGuard>
+        </AuthContextWrapper>
       </ThemeWrapper>
     </QueryClientProvider>
   );
