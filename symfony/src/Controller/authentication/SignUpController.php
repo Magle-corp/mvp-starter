@@ -59,6 +59,7 @@ class SignUpController extends AbstractController
         $newUser->setEmail($userEmail);
         $newUser->setPassword($this->passwordHasher->hashPassword($newUser, $userPassword));
         $this->entityManager->persist($newUser);
+        $this->entityManager->flush();
 
         $tokenPayload = ['user_id' => $newUser->getId()];
         $token = $this->JWTService->generate($tokenPayload, getenv('JWT_SIGNUP_VALIDATION_SECRET'));
@@ -67,7 +68,6 @@ class SignUpController extends AbstractController
         $tokenSignUp->setSignUpToken($token);
         $tokenSignUp->setUsername($newUser->getEmail());
         $this->entityManager->persist($tokenSignUp);
-
         $this->entityManager->flush();
 
         $this->emailService->sendSignUpValidationEmail($newUser, $token);
