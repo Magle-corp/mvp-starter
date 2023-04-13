@@ -46,7 +46,7 @@ class ForgotPasswordController extends AbstractController
         $userRepository = $this->entityManager->getRepository(User::class);
         $user = $userRepository->findOneBy(['email' => $userEmail]);
 
-        /* Returns an HTTP response with status 200 to not communicate confidential information */
+        /* If the token user id isn't registered returns an HTTP response with status 200 to not communicate confidential information */
         if (!$user) {
             return $this->responseService->create('OK', 200);
         }
