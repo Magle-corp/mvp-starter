@@ -2,6 +2,7 @@
 
 namespace App\Controller\authentication;
 
+use App\Entity\TokenSignUp;
 use App\Entity\User;
 use App\Service\EmailService;
 use App\Service\JWTService;
@@ -61,15 +62,25 @@ class ReSendSignUpValidationEmailController extends AbstractController
         $userRepository = $this->entityManager->getRepository(User::class);
         $user = $userRepository->findOneBy(['id' => $userId]);
 
+        /* If the token user id isn't registered returns an HTTP response with status 200 to not communicate confidential information */
         if (!$user) {
-            return $this->responseService->create('Aucun compte correspondant', 409);
+            return $this->responseService->create('OK', 200);
         }
 
         if ($user->isVerified()) {
             return $this->responseService->create('Compte déjà vérifié', 409);
         }
 
-        $this->emailService->sendSignUpValidationEmail($user);
+        $tokenPayload = ['user_id' => $user->getId()];
+        $token = $this->JWTService->generate($tokenPayload, getenv('JWT_SIGNUP_VALIDATION_SECRET'));
+
+        $tokenSignUp = new TokenSignUp();
+        $tokenSignUp->setSignUpToken($token);
+        $tokenSignUp->setUsername($user->getEmail());
+        $this->entityManager->persist($tokenSignUp);
+        $this->entityManager->flush();
+
+        $this->emailService->sendSignUpValidationEmail($user, $token);
 
         return $this->responseService->create('OK', 200);
     }
