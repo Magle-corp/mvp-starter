@@ -36,14 +36,14 @@ const ForgotPasswordForm = (props: ForgotPasswordForm) => {
       {props.submitError && <FormError>{props.submitError}</FormError>}
       <InputsWrapper>
         <FormFieldText<ForgotPassword>
-          label="Adresse email *"
+          label="adresse email *"
           name="email"
           control={form.control}
           error={form.formState.errors.email}
         />
       </InputsWrapper>
       <Button
-        label="Changer mot de passe"
+        label="changer mot de passe"
         onClick={form.handleSubmit(props.onSubmit)}
         loading={props.submitLoading}
       />
