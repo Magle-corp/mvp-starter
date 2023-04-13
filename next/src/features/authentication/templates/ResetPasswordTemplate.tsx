@@ -27,11 +27,20 @@ const ResetPasswordTemplate = () => {
   return (
     <AuthCard title="Changer mon mot de passe">
       {!resetPasswordMutation.isSuccess && (
-        <ResetPasswordForm
-          onSubmit={onSubmit}
-          submitLoading={resetPasswordMutation.isLoading}
-          submitError={resetPasswordMutation.error?.response?.data.message}
-        />
+        <>
+          <ResetPasswordForm
+            onSubmit={onSubmit}
+            submitLoading={resetPasswordMutation.isLoading}
+            submitError={resetPasswordMutation.error?.response?.data.message}
+          />
+          {resetPasswordMutation.isError && (
+            <LinksWrapper>
+              <Link href={AppPages.AUTH_FORGOT_PASSWORD}>
+                Mot de passe oublié
+              </Link>
+            </LinksWrapper>
+          )}
+        </>
       )}
       {resetPasswordMutation.isSuccess && (
         <>
