@@ -1,15 +1,6 @@
-import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-type LinksWrapper = {
-  children: ReactNode;
-};
-
-const LinksWrapper = (props: LinksWrapper) => {
-  return <Wrapper>{props.children}</Wrapper>;
-};
-
-const Wrapper = styled.div`
+export default styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,5 +10,3 @@ const Wrapper = styled.div`
     font-weight: 600;
   }
 `;
-
-export default LinksWrapper;
