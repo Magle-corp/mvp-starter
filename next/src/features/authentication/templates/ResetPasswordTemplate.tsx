@@ -26,32 +26,43 @@ const ResetPasswordTemplate = () => {
 
   return (
     <AuthCard title="Changer mon mot de passe">
-      {!resetPasswordMutation.isSuccess && (
+      {token && (
         <>
-          <ResetPasswordForm
-            onSubmit={onSubmit}
-            submitLoading={resetPasswordMutation.isLoading}
-            submitError={resetPasswordMutation.error?.response?.data.message}
-          />
-          {resetPasswordMutation.isError && (
-            <LinksWrapper>
-              <Link href={AppPages.AUTH_FORGOT_PASSWORD}>
-                Mot de passe oublié
-              </Link>
-            </LinksWrapper>
+          {!resetPasswordMutation.isSuccess && (
+            <>
+              <ResetPasswordForm
+                onSubmit={onSubmit}
+                submitLoading={resetPasswordMutation.isLoading}
+                submitError={
+                  resetPasswordMutation.error?.response?.data.message
+                }
+              />
+              {resetPasswordMutation.isError && (
+                <LinksWrapper>
+                  <Link href={AppPages.AUTH_FORGOT_PASSWORD}>
+                    Mot de passe oublié
+                  </Link>
+                </LinksWrapper>
+              )}
+            </>
+          )}
+          {resetPasswordMutation.isSuccess && (
+            <>
+              <CongratsWrapper>
+                <p>Mot de passe enregistré 🔒</p>
+                <p>Utilisez votre nouveau mot de passe pour vous connecter</p>
+              </CongratsWrapper>
+              <LinksWrapper>
+                <Link href={AppPages.AUTH_SIGN_IN}>Se connecter</Link>
+              </LinksWrapper>
+            </>
           )}
         </>
       )}
-      {resetPasswordMutation.isSuccess && (
-        <>
-          <CongratsWrapper>
-            <p>Mot de passe enregistré 🔒</p>
-            <p>Utilisez votre nouveau mot de passe pour vous connecter</p>
-          </CongratsWrapper>
-          <LinksWrapper>
-            <Link href={AppPages.AUTH_SIGN_IN}>Se connecter</Link>
-          </LinksWrapper>
-        </>
+      {!token && (
+        <LinksWrapper>
+          <Link href={AppPages.AUTH_SIGN_IN}>Se connecter</Link>
+        </LinksWrapper>
       )}
     </AuthCard>
   );
