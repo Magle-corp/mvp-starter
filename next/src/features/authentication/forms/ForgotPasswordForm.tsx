@@ -1,8 +1,10 @@
-import styled from 'styled-components';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, Schema, string } from 'yup';
 import { ForgotPassword } from '@/features/authentication/types/AuthFormSchema';
+import Form from '@/features/authentication/components/Form';
+import FormError from '@/features/authentication/components/FormError';
+import InputsWrapper from '@/features/authentication/components/InputsWrapper';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
 
@@ -50,25 +52,5 @@ const ForgotPasswordForm = (props: ForgotPasswordForm) => {
     </Form>
   );
 };
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3rem;
-  width: 90%;
-`;
-
-const FormError = styled.p`
-  color: ${({ theme }) => theme.colors.error};
-  text-align: center;
-`;
-
-const InputsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  width: 100%;
-`;
 
 export default ForgotPasswordForm;
