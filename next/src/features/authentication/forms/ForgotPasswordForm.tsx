@@ -41,13 +41,15 @@ const ForgotPasswordForm = (props: ForgotPasswordForm) => {
           label="adresse email *"
           name="email"
           control={form.control}
-          error={form.formState.errors.email}
+          error={form.formState.errors.email?.message}
+          required
         />
       </InputsWrapper>
       <Button
         label="changer mot de passe"
         onClick={form.handleSubmit(props.onSubmit)}
         loading={props.submitLoading}
+        type="submit"
       />
     </Form>
   );

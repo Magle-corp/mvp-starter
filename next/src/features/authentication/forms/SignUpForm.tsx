@@ -54,33 +54,38 @@ const SignUpForm = (props: SignUpForm) => {
           label="adresse email *"
           name="email"
           control={form.control}
-          error={form.formState.errors.email}
+          error={form.formState.errors.email?.message}
+          required
         />
         <FormFieldPassword<SignUp>
           label="mot de passe *"
           name="password"
           control={form.control}
-          error={form.formState.errors.password}
+          error={form.formState.errors.password?.message}
           help="Minimum 8 caractères, maximum 25"
+          required
         />
         <FormFieldPassword<SignUp>
           label="confirmer mot de passe *"
           name="confirmPassword"
           control={form.control}
-          error={form.formState.errors.confirmPassword}
+          error={form.formState.errors.confirmPassword?.message}
           feedback={false}
+          required
         />
         <FormFieldCheckbox<SignUp>
           label="J'accepte les conditions générales d'utilisation *"
           name="acceptCGU"
           control={form.control}
-          error={form.formState.errors.acceptCGU}
+          error={form.formState.errors.acceptCGU?.message}
+          required
         />
       </InputsWrapper>
       <Button
         label="S'inscrire"
         onClick={form.handleSubmit(props.onSubmit)}
         loading={props.submitLoading}
+        type="submit"
       />
     </Form>
   );

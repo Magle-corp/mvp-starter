@@ -47,20 +47,23 @@ const SignInForm = (props: SignInForm) => {
           label="adresse email *"
           name="email"
           control={form.control}
-          error={form.formState.errors.email}
+          error={form.formState.errors.email?.message}
+          required
         />
         <FormFieldPassword<SignIn>
           label="mot de passe *"
           name="password"
           control={form.control}
-          error={form.formState.errors.password}
+          error={form.formState.errors.password?.message}
           feedback={false}
+          required
         />
       </InputsWrapper>
       <Button
         label="Se connecter"
         onClick={form.handleSubmit(props.onSubmit)}
         loading={props.submitLoading}
+        type="submit"
       />
     </Form>
   );

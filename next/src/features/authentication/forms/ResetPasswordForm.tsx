@@ -44,14 +44,16 @@ const ResetPasswordForm = (props: ResetPasswordForm) => {
           label="mot de passe *"
           name="password"
           control={form.control}
-          error={form.formState.errors.password}
+          error={form.formState.errors.password?.message}
           help="Minimum 8 caractères, maximum 25"
+          required
         />
         <FormFieldPassword<ResetPassword>
           label="confirmer mot de passe *"
           name="confirmPassword"
           control={form.control}
-          error={form.formState.errors.confirmPassword}
+          error={form.formState.errors.confirmPassword?.message}
+          required
           feedback={false}
         />
       </InputsWrapper>
@@ -59,6 +61,7 @@ const ResetPasswordForm = (props: ResetPasswordForm) => {
         label="Enregistrer mot de passe"
         onClick={form.handleSubmit(props.onSubmit)}
         loading={props.submitLoading}
+        type="submit"
       />
     </Form>
   );
