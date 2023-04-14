@@ -19,7 +19,7 @@ const StyledLink = styled(NextLink)`
   cursor: pointer;
   border-bottom: 1px solid ${({ theme }) => theme.colors.black};
 
-  @media screen and (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
     border-bottom: unset;
 
     &:before,
