@@ -17,15 +17,25 @@ const FormFieldText = <T extends FieldValues>(props: FormFieldText<T>) => {
           render={({ field }) => (
             <InputText
               id={props.name}
-              className={props.error?.message ? 'p-invalid' : ''}
+              className={props.error ? 'p-invalid' : ''}
               {...field}
-              {...props}
+              aria-required={props.required}
+              aria-invalid={!!props.error}
+              aria-describedby={
+                (props.error ? `${props.name}-error` : '') +
+                ' ' +
+                (props.help ? `${props.name}-format` : '')
+              }
             />
           )}
         />
       </FloatLabel>
-      {!props.error && props.help && <InputHelp>{props.help}</InputHelp>}
-      {props.error && <InputError>{props.error.message}</InputError>}
+      {props.error && (
+        <InputError id={`${props.name}-error`}>{props.error}</InputError>
+      )}
+      {props.help && (
+        <InputHelp id={`${props.name}-format`}>{props.help}</InputHelp>
+      )}
     </FieldWrapper>
   );
 };

@@ -4,7 +4,7 @@ type FormField<T extends FieldValues> = {
   label: string;
   name: Path<T>;
   control: Control<T>;
-  error: FieldError | undefined;
+  error: FieldError['message'] | undefined;
   help?: string;
 };
 
