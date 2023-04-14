@@ -143,6 +143,11 @@ const SignUpValidationTemplate = () => {
           )}
         </>
       )}
+      {!token && !signUpValidationMutation.isLoading && (
+        <LinksWrapper>
+          <Link href={AppPages.AUTH_SIGN_IN}>Se connecter</Link>
+        </LinksWrapper>
+      )}
     </AuthCard>
   );
 };
