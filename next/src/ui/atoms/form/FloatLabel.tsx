@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import styled from 'styled-components';
 
 type FloatLabel = {
   children: ReactNode;
@@ -8,11 +9,15 @@ type FloatLabel = {
 
 const FloatLabel = ({ ...props }: FloatLabel) => {
   return (
-    <span className="p-float-label">
+    <StyledSpan className="p-float-label">
       {props.children}
       <label htmlFor={props.htmlFor}>{props.label}</label>
-    </span>
+    </StyledSpan>
   );
 };
+
+const StyledSpan = styled.span`
+  width: 100%;
+`;
 
 export default FloatLabel;
