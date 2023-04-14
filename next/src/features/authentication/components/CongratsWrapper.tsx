@@ -1,15 +1,6 @@
-import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-type CongratsWrapper = {
-  children: ReactNode;
-};
-
-const CongratsWrapper = (props: CongratsWrapper) => {
-  return <Wrapper>{props.children}</Wrapper>;
-};
-
-const Wrapper = styled.div`
+export default styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,5 +11,3 @@ const Wrapper = styled.div`
     font-weight: 600;
   }
 `;
-
-export default CongratsWrapper;
