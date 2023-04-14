@@ -1,7 +1,9 @@
-import styled from 'styled-components';
 import { Controller, FieldValues } from 'react-hook-form';
 import { Checkbox, CheckboxProps } from 'primereact/checkbox';
 import FormField from '@/cdn/types/FormField';
+import FieldWrapper from '@/ui/atoms/form/FieldWrapper';
+import InputHelp from '@/ui/atoms/form/InputHelp';
+import InputError from '@/ui/atoms/form/InputError';
 
 type FormFieldCheckbox<T extends FieldValues> = FormField<T> &
   Partial<CheckboxProps>;
@@ -10,8 +12,8 @@ const FormFieldCheckbox = <T extends FieldValues>(
   props: FormFieldCheckbox<T>
 ) => {
   return (
-    <div>
-      <FieldWrapper>
+    <FieldWrapper direction="column">
+      <FieldWrapper direction="row">
         <Controller
           name={props.name}
           control={props.control}
@@ -39,25 +41,8 @@ const FormFieldCheckbox = <T extends FieldValues>(
       {props.help && (
         <InputHelp id={`${props.name}-format`}>{props.help}</InputHelp>
       )}
-    </div>
+    </FieldWrapper>
   );
 };
-
-const FieldWrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  width: 100%;
-`;
-
-const InputHelp = styled.p`
-  padding-left: 0.25rem;
-  font-size: 0.75rem;
-`;
-
-const InputError = styled.p`
-  color: ${({ theme }) => theme.colors.error};
-  margin-top: 0.5rem;
-`;
 
 export default FormFieldCheckbox;

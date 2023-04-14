@@ -1,15 +1,17 @@
-import styled from 'styled-components';
 import { Controller, FieldValues } from 'react-hook-form';
 import { InputTextProps } from 'primereact/inputtext';
 import FormField from '@/cdn/types/FormField';
-import FloatLabel from '@/ui/atoms/FloatLabel';
+import FloatLabel from '@/ui/atoms/form/FloatLabel';
+import FieldWrapper from '@/ui/atoms/form/FieldWrapper';
+import InputHelp from '@/ui/atoms/form/InputHelp';
+import InputError from '@/ui/atoms/form/InputError';
 import InputText from '@/ui/atoms/inputs/InputText';
 
 type FormFieldText<T extends FieldValues> = FormField<T> & InputTextProps;
 
 const FormFieldText = <T extends FieldValues>(props: FormFieldText<T>) => {
   return (
-    <FieldWrapper>
+    <FieldWrapper direction="column">
       <FloatLabel htmlFor={props.name} label={props.label}>
         <Controller
           name={props.name}
@@ -39,22 +41,5 @@ const FormFieldText = <T extends FieldValues>(props: FormFieldText<T>) => {
     </FieldWrapper>
   );
 };
-
-const FieldWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-`;
-
-const InputHelp = styled.p`
-  padding-left: 0.25rem;
-  font-size: 0.75rem;
-`;
-
-const InputError = styled.p`
-  padding-left: 0.25rem;
-  color: ${({ theme }) => theme.colors.error};
-`;
 
 export default FormFieldText;

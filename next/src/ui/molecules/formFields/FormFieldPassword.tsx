@@ -1,8 +1,10 @@
-import styled from 'styled-components';
 import { Controller, FieldValues } from 'react-hook-form';
 import { PasswordProps } from 'primereact/password';
 import FormField from '@/cdn/types/FormField';
-import FloatLabel from '@/ui/atoms/FloatLabel';
+import FloatLabel from '@/ui/atoms/form/FloatLabel';
+import FieldWrapper from '@/ui/atoms/form/FieldWrapper';
+import InputHelp from '@/ui/atoms/form/InputHelp';
+import InputError from '@/ui/atoms/form/InputError';
 import InputPassword from '@/ui/atoms/inputs/InputPassword';
 
 type FormFieldPassword<T extends FieldValues> = FormField<T> & PasswordProps;
@@ -11,7 +13,7 @@ const FormFieldPassword = <T extends FieldValues>(
   props: FormFieldPassword<T>
 ) => {
   return (
-    <FieldWrapper>
+    <FieldWrapper direction="column">
       <FloatLabel htmlFor={props.name} label={props.label}>
         <Controller
           name={props.name}
@@ -41,22 +43,5 @@ const FormFieldPassword = <T extends FieldValues>(
     </FieldWrapper>
   );
 };
-
-const FieldWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-`;
-
-const InputHelp = styled.p`
-  padding-left: 0.25rem;
-  font-size: 0.75rem;
-`;
-
-const InputError = styled.p`
-  padding-left: 0.25rem;
-  color: ${({ theme }) => theme.colors.error};
-`;
 
 export default FormFieldPassword;
