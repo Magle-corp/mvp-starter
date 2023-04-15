@@ -22,7 +22,7 @@ const AuthGuard = (props: AuthGuard) => {
   return (
     <>
       {publicPage && <>{props.children}</>}
-      {!publicPage && !loading && <>{props.children}</>}
+      {!publicPage && !loading && token && <>{props.children}</>}
       {!publicPage && loading && (
         <LoadingWrapper>
           <ProgressSpinner />
