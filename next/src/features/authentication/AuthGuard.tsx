@@ -2,7 +2,6 @@ import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import AppPages from '@/cdn/enums/AppPages';
-import AppPublicPages from '@/cdn/enums/AppPlubicPages';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
@@ -11,26 +10,23 @@ type AuthGuard = {
 };
 
 const AuthGuard = (props: AuthGuard) => {
-  const { token, loading } = useAuthContext();
+  const { publicPage, token, loading } = useAuthContext();
   const router = useRouter();
-  const publicPages = Object.values(AppPublicPages) as string[];
 
   useEffect(() => {
-    if (!loading && !token && !publicPages.includes(router.pathname)) {
+    if (!publicPage && !loading && !token) {
       router.push(AppPages.AUTH_SIGN_IN);
     }
-  }, [token, loading, router.pathname]);
+  }, [publicPage, loading, token, router]);
 
   return (
     <>
-      {publicPages.includes(router.pathname) && <>{props.children}</>}
-      {!publicPages.includes(router.pathname) && loading && (
+      {publicPage && <>{props.children}</>}
+      {!publicPage && !loading && <>{props.children}</>}
+      {!publicPage && loading && (
         <LoadingWrapper>
           <ProgressSpinner />
         </LoadingWrapper>
-      )}
-      {!publicPages.includes(router.pathname) && !loading && (
-        <>{props.children}</>
       )}
     </>
   );

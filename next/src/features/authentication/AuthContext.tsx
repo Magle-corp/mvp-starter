@@ -5,6 +5,8 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useRouter } from 'next/router';
+import AppPublicPages from '@/cdn/enums/AppPlubicPages';
 import authService from '@/features/authentication/utils/AuthService';
 import {
   AuthToken,
@@ -16,6 +18,7 @@ type Props = {
 };
 
 type SharedStates = {
+  publicPage: boolean;
   token: AuthTokenPayload | null;
   loading: boolean;
   login: Function;
@@ -28,21 +31,27 @@ export function AuthContextWrapper({ children }: Props) {
   const [token, setToken] = useState<AuthTokenPayload | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const router = useRouter();
+  const publicPagesEnum = Object.values(AppPublicPages) as string[];
+  const publicPage = publicPagesEnum.includes(router.pathname);
+
   useEffect(() => {
-    const token = authService.getLocalAuthToken();
+    if (!publicPage) {
+      const token = authService.getLocalAuthToken();
 
-    if (token) {
-      const validToken = authService.tokenCompleteCheck(token);
+      if (token) {
+        const validToken = authService.tokenCompleteCheck(token);
 
-      if (validToken) {
-        setToken(authService.getAuthTokenPayload(token));
-      } else {
-        getFreshToken(token);
+        if (validToken) {
+          setToken(authService.getAuthTokenPayload(token));
+        } else {
+          getFreshToken(token);
+        }
       }
     }
 
     setLoading(false);
-  }, []);
+  }, [publicPage, setToken]);
 
   const getFreshToken = async (authToken: AuthToken) => {
     const freshToken = await authService.fetchRefreshToken(authToken);
@@ -67,6 +76,7 @@ export function AuthContextWrapper({ children }: Props) {
   };
 
   const sharedStates: SharedStates = {
+    publicPage,
     token,
     loading,
     login,
