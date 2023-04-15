@@ -44,7 +44,8 @@ const isValidTokenPayload = (tokenPayload: AuthTokenPayload): boolean => {
     tokenPayload.hasOwnProperty('email') &&
     tokenPayload.hasOwnProperty('exp') &&
     tokenPayload.hasOwnProperty('iat') &&
-    tokenPayload.hasOwnProperty('roles')
+    tokenPayload.hasOwnProperty('roles') &&
+    tokenPayload.hasOwnProperty('organizations')
   );
 };
 
