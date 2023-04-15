@@ -19,7 +19,6 @@ const AuthCard = (props: AuthCard) => {
 };
 
 const StyledCard = styled(Card)`
-  width: 100%;
   max-width: 360px;
   margin: 3rem auto 0;
 `;
