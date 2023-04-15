@@ -54,6 +54,25 @@ const isExpiredAuthToken = (tokenPayload: AuthTokenPayload): boolean => {
   return isBefore(authTokenExpirationDate, new Date());
 };
 
+const tokenCompleteCheck = (token: AuthToken): boolean => {
+  const validToken = isValidToken(token);
+
+  if (validToken) {
+    const tokenPayload = getAuthTokenPayload(token);
+
+    if (tokenPayload) {
+      const validPayload = isValidTokenPayload(tokenPayload);
+
+      if (validPayload) {
+        return !isExpiredAuthToken(tokenPayload);
+      }
+    }
+  }
+
+  removeLocalAuthToken();
+  return false;
+};
+
 const fetchRefreshToken = async (token: AuthToken): Promise<AuthToken> => {
   const res: AxiosResponse<AuthToken> = await api
     .post(ApiRoutes.AUTH_REFRESH_TOKEN, token)
@@ -74,6 +93,7 @@ const authService = {
   getAuthTokenPayload,
   isValidTokenPayload,
   isExpiredAuthToken,
+  tokenCompleteCheck,
   fetchRefreshToken,
 };
 

@@ -6,14 +6,17 @@ import {
   useState,
 } from 'react';
 import authService from '@/features/authentication/utils/AuthService';
-import { AuthToken } from '@/features/authentication/types/AuthToken';
+import {
+  AuthToken,
+  AuthTokenPayload,
+} from '@/features/authentication/types/AuthToken';
 
 type Props = {
   children: ReactNode;
 };
 
 type SharedStates = {
-  authenticated: boolean;
+  token: AuthTokenPayload | null;
   loading: boolean;
   login: Function;
 };
@@ -22,37 +25,19 @@ type SharedStates = {
 const AuthContext = createContext<SharedStates>();
 
 export function AuthContextWrapper({ children }: Props) {
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [token, setToken] = useState<AuthTokenPayload | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const token = authService.getLocalAuthToken();
 
     if (token) {
-      const validToken = authService.isValidToken(token);
+      const validToken = authService.tokenCompleteCheck(token);
 
       if (validToken) {
-        const tokenPayload = authService.getAuthTokenPayload(token);
-
-        if (tokenPayload) {
-          const validPayload = authService.isValidTokenPayload(tokenPayload);
-
-          if (validPayload) {
-            const expiredToken = authService.isExpiredAuthToken(tokenPayload);
-
-            if (expiredToken) {
-              getFreshToken(token);
-            } else {
-              setAuthenticated(true);
-            }
-          } else {
-            authService.removeLocalAuthToken();
-          }
-        } else {
-          authService.removeLocalAuthToken();
-        }
+        setToken(authService.getAuthTokenPayload(token));
       } else {
-        authService.removeLocalAuthToken();
+        getFreshToken(token);
       }
     }
 
@@ -63,18 +48,26 @@ export function AuthContextWrapper({ children }: Props) {
     const freshToken = await authService.fetchRefreshToken(authToken);
 
     if (freshToken) {
-      setAuthenticated(true);
-      authService.setLocalAuthToken(freshToken);
+      const validFreshToken = authService.tokenCompleteCheck(freshToken);
+
+      if (validFreshToken) {
+        setToken(authService.getAuthTokenPayload(freshToken));
+        authService.setLocalAuthToken(freshToken);
+      }
     }
   };
 
   const login = (token: AuthToken) => {
-    setAuthenticated(true);
-    authService.setLocalAuthToken(token);
+    const validToken = authService.tokenCompleteCheck(token);
+
+    if (validToken) {
+      setToken(authService.getAuthTokenPayload(token));
+      authService.setLocalAuthToken(token);
+    }
   };
 
   const sharedStates: SharedStates = {
-    authenticated,
+    token,
     loading,
     login,
   };

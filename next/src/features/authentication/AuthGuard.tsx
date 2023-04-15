@@ -11,15 +11,15 @@ type AuthGuard = {
 };
 
 const AuthGuard = (props: AuthGuard) => {
-  const { authenticated, loading } = useAuthContext();
+  const { token, loading } = useAuthContext();
   const router = useRouter();
   const publicPages = Object.values(AppPublicPages) as string[];
 
   useEffect(() => {
-    if (!loading && !authenticated && !publicPages.includes(router.pathname)) {
+    if (!loading && !token && !publicPages.includes(router.pathname)) {
       router.push(AppPages.AUTH_SIGN_IN);
     }
-  }, [authenticated, loading, router.pathname]);
+  }, [token, loading, router.pathname]);
 
   return (
     <>
