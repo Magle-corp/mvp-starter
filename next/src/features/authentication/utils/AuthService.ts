@@ -58,6 +58,7 @@ const fetchRefreshToken = async (token: AuthToken): Promise<AuthToken> => {
     .post(ApiRoutes.AUTH_REFRESH_TOKEN, token)
     .catch((err) => {
       console.log(err);
+      removeLocalAuthToken();
       return err;
     });
 
