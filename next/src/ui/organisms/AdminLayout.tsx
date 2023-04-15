@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { Avatar } from 'primereact/avatar';
-import AppPages from '@/cdn/enums/AppPages';
+import menuAdmin from '@/cdn/conf/menuAdmin';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import Admin from '@/ui/atoms/layout/Admin';
 import AdminHeader from '@/ui/atoms/layout/AdminHeader';
@@ -15,16 +15,7 @@ type AdminLayout = {
 
 const AdminLayout = (props: AdminLayout) => {
   const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(false);
-
   const { breakpointSM, breakpointMD } = useBreakpoints();
-
-  const SideMenuItems = [
-    { label: 'Accueil', icon: 'pi pi-home', url: AppPages.DASHBOARD },
-    {
-      label: 'Animaux',
-      icon: 'pi pi-table',
-    },
-  ];
 
   const HeaderLeft = (
     <>
@@ -59,10 +50,10 @@ const AdminLayout = (props: AdminLayout) => {
             visible={sideMenuOpen}
             onHide={() => setSideMenuOpen(!sideMenuOpen)}
           >
-            <Menu model={SideMenuItems} />
+            <Menu model={menuAdmin} />
           </Sidebar>
         )}
-        {breakpointMD && sideMenuOpen && <Menu model={SideMenuItems} />}
+        {breakpointMD && sideMenuOpen && <Menu model={menuAdmin} />}
         {props.children}
       </AdminBody>
     </Admin>
