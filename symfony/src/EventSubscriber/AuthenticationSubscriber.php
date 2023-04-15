@@ -3,6 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Service\ResponseService;
+use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
@@ -21,7 +22,8 @@ final class AuthenticationSubscriber implements EventSubscriberInterface
     {
         return [
             LoginFailureEvent::class => ['customLoginFailureEventException'],
-            LoginSuccessEvent::class => ['customLoginSuccessEventException']
+            LoginSuccessEvent::class => ['customLoginSuccessEventException'],
+            'lexik_jwt_authentication.on_jwt_created' => ['customTokenPayload'],
         ];
     }
 
@@ -38,4 +40,20 @@ final class AuthenticationSubscriber implements EventSubscriberInterface
             $event->setResponse($this->responseService->create("Veuillez confirmer votre inscription pour pouvoir vous connecter", 403));
         }
     }
+
+    public function customTokenPayload(JWTCreatedEvent $event): void
+    {
+        $payload = $event->getData();
+        $user = $event->getUser();
+        $userOrganizations = $user->getOrganizations()->toArray();
+
+        $organizationId = [];
+        foreach ($userOrganizations as $organization) {
+            $organizationId = [...$organizationId, $organization->getId()];
+        }
+
+        $payload['organizations'] = $organizationId;
+        $event->setData($payload);
+    }
+
 }
