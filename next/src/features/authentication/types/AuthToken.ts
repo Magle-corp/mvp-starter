@@ -8,6 +8,7 @@ type AuthTokenPayload = {
   exp: number;
   iat: number;
   roles: string[];
+  organizations: number[];
 };
 
 export type { AuthToken, AuthTokenPayload };
