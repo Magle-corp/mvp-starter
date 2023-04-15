@@ -1,11 +1,12 @@
 import { ReactNode, useState } from 'react';
-import styled from 'styled-components';
 import { Avatar } from 'primereact/avatar';
-import { InputText } from 'primereact/inputtext';
-import { Menu } from 'primereact/menu';
-import { Sidebar } from 'primereact/sidebar';
 import AppPages from '@/cdn/enums/AppPages';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
+import Admin from '@/ui/atoms/layout/Admin';
+import AdminHeader from '@/ui/atoms/layout/AdminHeader';
+import AdminBody from '@/ui/atoms/layout/AdminBody';
+import Menu from '@/ui/atoms/Menu';
+import Sidebar from '@/ui/atoms/SideBar';
 import Icon from '@/ui/atoms/Icon';
 
 type AdminLayout = {
@@ -25,120 +26,47 @@ const AdminLayout = (props: AdminLayout) => {
     },
   ];
 
+  const HeaderLeft = (
+    <>
+      {(!sideMenuOpen || !breakpointMD) && (
+        <Icon
+          size={25}
+          pointer={true}
+          className="pi pi-bars"
+          onClick={() => setSideMenuOpen(!sideMenuOpen)}
+        />
+      )}
+      {sideMenuOpen && breakpointMD && (
+        <Icon
+          size={25}
+          pointer={true}
+          className="pi pi-times"
+          onClick={() => setSideMenuOpen(!sideMenuOpen)}
+        />
+      )}
+      {breakpointSM && <p>La maison des chats</p>}
+    </>
+  );
+
+  const HeaderRight = <Avatar shape="circle" />;
+
   return (
-    <Grid>
-      <Header>
-        <HeaderLeft>
-          {(!sideMenuOpen || !breakpointMD) && (
-            <Icon
-              size={25}
-              pointer={true}
-              className="pi pi-bars"
-              onClick={() => setSideMenuOpen(!sideMenuOpen)}
-            />
-          )}
-          {sideMenuOpen && breakpointMD && (
-            <Icon
-              size={25}
-              pointer={true}
-              className="pi pi-times"
-              onClick={() => setSideMenuOpen(!sideMenuOpen)}
-            />
-          )}
-          {breakpointSM && <p>La maison des chats</p>}
-        </HeaderLeft>
-        <HeaderRight>
-          {!breakpointMD && (
-            <Icon pointer={true} size={20} className="pi pi-search" />
-          )}
-          {breakpointMD && <InputText />}
-          <Avatar shape="circle" />
-        </HeaderRight>
-      </Header>
-      <Body>
+    <Admin>
+      <AdminHeader headerLeft={HeaderLeft} headerRight={HeaderRight} />
+      <AdminBody>
         {!breakpointMD && (
-          <StyledSideBar
+          <Sidebar
             visible={sideMenuOpen}
             onHide={() => setSideMenuOpen(!sideMenuOpen)}
           >
-            <StyledMenu model={SideMenuItems} />
-          </StyledSideBar>
+            <Menu model={SideMenuItems} />
+          </Sidebar>
         )}
-        {breakpointMD && sideMenuOpen && (
-          <div>
-            <StyledMenu model={SideMenuItems} />
-          </div>
-        )}
+        {breakpointMD && sideMenuOpen && <Menu model={SideMenuItems} />}
         {props.children}
-      </Body>
-    </Grid>
+      </AdminBody>
+    </Admin>
   );
 };
-
-const Grid = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const HeaderLeft = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-
-  p {
-    font-weight: 600;
-  }
-`;
-
-const HeaderRight = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-
-  input {
-    height: 32px;
-    border-radius: 3px;
-  }
-`;
-
-const Body = styled.div`
-  display: flex;
-  gap: 1.5rem;
-  height: 100%;
-`;
-
-const StyledMenu = styled(Menu)`
-  height: 100%;
-  padding: 0;
-  border: none;
-  border-radius: 3px;
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-    0 1px 3px 0 rgba(0, 0, 0, 0.12);
-`;
-
-const StyledSideBar = styled(Sidebar)`
-  width: max-content !important;
-
-  .p-sidebar-content {
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  ${StyledMenu} {
-    box-shadow: unset;
-  }
-`;
 
 export default AdminLayout;
