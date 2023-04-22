@@ -10,7 +10,7 @@ import CongratsWrapper from '@/features/authentication/components/CongratsWrappe
 import Link from '@/ui/atoms/Link';
 
 const SignUpTemplate = () => {
-  const signUpMutation = usePost<SignUp>(ApiRoutes.AUTH_SIGN_UP);
+  const signUpMutation = usePost<SignUp>({ url: ApiRoutes.AUTH_SIGN_UP });
 
   const onSubmit: SubmitHandler<SignUp> = (fieldValues: SignUp) => {
     signUpMutation.mutate(fieldValues);

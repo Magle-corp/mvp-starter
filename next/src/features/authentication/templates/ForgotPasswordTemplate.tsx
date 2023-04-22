@@ -11,9 +11,9 @@ import CongratsWrapper from '@/features/authentication/components/CongratsWrappe
 import Link from '@/ui/atoms/Link';
 
 const ForgotPasswordTemplate = () => {
-  const forgotPasswordMutation = usePost<ForgotPassword>(
-    ApiRoutes.AUTH_FORGOT_PASSWORD
-  );
+  const forgotPasswordMutation = usePost<ForgotPassword>({
+    url: ApiRoutes.AUTH_FORGOT_PASSWORD,
+  });
 
   const onSubmit: SubmitHandler<ForgotPassword> = (
     fieldValues: ForgotPassword

@@ -16,13 +16,13 @@ const SignInTemplate = () => {
   const router = useRouter();
   const { login } = useAuthContext();
 
-  const signInMutation = usePost<SignIn>(
-    ApiRoutes.AUTH_SIGN_IN,
-    ({ data }: AxiosResponse<AuthToken>) => {
+  const signInMutation = usePost<SignIn>({
+    url: ApiRoutes.AUTH_SIGN_IN,
+    onSuccess: ({ data }: AxiosResponse<AuthToken>) => {
       login(data);
       router.push(AppPages.DASHBOARD);
-    }
-  );
+    },
+  });
 
   const onSubmit: SubmitHandler<SignIn> = (fieldValues: SignIn) => {
     signInMutation.mutate(fieldValues);
