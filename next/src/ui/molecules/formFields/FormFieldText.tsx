@@ -1,8 +1,8 @@
 import { Controller, FieldValues } from 'react-hook-form';
 import { InputTextProps } from 'primereact/inputtext';
-import FormField from '@/cdn/types/FormField';
+import { FormField } from '@/cdn/types/Form';
 import FloatLabel from '@/ui/atoms/form/FloatLabel';
-import FieldWrapper from '@/ui/atoms/form/FieldWrapper';
+import InputWrapper from '@/ui/atoms/form/InputWrapper';
 import InputHelp from '@/ui/atoms/form/InputHelp';
 import InputError from '@/ui/atoms/form/InputError';
 import InputText from '@/ui/atoms/inputs/InputText';
@@ -11,7 +11,7 @@ type FormFieldText<T extends FieldValues> = FormField<T> & InputTextProps;
 
 const FormFieldText = <T extends FieldValues>(props: FormFieldText<T>) => {
   return (
-    <FieldWrapper direction="column">
+    <InputWrapper direction="column">
       <FloatLabel htmlFor={props.name} label={props.label}>
         <Controller
           name={props.name}
@@ -38,7 +38,7 @@ const FormFieldText = <T extends FieldValues>(props: FormFieldText<T>) => {
       {props.help && (
         <InputHelp id={`${props.name}-format`}>{props.help}</InputHelp>
       )}
-    </FieldWrapper>
+    </InputWrapper>
   );
 };
 

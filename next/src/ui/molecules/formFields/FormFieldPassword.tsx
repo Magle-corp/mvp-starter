@@ -1,8 +1,8 @@
 import { Controller, FieldValues } from 'react-hook-form';
 import { PasswordProps } from 'primereact/password';
-import FormField from '@/cdn/types/FormField';
+import { FormField } from '@/cdn/types/Form';
 import FloatLabel from '@/ui/atoms/form/FloatLabel';
-import FieldWrapper from '@/ui/atoms/form/FieldWrapper';
+import InputWrapper from '@/ui/atoms/form/InputWrapper';
 import InputHelp from '@/ui/atoms/form/InputHelp';
 import InputError from '@/ui/atoms/form/InputError';
 import InputPassword from '@/ui/atoms/inputs/InputPassword';
@@ -13,7 +13,7 @@ const FormFieldPassword = <T extends FieldValues>(
   props: FormFieldPassword<T>
 ) => {
   return (
-    <FieldWrapper direction="column">
+    <InputWrapper direction="column">
       <FloatLabel htmlFor={props.name} label={props.label}>
         <Controller
           name={props.name}
@@ -40,7 +40,7 @@ const FormFieldPassword = <T extends FieldValues>(
       {props.help && (
         <InputHelp id={`${props.name}-format`}>{props.help}</InputHelp>
       )}
-    </FieldWrapper>
+    </InputWrapper>
   );
 };
 
