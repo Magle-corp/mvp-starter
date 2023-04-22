@@ -80,6 +80,7 @@ export function AuthContextWrapper({ children }: Props) {
     token,
     tokenPayload,
     loading,
+    getFreshToken,
     login,
   };
 
