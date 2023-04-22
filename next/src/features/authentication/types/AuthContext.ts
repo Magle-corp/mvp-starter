@@ -8,6 +8,7 @@ type AuthContext = {
   token: AuthToken | null;
   tokenPayload: AuthTokenPayload | null;
   loading: boolean;
+  getFreshToken: Function;
   login: Function;
 };
 
