@@ -8,6 +8,7 @@ type AuthTokenPayload = {
   exp: number;
   iat: number;
   roles: string[];
+  user_id: number;
   organizations: number[];
 };
 
