@@ -7,28 +7,25 @@ import {
 } from 'react';
 import { useRouter } from 'next/router';
 import AppPublicPages from '@/cdn/enums/AppPlubicPages';
-import authService from '@/features/authentication/utils/AuthService';
 import {
   AuthToken,
   AuthTokenPayload,
 } from '@/features/authentication/types/AuthToken';
+import AuthContext from '@/features/authentication/types/AuthContext';
+import authService from '@/features/authentication/utils/AuthService';
 
 type Props = {
   children: ReactNode;
 };
 
-type SharedStates = {
-  publicPage: boolean;
-  token: AuthTokenPayload | null;
-  loading: boolean;
-  login: Function;
-};
-
 // @ts-ignore
-const AuthContext = createContext<SharedStates>();
+const Context = createContext<AuthContext>();
 
 export function AuthContextWrapper({ children }: Props) {
-  const [token, setToken] = useState<AuthTokenPayload | null>(null);
+  const [token, setToken] = useState<AuthToken | null>(null);
+  const [tokenPayload, setTokenPayload] = useState<AuthTokenPayload | null>(
+    null
+  );
   const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
@@ -43,7 +40,8 @@ export function AuthContextWrapper({ children }: Props) {
         const validToken = authService.tokenCompleteCheck(token);
 
         if (validToken) {
-          setToken(authService.getAuthTokenPayload(token));
+          setToken(token);
+          setTokenPayload(authService.getAuthTokenPayload(token));
         } else {
           getFreshToken(token);
         }
@@ -51,7 +49,7 @@ export function AuthContextWrapper({ children }: Props) {
     }
 
     setLoading(false);
-  }, [publicPage, setToken]);
+  }, [publicPage, setTokenPayload, setToken]);
 
   const getFreshToken = async (authToken: AuthToken) => {
     const freshToken = await authService.fetchRefreshToken(authToken);
@@ -60,7 +58,8 @@ export function AuthContextWrapper({ children }: Props) {
       const validFreshToken = authService.tokenCompleteCheck(freshToken);
 
       if (validFreshToken) {
-        setToken(authService.getAuthTokenPayload(freshToken));
+        setToken(token);
+        setTokenPayload(authService.getAuthTokenPayload(freshToken));
         authService.setLocalAuthToken(freshToken);
       }
     }
@@ -70,23 +69,23 @@ export function AuthContextWrapper({ children }: Props) {
     const validToken = authService.tokenCompleteCheck(token);
 
     if (validToken) {
-      setToken(authService.getAuthTokenPayload(token));
+      setToken(token);
+      setTokenPayload(authService.getAuthTokenPayload(token));
       authService.setLocalAuthToken(token);
     }
   };
 
-  const sharedStates: SharedStates = {
+  const sharedStates: AuthContext = {
     publicPage,
     token,
+    tokenPayload,
     loading,
     login,
   };
 
-  return (
-    <AuthContext.Provider value={sharedStates}>{children}</AuthContext.Provider>
-  );
+  return <Context.Provider value={sharedStates}>{children}</Context.Provider>;
 }
 
 export function useAuthContext() {
-  return useContext(AuthContext);
+  return useContext(Context);
 }
