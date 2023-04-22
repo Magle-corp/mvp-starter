@@ -16,13 +16,13 @@ const SignUpValidationTemplate = () => {
   const router = useRouter();
   const { token } = router.query;
 
-  const signUpValidationMutation = usePost<SignUpValidation>(
-    ApiRoutes.AUTH_SIGN_UP_VALIDATION
-  );
+  const signUpValidationMutation = usePost<SignUpValidation>({
+    url: ApiRoutes.AUTH_SIGN_UP_VALIDATION,
+  });
 
-  const reSendSignUpValidationEmailMutation = usePost<SignUpValidation>(
-    ApiRoutes.AUTH_RE_SEND_SIGN_UP_VALIDATION_EMAIL
-  );
+  const reSendSignUpValidationEmailMutation = usePost<SignUpValidation>({
+    url: ApiRoutes.AUTH_RE_SEND_SIGN_UP_VALIDATION_EMAIL,
+  });
 
   useEffect(() => {
     if (token && typeof token === 'string') {
