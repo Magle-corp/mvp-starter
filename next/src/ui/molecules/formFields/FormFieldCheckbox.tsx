@@ -1,7 +1,7 @@
 import { Controller, FieldValues } from 'react-hook-form';
 import { Checkbox, CheckboxProps } from 'primereact/checkbox';
-import FormField from '@/cdn/types/FormField';
-import FieldWrapper from '@/ui/atoms/form/FieldWrapper';
+import { FormField } from '@/cdn/types/Form';
+import InputWrapper from '@/ui/atoms/form/InputWrapper';
 import InputHelp from '@/ui/atoms/form/InputHelp';
 import InputError from '@/ui/atoms/form/InputError';
 
@@ -12,8 +12,8 @@ const FormFieldCheckbox = <T extends FieldValues>(
   props: FormFieldCheckbox<T>
 ) => {
   return (
-    <FieldWrapper direction="column">
-      <FieldWrapper direction="row">
+    <InputWrapper direction="column">
+      <InputWrapper direction="row">
         <Controller
           name={props.name}
           control={props.control}
@@ -34,14 +34,14 @@ const FormFieldCheckbox = <T extends FieldValues>(
           )}
         />
         <label htmlFor={props.name}>{props.label}</label>
-      </FieldWrapper>
+      </InputWrapper>
       {props.error && (
         <InputError id={`${props.name}-error`}>{props.error}</InputError>
       )}
       {props.help && (
         <InputHelp id={`${props.name}-format`}>{props.help}</InputHelp>
       )}
-    </FieldWrapper>
+    </InputWrapper>
   );
 };
 
