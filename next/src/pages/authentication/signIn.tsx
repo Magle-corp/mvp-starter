@@ -1,7 +1,9 @@
+import { ReactElement } from 'react';
 import Head from 'next/head';
+import AdminLayout from '@/cdn/layouts/AdminLayout';
 import SignInTemplate from '@/features/authentication/templates/SignInTemplate';
 
-export default function SignIn() {
+const SignIn = (): JSX.Element => {
   return (
     <>
       <Head>
@@ -15,4 +17,10 @@ export default function SignIn() {
       </main>
     </>
   );
-}
+};
+
+SignIn.getLayout = (page: ReactElement) => {
+  return <AdminLayout>{page}</AdminLayout>;
+};
+
+export default SignIn;
