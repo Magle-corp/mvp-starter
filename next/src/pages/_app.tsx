@@ -1,3 +1,5 @@
+import { ReactElement, ReactNode } from 'react';
+import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { addLocale, locale } from 'primereact/api';
@@ -6,8 +8,25 @@ import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { GlobalStyle, ThemeWrapper } from '@/theme';
-import { AuthContextWrapper } from '@/features/authentication/AuthContext';
-import AuthGuard from '@/features/authentication/AuthGuard';
+
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = Partial<AppProps> & {
+  Component: NextPageWithLayout;
+};
+
+const Layout = ({
+  Component,
+  pageProps,
+}: AppPropsWithLayout): JSX.Element | null => {
+  if (Component.getLayout) {
+    return <>{Component.getLayout(<Component {...pageProps} />)}</>;
+  } else {
+    return <Component {...pageProps} />;
+  }
+};
 
 export default function App({ Component, pageProps }: AppProps) {
   addLocale('fr', primeLocaleFr);
@@ -19,11 +38,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ThemeWrapper>
         <GlobalStyle />
-        <AuthContextWrapper>
-          <AuthGuard>
-            <Component {...pageProps} />
-          </AuthGuard>
-        </AuthContextWrapper>
+        <Layout Component={Component} pageProps={pageProps} />
       </ThemeWrapper>
     </QueryClientProvider>
   );

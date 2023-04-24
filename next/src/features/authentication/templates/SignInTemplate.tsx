@@ -20,7 +20,7 @@ const SignInTemplate = () => {
     url: ApiRoutes.AUTH_SIGN_IN,
     onSuccess: ({ data }: AxiosResponse<AuthToken>) => {
       login(data);
-      router.push(AppPages.DASHBOARD);
+      router.push(AppPages.ADMIN_DASHBOARD);
     },
   });
 

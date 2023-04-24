@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import SignUpValidationTemplate from '@/features/authentication/templates/SignUpValidationTemplate';
 
-const SignUpValidation = () => {
+export default function SignUpValidation() {
   return (
     <>
       <Head>
@@ -18,6 +18,4 @@ const SignUpValidation = () => {
       </main>
     </>
   );
-};
-
-export default SignUpValidation;
+}
