@@ -7,6 +7,7 @@ import {
 } from 'react-hook-form';
 
 type FormHandler<T extends FieldValues> = {
+  defaultValues: T;
   onSubmit: SubmitHandler<T>;
   submitLoading: boolean;
   submitError: string | undefined;

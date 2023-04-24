@@ -1,33 +1,36 @@
-import { useMutation } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
+import { useQuery } from '@tanstack/react-query';
 import api from '@/cdn/utils/api';
 import { ApiError } from '@/cdn/types/ApiResponse';
 import { AuthToken } from '@/features/authentication/types/AuthToken';
 
-type UsePost<T> = {
+type useGet<T> = {
   url: string;
   token?: AuthToken['token'];
-  key?: string;
+  key: string;
   onSuccess?: (data: AxiosResponse<T>) => void;
-  onError?: (error: AxiosError<ApiError> | unknown) => void;
+  onError?: (error: AxiosError<ApiError>) => void;
+  enabled?: boolean;
 };
 
-const usePost = <T,>(props: UsePost<T>) => {
+const useGet = <T,>(props: useGet<T>) => {
   if (props.token) {
     api.defaults.headers.common.Authorization = `Bearer ${props.token}`;
   }
 
-  return useMutation([props.key], {
-    mutationFn: async (payload: T) => {
-      return api.post(props.url, payload);
+  return useQuery([props.key], {
+    queryFn: () => {
+      return api.get(props.url);
     },
+    retry: false,
     onSuccess: (data) => {
       props.onSuccess && props.onSuccess(data);
     },
     onError: (error: AxiosError<ApiError>) => {
       props.onError && props.onError(error);
     },
+    enabled: props.enabled ?? true,
   });
 };
 
-export default usePost;
+export default useGet;
