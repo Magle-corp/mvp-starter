@@ -5,5 +5,6 @@ export default [
   {
     label: 'Animaux',
     icon: 'pi pi-table',
+    url: AppPages.ADMIN_ANIMALS,
   },
 ];
