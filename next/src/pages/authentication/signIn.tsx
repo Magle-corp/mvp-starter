@@ -1,7 +1,8 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import AdminLayout from '@/cdn/layouts/AdminLayout';
 import SignInTemplate from '@/features/authentication/templates/SignInTemplate';
+import { AuthContextWrapper } from '@/features/authentication/AuthContext';
+import AuthGuard from '@/features/authentication/AuthGuard';
 
 const SignIn = (): JSX.Element => {
   return (
@@ -20,7 +21,11 @@ const SignIn = (): JSX.Element => {
 };
 
 SignIn.getLayout = (page: ReactElement) => {
-  return <AdminLayout>{page}</AdminLayout>;
+  return (
+    <AuthContextWrapper>
+      <AuthGuard>{page}</AuthGuard>
+    </AuthContextWrapper>
+  );
 };
 
 export default SignIn;
