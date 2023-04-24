@@ -4,6 +4,7 @@ import { AuthContextWrapper } from '@/features/authentication/AuthContext';
 import AuthGuard from '@/features/authentication/AuthGuard';
 import { OrganizationContextWrapper } from '@/features/organization/OrganizationContext';
 import OrganizationGuard from '@/features/organization/OrganizationGuard';
+import AdminTemplate from '@/ui/organisms/AdminTemplate';
 
 const Dashboard = (): JSX.Element => {
   return (
@@ -24,7 +25,9 @@ Dashboard.getLayout = function getLayout(page: ReactElement) {
     <AuthContextWrapper>
       <AuthGuard>
         <OrganizationContextWrapper>
-          <OrganizationGuard>{page}</OrganizationGuard>
+          <OrganizationGuard>
+            <AdminTemplate>{page}</AdminTemplate>
+          </OrganizationGuard>
         </OrganizationContextWrapper>
       </AuthGuard>
     </AuthContextWrapper>

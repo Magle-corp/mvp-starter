@@ -1,9 +1,7 @@
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
-import { AxiosResponse } from 'axios';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
-import { AuthToken } from '@/features/authentication/types/AuthToken';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { SignIn } from '@/features/authentication/types/AuthFormSchema';
@@ -18,7 +16,7 @@ const SignInTemplate = () => {
 
   const signInMutation = usePost<SignIn>({
     url: ApiRoutes.AUTH_SIGN_IN,
-    onSuccess: ({ data }: AxiosResponse<AuthToken>) => {
+    onSuccess: ({ data }) => {
       login(data);
       router.push(AppPages.ADMIN_DASHBOARD);
     },

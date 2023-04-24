@@ -19,6 +19,8 @@ const AuthGuard = (props: AuthGuard) => {
     }
   }, [publicPage, loading, token, router]);
 
+  // TODO: implementer cas ou loadin termine et pas de token
+
   return (
     <>
       {publicPage && <>{props.children}</>}
