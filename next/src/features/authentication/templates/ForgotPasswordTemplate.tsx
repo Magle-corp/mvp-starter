@@ -11,6 +11,10 @@ import CongratsWrapper from '@/features/authentication/components/CongratsWrappe
 import Link from '@/ui/atoms/Link';
 
 const ForgotPasswordTemplate = () => {
+  const forgotPasswordDefaultValues: ForgotPassword = {
+    email: '',
+  };
+
   const forgotPasswordMutation = usePost<ForgotPassword>({
     url: ApiRoutes.AUTH_FORGOT_PASSWORD,
   });
@@ -30,6 +34,7 @@ const ForgotPasswordTemplate = () => {
             votre mot de passe
           </Help>
           <ForgotPasswordForm
+            defaultValues={forgotPasswordDefaultValues}
             onSubmit={onSubmit}
             submitLoading={forgotPasswordMutation.isLoading}
             submitError={undefined}

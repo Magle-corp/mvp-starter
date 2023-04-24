@@ -14,6 +14,11 @@ const SignInTemplate = () => {
   const router = useRouter();
   const { login } = useAuthContext();
 
+  const signInDefaultValues: SignIn = {
+    email: '',
+    password: '',
+  };
+
   const signInMutation = usePost<SignIn>({
     url: ApiRoutes.AUTH_SIGN_IN,
     onSuccess: ({ data }) => {
@@ -31,6 +36,7 @@ const SignInTemplate = () => {
       {!signInMutation.isSuccess && (
         <>
           <SignInForm
+            defaultValues={signInDefaultValues}
             onSubmit={onSubmit}
             submitLoading={signInMutation.isLoading}
             submitError={signInMutation.error?.response?.data.message}

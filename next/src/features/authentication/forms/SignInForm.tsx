@@ -1,6 +1,7 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, Schema, string } from 'yup';
+import { FormHandler } from '@/cdn/types/Form';
 import { SignIn } from '@/features/authentication/types/AuthFormSchema';
 import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
@@ -9,13 +10,7 @@ import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';
 import Button from '@/ui/atoms/Button';
 
-type SignInForm = {
-  onSubmit: SubmitHandler<SignIn>;
-  submitLoading: boolean;
-  submitError: string | undefined;
-};
-
-const SignInForm = (props: SignInForm) => {
+const SignInForm = (props: FormHandler<SignIn>) => {
   const schema: Schema<SignIn> = object({
     email: string()
       .min(5, 'Minimum 5 caractères')
@@ -28,15 +23,10 @@ const SignInForm = (props: SignInForm) => {
       .required('Champ requis'),
   });
 
-  const defaultValues: SignIn = {
-    email: '',
-    password: '',
-  };
-
   const form = useForm<SignIn>({
     mode: 'onChange',
     resolver: yupResolver(schema),
-    defaultValues: defaultValues,
+    defaultValues: props.defaultValues,
   });
 
   return (

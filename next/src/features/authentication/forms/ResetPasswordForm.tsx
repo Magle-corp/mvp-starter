@@ -1,6 +1,7 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, ref, Schema, string } from 'yup';
+import { FormHandler } from '@/cdn/types/Form';
 import { ResetPassword } from '@/features/authentication/types/AuthFormSchema';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
@@ -8,13 +9,7 @@ import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';
 import Button from '@/ui/atoms/Button';
 
-type ResetPasswordForm = {
-  onSubmit: SubmitHandler<ResetPassword>;
-  submitLoading: boolean;
-  submitError: string | undefined;
-};
-
-const ResetPasswordForm = (props: ResetPasswordForm) => {
+const ResetPasswordForm = (props: FormHandler<ResetPassword>) => {
   const schema: Schema<ResetPassword> = object({
     password: string()
       .min(8, 'Minimum 8 caractères')
@@ -25,15 +20,10 @@ const ResetPasswordForm = (props: ResetPasswordForm) => {
       .required('Champ requis'),
   });
 
-  const defaultValues: ResetPassword = {
-    password: '',
-    confirmPassword: '',
-  };
-
   const form = useForm<ResetPassword>({
     mode: 'onChange',
     resolver: yupResolver(schema),
-    defaultValues: defaultValues,
+    defaultValues: props.defaultValues,
   });
 
   return (

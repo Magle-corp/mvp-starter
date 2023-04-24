@@ -1,6 +1,7 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, Schema, string } from 'yup';
+import { FormHandler } from '@/cdn/types/Form';
 import { ForgotPassword } from '@/features/authentication/types/AuthFormSchema';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
@@ -8,13 +9,7 @@ import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
 
-type ForgotPasswordForm = {
-  onSubmit: SubmitHandler<ForgotPassword>;
-  submitLoading: boolean;
-  submitError: string | undefined;
-};
-
-const ForgotPasswordForm = (props: ForgotPasswordForm) => {
+const ForgotPasswordForm = (props: FormHandler<ForgotPassword>) => {
   const schema: Schema<ForgotPassword> = object({
     email: string()
       .min(5, 'Minimum 5 caractères')
@@ -23,14 +18,10 @@ const ForgotPasswordForm = (props: ForgotPasswordForm) => {
       .required('Champ requis'),
   });
 
-  const defaultValues: ForgotPassword = {
-    email: '',
-  };
-
   const form = useForm<ForgotPassword>({
     mode: 'onChange',
     resolver: yupResolver(schema),
-    defaultValues: defaultValues,
+    defaultValues: props.defaultValues,
   });
 
   return (

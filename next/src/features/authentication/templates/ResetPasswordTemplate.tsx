@@ -14,6 +14,11 @@ const ResetPasswordTemplate = () => {
   const router = useRouter();
   const { token } = router.query;
 
+  const resetPasswordDefaultValues: ResetPassword = {
+    password: '',
+    confirmPassword: '',
+  };
+
   const resetPasswordMutation = usePost<ResetPassword>({
     url: ApiRoutes.AUTH_RESET_PASSWORD,
   });
@@ -31,6 +36,7 @@ const ResetPasswordTemplate = () => {
           {!resetPasswordMutation.isSuccess && (
             <>
               <ResetPasswordForm
+                defaultValues={resetPasswordDefaultValues}
                 onSubmit={onSubmit}
                 submitLoading={resetPasswordMutation.isLoading}
                 submitError={
