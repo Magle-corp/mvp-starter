@@ -10,6 +10,13 @@ import CongratsWrapper from '@/features/authentication/components/CongratsWrappe
 import Link from '@/ui/atoms/Link';
 
 const SignUpTemplate = () => {
+  const signUpDefaultValues: SignUp = {
+    email: '',
+    password: '',
+    confirmPassword: '',
+    acceptCGU: false,
+  };
+
   const signUpMutation = usePost<SignUp>({ url: ApiRoutes.AUTH_SIGN_UP });
 
   const onSubmit: SubmitHandler<SignUp> = (fieldValues: SignUp) => {
@@ -21,6 +28,7 @@ const SignUpTemplate = () => {
       {!signUpMutation.isSuccess && (
         <>
           <SignUpForm
+            defaultValues={signUpDefaultValues}
             onSubmit={onSubmit}
             submitLoading={signUpMutation.isLoading}
             submitError={signUpMutation.error?.response?.data.message}

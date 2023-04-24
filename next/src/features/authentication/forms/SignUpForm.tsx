@@ -1,6 +1,7 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, Schema, string, ref, boolean } from 'yup';
+import { boolean, object, ref, Schema, string } from 'yup';
+import { FormHandler } from '@/cdn/types/Form';
 import { SignUp } from '@/features/authentication/types/AuthFormSchema';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
@@ -10,13 +11,7 @@ import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';
 import Button from '@/ui/atoms/Button';
 
-type SignUpForm = {
-  onSubmit: SubmitHandler<SignUp>;
-  submitLoading: boolean;
-  submitError: string | undefined;
-};
-
-const SignUpForm = (props: SignUpForm) => {
+const SignUpForm = (props: FormHandler<SignUp>) => {
   const schema: Schema<SignUp> = object({
     email: string()
       .min(5, 'Minimum 5 caractères')
@@ -33,17 +28,10 @@ const SignUpForm = (props: SignUpForm) => {
     acceptCGU: boolean().oneOf([true], 'Accord nécessaire').required(),
   });
 
-  const defaultValues: SignUp = {
-    email: '',
-    password: '',
-    confirmPassword: '',
-    acceptCGU: false,
-  };
-
   const form = useForm<SignUp>({
     mode: 'onChange',
     resolver: yupResolver(schema),
-    defaultValues: defaultValues,
+    defaultValues: props.defaultValues,
   });
 
   return (
