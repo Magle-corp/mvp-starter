@@ -1,7 +1,9 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import AdminLayout from '@/cdn/layouts/AdminLayout';
-import AdminTemplate from '@/ui/organisms/AdminTemplate';
+import { AuthContextWrapper } from '@/features/authentication/AuthContext';
+import AuthGuard from '@/features/authentication/AuthGuard';
+import { OrganizationContextWrapper } from '@/features/organization/OrganizationContext';
+import OrganizationGuard from '@/features/organization/OrganizationGuard';
 
 const Dashboard = (): JSX.Element => {
   return (
@@ -19,9 +21,13 @@ const Dashboard = (): JSX.Element => {
 
 Dashboard.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AdminLayout>
-      <AdminTemplate>{page}</AdminTemplate>
-    </AdminLayout>
+    <AuthContextWrapper>
+      <AuthGuard>
+        <OrganizationContextWrapper>
+          <OrganizationGuard>{page}</OrganizationGuard>
+        </OrganizationContextWrapper>
+      </AuthGuard>
+    </AuthContextWrapper>
   );
 };
 
