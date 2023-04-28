@@ -10,14 +10,19 @@ type OrganizationGuard = {
 };
 
 const OrganizationGuard = (props: OrganizationGuard) => {
-  const { organization, loading } = useOrganizationContext();
+  const { organization, loading, error } = useOrganizationContext();
 
   return (
     <>
-      {!loading && organization && <>{props.children}</>}
-      {!loading && !organization && (
+      {!error && !loading && organization && <>{props.children}</>}
+      {!error && !loading && !organization && (
         <AdminTemplate>
           <NoOrganizationTemplate />
+        </AdminTemplate>
+      )}
+      {error && !loading && (
+        <AdminTemplate>
+          <></>
         </AdminTemplate>
       )}
       {loading && (
