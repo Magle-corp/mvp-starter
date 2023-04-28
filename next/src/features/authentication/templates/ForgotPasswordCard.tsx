@@ -10,7 +10,7 @@ import LinksWrapper from '@/features/authentication/components/LinksWrapper';
 import CongratsWrapper from '@/features/authentication/components/CongratsWrapper';
 import Link from '@/ui/atoms/Link';
 
-const ForgotPasswordTemplate = () => {
+const ForgotPasswordCard = () => {
   const forgotPasswordDefaultValues: ForgotPassword = {
     email: '',
   };
@@ -67,4 +67,4 @@ const Help = styled.p`
   text-align: center;
 `;
 
-export default ForgotPasswordTemplate;
+export default ForgotPasswordCard;

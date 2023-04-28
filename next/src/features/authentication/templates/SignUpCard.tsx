@@ -9,7 +9,7 @@ import LinksWrapper from '@/features/authentication/components/LinksWrapper';
 import CongratsWrapper from '@/features/authentication/components/CongratsWrapper';
 import Link from '@/ui/atoms/Link';
 
-const SignUpTemplate = () => {
+const SignUpCard = () => {
   const signUpDefaultValues: SignUp = {
     email: '',
     password: '',
@@ -57,4 +57,4 @@ const SignUpTemplate = () => {
   );
 };
 
-export default SignUpTemplate;
+export default SignUpCard;

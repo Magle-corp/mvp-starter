@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import SignUpTemplate from '@/features/authentication/templates/SignUpTemplate';
+import SignUpCard from '@/features/authentication/templates/SignUpCard';
 
 export default function SignUp() {
   return (
@@ -11,7 +11,7 @@ export default function SignUp() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <SignUpTemplate />
+        <SignUpCard />
       </main>
     </>
   );

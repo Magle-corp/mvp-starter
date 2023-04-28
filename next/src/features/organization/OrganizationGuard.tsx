@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 import AppPages from '@/cdn/enums/AppPages';
-import NoOrganizationTemplate from '@/features/organization/templates/NoOrganizationTemplate';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
+import CreateOrganizationCard from '@/features/organization/templates/CreateOrganizationCard';
 import AdminTemplate from '@/ui/organisms/AdminTemplate';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 import Card from '@/ui/atoms/Card';
@@ -20,7 +20,7 @@ const OrganizationGuard = (props: OrganizationGuard) => {
       {!error && !loading && organization && <>{props.children}</>}
       {!error && !loading && !organization && (
         <AdminTemplate>
-          <NoOrganizationTemplate />
+          <CreateOrganizationCard />
         </AdminTemplate>
       )}
       {error && !loading && (

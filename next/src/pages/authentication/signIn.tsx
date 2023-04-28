@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import SignInTemplate from '@/features/authentication/templates/SignInTemplate';
+import SignInCard from '@/features/authentication/templates/SignInCard';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
 import AuthGuard from '@/features/authentication/AuthGuard';
 
@@ -14,7 +14,7 @@ const SignIn = (): JSX.Element => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <SignInTemplate />
+        <SignInCard />
       </main>
     </>
   );
