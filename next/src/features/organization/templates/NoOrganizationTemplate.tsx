@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import ApiIris from '@/cdn/enums/ApiIris';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
@@ -28,15 +29,23 @@ const NoOrganizationTemplate = () => {
   };
 
   return (
-    <Card title="Créons votre organisation">
+    <StyledCard title="Créons votre organisation">
       <CreateOrganizationForm
         defaultValues={organizationDefaultValues}
         onSubmit={onSubmit}
         submitLoading={organizationMutation.isLoading}
         submitError={organizationMutation.error?.response?.data.message}
       />
-    </Card>
+    </StyledCard>
   );
 };
+
+const StyledCard = styled(Card)`
+  @media screen and (${({ theme }) => theme.breakpoints.md}) {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+`;
 
 export default NoOrganizationTemplate;
