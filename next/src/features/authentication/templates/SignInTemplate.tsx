@@ -32,24 +32,28 @@ const SignInTemplate = () => {
   };
 
   return (
-    <AuthCard title="Connexion">
+    <>
       {!signInMutation.isSuccess && (
-        <>
-          <SignInForm
-            defaultValues={signInDefaultValues}
-            onSubmit={onSubmit}
-            submitLoading={signInMutation.isLoading}
-            submitError={signInMutation.error?.response?.data.message}
-          />
-          <LinksWrapper>
-            <Link href={AppPages.AUTH_FORGOT_PASSWORD}>
-              Mot de passe oublié
-            </Link>
-            <Link href={AppPages.AUTH_SIGN_UP}>Créer un compte</Link>
-          </LinksWrapper>
-        </>
+        <AuthCard title="Connexion">
+          {!signInMutation.isSuccess && (
+            <>
+              <SignInForm
+                defaultValues={signInDefaultValues}
+                onSubmit={onSubmit}
+                submitLoading={signInMutation.isLoading}
+                submitError={signInMutation.error?.response?.data.message}
+              />
+              <LinksWrapper>
+                <Link href={AppPages.AUTH_FORGOT_PASSWORD}>
+                  Mot de passe oublié
+                </Link>
+                <Link href={AppPages.AUTH_SIGN_UP}>Créer un compte</Link>
+              </LinksWrapper>
+            </>
+          )}
+        </AuthCard>
       )}
-    </AuthCard>
+    </>
   );
 };
 

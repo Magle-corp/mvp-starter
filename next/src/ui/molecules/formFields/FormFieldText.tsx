@@ -21,11 +21,12 @@ const FormFieldText = <T extends FieldValues>(props: FormFieldText<T>) => {
               id={props.name}
               className={props.error ? 'p-invalid' : ''}
               {...field}
+              {...props}
               aria-required={props.required}
               aria-invalid={!!props.error}
               aria-describedby={
                 (props.error ? `${props.name}-error` : '') +
-                ' ' +
+                (props.error && props.help ? ' ' : '') +
                 (props.help ? `${props.name}-format` : '')
               }
             />
