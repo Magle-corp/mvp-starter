@@ -10,6 +10,7 @@ type AuthContext = {
   loading: boolean;
   getFreshToken: Function;
   login: Function;
+  logout: Function;
 };
 
 export default AuthContext;

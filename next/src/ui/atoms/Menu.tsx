@@ -5,6 +5,9 @@ import { MenuItem, MenuItemOptions } from 'primereact/menuitem';
 
 const MenuNextLinkTemplate = (item: MenuItem, options: MenuItemOptions) => (
   <Link href={item.url as string} className={options.className}>
+    <span>
+      <i className={options.iconClassName} />
+    </span>
     {item.label}
   </Link>
 );

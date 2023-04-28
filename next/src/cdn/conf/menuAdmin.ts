@@ -1,10 +1,14 @@
 import AppPages from '@/cdn/enums/AppPages';
 
 export default [
-  { label: 'Accueil', icon: 'pi pi-home', url: AppPages.ADMIN_DASHBOARD },
   {
-    label: 'Animaux',
-    icon: 'pi pi-table',
-    url: AppPages.ADMIN_ANIMALS,
+    label: 'Profil',
+    icon: 'pi pi-user',
+    url: AppPages.ADMIN_DASHBOARD,
+  },
+  {
+    label: 'Organisation',
+    icon: 'pi pi-globe',
+    url: AppPages.ADMIN_DASHBOARD,
   },
 ];
