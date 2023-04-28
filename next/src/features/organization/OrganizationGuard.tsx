@@ -25,7 +25,7 @@ const OrganizationGuard = (props: OrganizationGuard) => {
       )}
       {error && !loading && (
         <AdminTemplate>
-          <Card title="🔌 Oups...">
+          <StyledCard title="🔌 Oups...">
             <ErrorWrapper>
               <p>Une erreur nous empêche de vous donner accès au back-office</p>
               <p>Veuillez nous excuser pour la gêne occasionnée</p>
@@ -33,7 +33,7 @@ const OrganizationGuard = (props: OrganizationGuard) => {
             <LinksWrapper>
               <Link href={AppPages.AUTH_SIGN_IN}>Se connecter</Link>
             </LinksWrapper>
-          </Card>
+          </StyledCard>
         </AdminTemplate>
       )}
       {loading && (
@@ -44,6 +44,14 @@ const OrganizationGuard = (props: OrganizationGuard) => {
     </>
   );
 };
+
+const StyledCard = styled(Card)`
+  @media screen and (${({ theme }) => theme.breakpoints.md}) {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+`;
 
 const ErrorWrapper = styled.div`
   display: flex;
