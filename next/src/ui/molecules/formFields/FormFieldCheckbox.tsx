@@ -23,11 +23,12 @@ const FormFieldCheckbox = <T extends FieldValues>(
               className={props.error ? 'p-invalid' : ''}
               checked={field.value}
               {...field}
+              {...props}
               aria-required={props.required}
               aria-invalid={!!props.error}
               aria-describedby={
                 (props.error ? `${props.name}-error` : '') +
-                ' ' +
+                (props.error && props.help ? ' ' : '') +
                 (props.help ? `${props.name}-format` : '')
               }
             />
