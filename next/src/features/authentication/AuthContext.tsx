@@ -75,6 +75,12 @@ export function AuthContextWrapper({ children }: Props) {
     }
   };
 
+  const logout = () => {
+    authService.removeLocalAuthToken();
+    setToken(null);
+    setTokenPayload(null);
+  };
+
   const sharedStates: AuthContext = {
     publicPage,
     token,
@@ -82,6 +88,7 @@ export function AuthContextWrapper({ children }: Props) {
     loading,
     getFreshToken,
     login,
+    logout,
   };
 
   return <Context.Provider value={sharedStates}>{children}</Context.Provider>;

@@ -1,8 +1,6 @@
 const colors = {
-  // PRIMARY_COLOR: '#abc0bd',
-  // PRIMARY_CONTRAST: '#101212',
-  // SECONDARY_COLOR: '#2A4254',
-  // SECONDARY_CONTRAST: '#ffffff',
+  primary: '#3b82f6',
+  secondary: '#673ab7',
   white: '#f9f9fa',
   black: '#495057',
   gray: '#adadad',
