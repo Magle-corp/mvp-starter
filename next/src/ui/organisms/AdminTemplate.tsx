@@ -13,6 +13,7 @@ import Menu from '@/ui/atoms/Menu';
 import Icon from '@/ui/atoms/Icon';
 import Button from '@/ui/atoms/Button';
 import styled from 'styled-components';
+import SideBar from '@/ui/atoms/SideBar';
 
 type AdminTemplate = {
   children: ReactNode;
@@ -60,16 +61,16 @@ const AdminTemplate = (props: AdminTemplate) => {
             shape="circle"
             onClick={() => setSideBarOpen(!sideBarOpen)}
           />
-          <AdminMenu
+          <SideBar
             position="right"
             visible={sideBarOpen}
             onHide={() => setSideBarOpen(!sideBarOpen)}
           >
             <Menu model={menuAdmin} />
-            <Button variant="danger" onClick={() => logout()}>
+            <LogoutButton variant="danger" onClick={() => logout()}>
               Deconnexion
-            </Button>
-          </AdminMenu>
+            </LogoutButton>
+          </SideBar>
         </>
       )}
     </>
@@ -81,12 +82,12 @@ const AdminTemplate = (props: AdminTemplate) => {
       {organization && (
         <AdminBody>
           {!breakpointMD && (
-            <OrganizationMenu
+            <SideBar
               visible={sideMenuOpen}
               onHide={() => setSideMenuOpen(!sideMenuOpen)}
             >
               <Menu model={menuOrganization} />
-            </OrganizationMenu>
+            </SideBar>
           )}
           {breakpointMD && sideMenuOpen && <Menu model={menuOrganization} />}
         </AdminBody>
@@ -96,36 +97,12 @@ const AdminTemplate = (props: AdminTemplate) => {
   );
 };
 
-const SideMenu = styled(Sidebar)`
-  width: max-content !important;
-
-  .p-sidebar-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  .p-menu {
-    box-shadow: unset;
-  }
-`;
-
-const OrganizationMenu = styled(SideMenu)``;
-
 const AdminAvatar = styled(Avatar)`
   cursor: pointer;
 `;
 
-const AdminMenu = styled(SideMenu)`
-  .p-sidebar-content {
-    padding-top: 5px !important;
-
-    ${Button} {
-      margin: auto auto;
-    }
-  }
+const LogoutButton = styled(Button)`
+  margin: auto auto;
 `;
 
 export default AdminTemplate;
