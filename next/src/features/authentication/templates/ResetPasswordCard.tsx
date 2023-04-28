@@ -10,7 +10,7 @@ import CongratsWrapper from '@/features/authentication/components/CongratsWrappe
 import LinksWrapper from '@/features/authentication/components/LinksWrapper';
 import Link from '@/ui/atoms/Link';
 
-const ResetPasswordTemplate = () => {
+const ResetPasswordCard = () => {
   const router = useRouter();
   const { token } = router.query;
 
@@ -74,4 +74,4 @@ const ResetPasswordTemplate = () => {
   );
 };
 
-export default ResetPasswordTemplate;
+export default ResetPasswordCard;

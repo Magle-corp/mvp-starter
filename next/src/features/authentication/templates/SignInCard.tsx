@@ -10,7 +10,7 @@ import AuthCard from '@/features/authentication/components/AuthCard';
 import LinksWrapper from '@/features/authentication/components/LinksWrapper';
 import Link from '@/ui/atoms/Link';
 
-const SignInTemplate = () => {
+const SignInCard = () => {
   const router = useRouter();
   const { login } = useAuthContext();
 
@@ -57,4 +57,4 @@ const SignInTemplate = () => {
   );
 };
 
-export default SignInTemplate;
+export default SignInCard;

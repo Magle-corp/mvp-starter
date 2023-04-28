@@ -12,7 +12,7 @@ import Button from '@/ui/atoms/Button';
 import Link from '@/ui/atoms/Link';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
-const SignUpValidationTemplate = () => {
+const SignUpValidationCard = () => {
   const router = useRouter();
   const { token } = router.query;
 
@@ -164,4 +164,4 @@ const Error = styled.p`
   color: ${({ theme }) => theme.colors.error};
 `;
 
-export default SignUpValidationTemplate;
+export default SignUpValidationCard;

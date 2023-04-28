@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import ForgotPasswordTemplate from '@/features/authentication/templates/ForgotPasswordTemplate';
+import ForgotPasswordCard from '@/features/authentication/templates/ForgotPasswordCard';
 
 export default function ForgotPassword() {
   return (
@@ -11,7 +11,7 @@ export default function ForgotPassword() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <ForgotPasswordTemplate />
+        <ForgotPasswordCard />
       </main>
     </>
   );

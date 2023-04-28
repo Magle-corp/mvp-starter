@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import ResetPasswordTemplate from '@/features/authentication/templates/ResetPasswordTemplate';
+import ResetPasswordCard from '@/features/authentication/templates/ResetPasswordCard';
 
 export default function ResetPassword() {
   return (
@@ -11,7 +11,7 @@ export default function ResetPassword() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <ResetPasswordTemplate />
+        <ResetPasswordCard />
       </main>
     </>
   );

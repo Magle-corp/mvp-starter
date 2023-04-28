@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import SignUpValidationTemplate from '@/features/authentication/templates/SignUpValidationTemplate';
+import SignUpValidationCard from '@/features/authentication/templates/SignUpValidationCard';
 
 export default function SignUpValidation() {
   return (
@@ -14,7 +14,7 @@ export default function SignUpValidation() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <SignUpValidationTemplate />
+        <SignUpValidationCard />
       </main>
     </>
   );
