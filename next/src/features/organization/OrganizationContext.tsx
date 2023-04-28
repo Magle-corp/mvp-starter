@@ -22,6 +22,7 @@ const Context = createContext<OrganizationContext>();
 export function OrganizationContextWrapper({ children }: Props) {
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
   const { token, tokenPayload } = useAuthContext();
 
   const organizationQuery = useGet<Organization>({
@@ -33,8 +34,9 @@ export function OrganizationContextWrapper({ children }: Props) {
       setLoading(false);
     },
     onError: () => {
-      // TODO: CHIPS POUR INFORMER UTILISATEUR ERREUR
+      // TODO: TOAST POUR INFORMER UTILISATEUR ERREUR
       setLoading(false);
+      setError(true);
     },
     enabled: false,
   });
@@ -50,6 +52,7 @@ export function OrganizationContextWrapper({ children }: Props) {
   const sharedStates: OrganizationContext = {
     organization,
     loading,
+    error,
   };
 
   return <Context.Provider value={sharedStates}>{children}</Context.Provider>;
