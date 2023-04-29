@@ -10,7 +10,7 @@ const SettingsLayout = (props: SettingsLayout) => {
   return (
     <>
       <TabMenu model={menuSettings} />
-      {props.children}
+      <main>{props.children}</main>
     </>
   );
 };
