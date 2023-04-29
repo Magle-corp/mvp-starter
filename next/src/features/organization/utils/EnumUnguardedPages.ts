@@ -1,5 +1,5 @@
 enum EnumUnguardedPages {
-  ADMIN_PROFILE = '/admin/profile',
+  ADMIN_SETTINGS_PROFILE = '/admin/settings/profile',
 }
 
 export default EnumUnguardedPages;
