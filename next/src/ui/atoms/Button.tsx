@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { Button } from 'primereact/button';
 import Colors from '@/theme/colors';
 
-type ButtonVariant = 'default' | 'danger';
+type ButtonVariant = 'danger';
 
 export default styled(Button)<{ variant?: ButtonVariant }>`
   ${({ variant }) => getVariant(variant)};

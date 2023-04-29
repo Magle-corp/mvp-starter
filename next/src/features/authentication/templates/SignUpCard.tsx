@@ -24,7 +24,7 @@ const SignUpCard = () => {
   };
 
   return (
-    <AuthCard title="Inscription">
+    <AuthCard title="Inscription" titleSize="large" titlePosition="center">
       {!signUpMutation.isSuccess && (
         <>
           <SignUpForm

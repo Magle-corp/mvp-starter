@@ -30,7 +30,11 @@ const ResetPasswordCard = () => {
   };
 
   return (
-    <AuthCard title="Changer mon mot de passe">
+    <AuthCard
+      title="Changer mon mot de passe"
+      titleSize="large"
+      titlePosition="center"
+    >
       {token && (
         <>
           {!resetPasswordMutation.isSuccess && (

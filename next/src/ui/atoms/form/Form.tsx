@@ -6,4 +6,5 @@ export default styled.form`
   align-items: center;
   gap: 3rem;
   width: 90%;
+  margin: 0 auto;
 `;
