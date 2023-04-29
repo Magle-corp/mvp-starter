@@ -6,12 +6,12 @@ import {
   useState,
 } from 'react';
 import { useRouter } from 'next/router';
-import AppPublicPages from '@/cdn/enums/AppPlubicPages';
 import {
   AuthToken,
   AuthTokenPayload,
 } from '@/features/authentication/types/AuthToken';
 import AuthContext from '@/features/authentication/types/AuthContext';
+import EnumPublicPages from '@/features/authentication/utils/EnumPublicPages';
 import authService from '@/features/authentication/utils/AuthService';
 
 type Props = {
@@ -29,7 +29,7 @@ export function AuthContextWrapper({ children }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
-  const publicPagesEnum = Object.values(AppPublicPages) as string[];
+  const publicPagesEnum = Object.values(EnumPublicPages) as string[];
   const publicPage = publicPagesEnum.includes(router.pathname);
 
   useEffect(() => {
