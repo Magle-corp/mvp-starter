@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import AppPages from '@/cdn/enums/AppPages';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import CreateOrganizationCard from '@/features/organization/templates/CreateOrganizationCard';
-import AdminTemplate from '@/ui/organisms/AdminTemplate';
+import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 import Card from '@/ui/atoms/Card';
 import Link from '@/ui/atoms/Link';
@@ -23,12 +23,12 @@ const OrganizationGuard = (props: OrganizationGuard) => {
         <>{props.children}</>
       )}
       {!unguardedPage && !error && !loading && !organization && (
-        <AdminTemplate>
+        <BackOfficeLayout>
           <CreateOrganizationCard />
-        </AdminTemplate>
+        </BackOfficeLayout>
       )}
       {!unguardedPage && error && !loading && (
-        <AdminTemplate>
+        <BackOfficeLayout>
           <StyledCard title="Oups...">
             <ErrorWrapper>
               <p>
@@ -40,7 +40,7 @@ const OrganizationGuard = (props: OrganizationGuard) => {
               <Link href={AppPages.AUTH_SIGN_IN}>Se connecter</Link>
             </LinksWrapper>
           </StyledCard>
-        </AdminTemplate>
+        </BackOfficeLayout>
       )}
       {!unguardedPage && loading && (
         <LoadingWrapper>
