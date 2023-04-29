@@ -48,6 +48,10 @@ const StyledTabMenu = styled(PTabMenu)`
   width: 100%;
   height: max-content;
   border-radius: 3px 3px 0 0;
+
+  * {
+    font-weight: normal !important;
+  }
 `;
 
 export default TabMenu;

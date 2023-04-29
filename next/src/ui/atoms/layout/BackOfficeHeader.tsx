@@ -22,7 +22,7 @@ const Header = styled.div`
 const HeaderLeft = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 `;
 
 const HeaderRight = styled(HeaderLeft)`

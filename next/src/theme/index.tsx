@@ -31,6 +31,10 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
   
+  main {
+    width: 100%;
+  }
+  
   p {
     line-height: 1.5rem;
   }

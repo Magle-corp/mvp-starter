@@ -23,7 +23,7 @@ type BackOfficeLayout = {
 const BackOfficeLayout = (props: BackOfficeLayout) => {
   const [adminMenuOpen, setAdminMenuOpen] = useState<boolean>(false);
   const [organizationMenuOpen, setOrganizationMenuOpen] =
-    useLocalStorage<boolean>(LocalStorageKeys.BO_ORGANIZATION_MENU, false);
+    useLocalStorage<boolean>(LocalStorageKeys.BO_ORGANIZATION_MENU, true);
   const { token, logout } = useAuthContext();
   const { organization } = useOrganizationContext();
   const { breakpointSM, breakpointMD } = useBreakpoints();
@@ -34,7 +34,7 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
         <>
           {(!organizationMenuOpen || !breakpointMD) && (
             <Icon
-              size={25}
+              size={20}
               pointer={true}
               className="pi pi-bars"
               onClick={() => setOrganizationMenuOpen(!organizationMenuOpen)}
@@ -42,13 +42,15 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
           )}
           {organizationMenuOpen && breakpointMD && (
             <Icon
-              size={25}
+              size={20}
               pointer={true}
               className="pi pi-times"
               onClick={() => setOrganizationMenuOpen(!organizationMenuOpen)}
             />
           )}
-          {breakpointSM && <p>{organization.name}</p>}
+          {breakpointSM && (
+            <OrganizationName>{organization.name}</OrganizationName>
+          )}
         </>
       )}
     </>
@@ -97,11 +99,15 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
             )}
           </>
         )}
-        {props.children}
+        <BodyItemsWrapper>{props.children}</BodyItemsWrapper>
       </BackOfficeBody>
     </BackOffice>
   );
 };
+
+const OrganizationName = styled.p`
+  font-weight: 700;
+`;
 
 const AdminAvatar = styled(Avatar)`
   cursor: pointer;
@@ -109,6 +115,13 @@ const AdminAvatar = styled(Avatar)`
 
 const LogoutButton = styled(Button)`
   margin: auto auto;
+`;
+
+const BodyItemsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
 `;
 
 export default BackOfficeLayout;
