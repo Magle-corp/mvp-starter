@@ -40,7 +40,6 @@ export function OrganizationContextWrapper({ children }: Props) {
       setLoading(false);
     },
     onError: () => {
-      // TODO: TOAST POUR INFORMER UTILISATEUR ERREUR
       setLoading(false);
       setError(true);
     },
@@ -48,11 +47,7 @@ export function OrganizationContextWrapper({ children }: Props) {
   });
 
   useEffect(() => {
-    if (
-      !unguardedPage &&
-      tokenPayload &&
-      tokenPayload.organizations.length > 0
-    ) {
+    if (tokenPayload && tokenPayload.organizations.length > 0) {
       organizationQuery.refetch();
     } else {
       setLoading(false);
