@@ -5,10 +5,12 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useRouter } from 'next/router';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import useGet from '@/cdn/hooks/useGet';
 import { useAuthContext } from '@/features/authentication/AuthContext';
+import EnumUnguardedPages from '@/features/organization/utils/EnumUnguardedPages';
 import OrganizationContext from '@/features/organization/types/OrganizationContext';
 import Organization from '@/features/organization/types/Organization';
 
@@ -24,6 +26,10 @@ export function OrganizationContextWrapper({ children }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const { token, tokenPayload } = useAuthContext();
+
+  const router = useRouter();
+  const unguardedPagesEnum = Object.values(EnumUnguardedPages) as string[];
+  const unguardedPage = unguardedPagesEnum.includes(router.pathname);
 
   const organizationQuery = useGet<Organization>({
     url: ApiRoutes.ORGANIZATION + '/' + tokenPayload?.organizations[0],
@@ -42,14 +48,19 @@ export function OrganizationContextWrapper({ children }: Props) {
   });
 
   useEffect(() => {
-    if (tokenPayload && tokenPayload.organizations.length > 0) {
+    if (
+      !unguardedPage &&
+      tokenPayload &&
+      tokenPayload.organizations.length > 0
+    ) {
       organizationQuery.refetch();
     } else {
       setLoading(false);
     }
-  }, [tokenPayload]);
+  }, [unguardedPage, tokenPayload]);
 
   const sharedStates: OrganizationContext = {
+    unguardedPage,
     organization,
     loading,
     error,

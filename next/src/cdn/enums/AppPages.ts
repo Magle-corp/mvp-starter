@@ -6,6 +6,7 @@ enum AppPages {
   AUTH_RESET_PASSWORD = '/authentication/resetPassword',
   ADMIN_DASHBOARD = '/admin/dashboard',
   ADMIN_ANIMALS = '/admin/animals',
+  ADMIN_PROFILE = '/admin/profile',
 }
 
 export default AppPages;

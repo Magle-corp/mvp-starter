@@ -1,6 +1,5 @@
 import { ReactNode, useState } from 'react';
 import { Avatar } from 'primereact/avatar';
-import { Sidebar } from 'primereact/sidebar';
 import menuAdmin from '@/cdn/conf/menuAdmin';
 import menuOrganization from '@/cdn/conf/menuOrganization';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
