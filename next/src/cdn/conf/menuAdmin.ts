@@ -4,7 +4,7 @@ export default [
   {
     label: 'Profil',
     icon: 'pi pi-user',
-    url: AppPages.ADMIN_PROFILE,
+    url: AppPages.ADMIN_SETTINGS_PROFILE,
   },
   {
     label: 'Organisation',
