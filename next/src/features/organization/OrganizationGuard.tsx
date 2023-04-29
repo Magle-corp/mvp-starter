@@ -13,21 +13,27 @@ type OrganizationGuard = {
 };
 
 const OrganizationGuard = (props: OrganizationGuard) => {
-  const { organization, loading, error } = useOrganizationContext();
+  const { unguardedPage, organization, loading, error } =
+    useOrganizationContext();
 
   return (
     <>
-      {!error && !loading && organization && <>{props.children}</>}
-      {!error && !loading && !organization && (
+      {unguardedPage && <>{props.children}</>}
+      {!unguardedPage && !error && !loading && organization && (
+        <>{props.children}</>
+      )}
+      {!unguardedPage && !error && !loading && !organization && (
         <AdminTemplate>
           <CreateOrganizationCard />
         </AdminTemplate>
       )}
-      {error && !loading && (
+      {!unguardedPage && error && !loading && (
         <AdminTemplate>
-          <StyledCard title="🔌 Oups...">
+          <StyledCard title="Oups...">
             <ErrorWrapper>
-              <p>Une erreur nous empêche de vous donner accès au back-office</p>
+              <p>
+                Une erreur nous empêche de vous donner accès au back-office 🔌
+              </p>
               <p>Veuillez nous excuser pour la gêne occasionnée</p>
             </ErrorWrapper>
             <LinksWrapper>
@@ -36,7 +42,7 @@ const OrganizationGuard = (props: OrganizationGuard) => {
           </StyledCard>
         </AdminTemplate>
       )}
-      {loading && (
+      {!unguardedPage && loading && (
         <LoadingWrapper>
           <ProgressSpinner />
         </LoadingWrapper>
