@@ -10,9 +10,9 @@ import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import useGet from '@/cdn/hooks/useGet';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import EnumUnguardedPages from '@/features/organization/utils/EnumUnguardedPages';
 import OrganizationContext from '@/features/organization/types/OrganizationContext';
 import Organization from '@/features/organization/types/Organization';
+import AppPages from '@/cdn/enums/AppPages';
 
 type Props = {
   children: ReactNode;
@@ -28,8 +28,8 @@ export function OrganizationContextWrapper({ children }: Props) {
   const { token, tokenPayload } = useAuthContext();
 
   const router = useRouter();
-  const unguardedPagesEnum = Object.values(EnumUnguardedPages) as string[];
-  const unguardedPage = unguardedPagesEnum.includes(router.pathname);
+  const unguardedPages: string[] = [AppPages.BO_SETTINGS_PROFILE];
+  const unguardedPage = unguardedPages.includes(router.pathname);
 
   const organizationQuery = useGet<Organization>({
     url: ApiRoutes.ORGANIZATION + '/' + tokenPayload?.organizations[0],

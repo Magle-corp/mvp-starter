@@ -11,8 +11,8 @@ import {
   AuthTokenPayload,
 } from '@/features/authentication/types/AuthToken';
 import AuthContext from '@/features/authentication/types/AuthContext';
-import EnumPublicPages from '@/features/authentication/utils/EnumPublicPages';
 import authService from '@/features/authentication/utils/AuthService';
+import AppPages from '@/cdn/enums/AppPages';
 
 type Props = {
   children: ReactNode;
@@ -29,8 +29,8 @@ export function AuthContextWrapper({ children }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
-  const publicPagesEnum = Object.values(EnumPublicPages) as string[];
-  const publicPage = publicPagesEnum.includes(router.pathname);
+  const publicPages: string[] = [AppPages.AUTH_SIGN_IN];
+  const publicPage = publicPages.includes(router.pathname);
 
   useEffect(() => {
     if (!publicPage) {

@@ -6,7 +6,7 @@ type BackOfficeHeader = {
   headerRight?: ReactNode;
 };
 
-const AdminHeader = (props: BackOfficeHeader) => {
+const BackOfficeHeader = (props: BackOfficeHeader) => {
   return (
     <Header>
       <HeaderLeft>{props.headerLeft}</HeaderLeft>
@@ -29,4 +29,4 @@ const HeaderRight = styled(HeaderLeft)`
   margin-left: auto;
 `;
 
-export default AdminHeader;
+export default BackOfficeHeader;
