@@ -29,7 +29,11 @@ const CreateOrganizationCard = () => {
   };
 
   return (
-    <StyledCard title="Créons votre organisation">
+    <StyledCard
+      title="Créons votre organisation"
+      titleSize="large"
+      titlePosition="center"
+    >
       <CreateOrganizationForm
         defaultValues={organizationDefaultValues}
         onSubmit={onSubmit}

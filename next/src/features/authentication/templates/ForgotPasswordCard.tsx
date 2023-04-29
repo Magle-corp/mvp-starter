@@ -26,7 +26,11 @@ const ForgotPasswordCard = () => {
   };
 
   return (
-    <AuthCard title="Mot de passe oublié">
+    <AuthCard
+      title="Mot de passe oublié"
+      titleSize="large"
+      titlePosition="center"
+    >
       {!forgotPasswordMutation.isSuccess && !forgotPasswordMutation.isError && (
         <>
           <Help>
