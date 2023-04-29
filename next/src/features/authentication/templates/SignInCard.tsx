@@ -23,7 +23,7 @@ const SignInCard = () => {
     url: ApiRoutes.AUTH_SIGN_IN,
     onSuccess: ({ data }) => {
       login(data);
-      router.push(AppPages.ADMIN_DASHBOARD);
+      router.push(AppPages.BO_DASHBOARD);
     },
   });
 

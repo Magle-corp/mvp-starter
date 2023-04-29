@@ -4,10 +4,10 @@ enum AppPages {
   AUTH_SIGN_UP_VALIDATION = '/authentication/signUpValidation',
   AUTH_FORGOT_PASSWORD = '/authentication/forgotPassword',
   AUTH_RESET_PASSWORD = '/authentication/resetPassword',
-  ADMIN_DASHBOARD = '/admin/dashboard',
-  ADMIN_ANIMALS = '/admin/animals',
-  ADMIN_SETTINGS_PROFILE = '/admin/settings/profile',
-  ADMIN_SETTINGS_ORGANIZATION = '/admin/settings/organization',
+  BO_DASHBOARD = '/backOffice/dashboard',
+  BO_ANIMALS = '/backOffice/animals',
+  BO_SETTINGS_PROFILE = '/backOffice/settings/profile',
+  BO_SETTINGS_ORGANIZATION = '/backOffice/settings/organization',
 }
 
 export default AppPages;
