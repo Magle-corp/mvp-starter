@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-type AdminHeader = {
+type BackOfficeHeader = {
   headerLeft?: ReactNode;
   headerRight?: ReactNode;
 };
 
-const AdminHeader = (props: AdminHeader) => {
+const AdminHeader = (props: BackOfficeHeader) => {
   return (
     <Header>
       <HeaderLeft>{props.headerLeft}</HeaderLeft>
