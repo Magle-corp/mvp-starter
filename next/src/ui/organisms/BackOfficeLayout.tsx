@@ -1,8 +1,10 @@
 import { ReactNode, useState } from 'react';
 import styled from 'styled-components';
 import { Avatar } from 'primereact/avatar';
+import LocalStorageKeys from '@/cdn/enums/LocalStorageKeys';
 import menuAdmin from '@/cdn/conf/menuAdmin';
 import menuOrganization from '@/cdn/conf/menuOrganization';
+import useLocalStorage from '@/cdn/hooks/useLocalStorage';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
@@ -19,8 +21,9 @@ type BackOfficeLayout = {
 };
 
 const BackOfficeLayout = (props: BackOfficeLayout) => {
-  const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(false);
-  const [sideBarOpen, setSideBarOpen] = useState<boolean>(false);
+  const [adminMenuOpen, setAdminMenuOpen] = useState<boolean>(false);
+  const [organizationMenuOpen, setOrganizationMenuOpen] =
+    useLocalStorage<boolean>(LocalStorageKeys.BO_ORGANIZATION_MENU, false);
   const { token, logout } = useAuthContext();
   const { organization } = useOrganizationContext();
   const { breakpointSM, breakpointMD } = useBreakpoints();
@@ -29,20 +32,20 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
     <>
       {organization && (
         <>
-          {(!sideMenuOpen || !breakpointMD) && (
+          {(!organizationMenuOpen || !breakpointMD) && (
             <Icon
               size={25}
               pointer={true}
               className="pi pi-bars"
-              onClick={() => setSideMenuOpen(!sideMenuOpen)}
+              onClick={() => setOrganizationMenuOpen(!organizationMenuOpen)}
             />
           )}
-          {sideMenuOpen && breakpointMD && (
+          {organizationMenuOpen && breakpointMD && (
             <Icon
               size={25}
               pointer={true}
               className="pi pi-times"
-              onClick={() => setSideMenuOpen(!sideMenuOpen)}
+              onClick={() => setOrganizationMenuOpen(!organizationMenuOpen)}
             />
           )}
           {breakpointSM && <p>{organization.name}</p>}
@@ -58,12 +61,12 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
           <AdminAvatar
             icon="pi pi-user"
             shape="circle"
-            onClick={() => setSideBarOpen(!sideBarOpen)}
+            onClick={() => setAdminMenuOpen(!adminMenuOpen)}
           />
           <SideBar
             position="right"
-            visible={sideBarOpen}
-            onHide={() => setSideBarOpen(!sideBarOpen)}
+            visible={adminMenuOpen}
+            onHide={() => setAdminMenuOpen(!adminMenuOpen)}
           >
             <Menu model={menuAdmin} />
             <LogoutButton variant="danger" onClick={() => logout()}>
@@ -82,13 +85,15 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
         <BackOfficeBody>
           {!breakpointMD && (
             <SideBar
-              visible={sideMenuOpen}
-              onHide={() => setSideMenuOpen(!sideMenuOpen)}
+              visible={organizationMenuOpen}
+              onHide={() => setOrganizationMenuOpen(!organizationMenuOpen)}
             >
               <Menu model={menuOrganization} />
             </SideBar>
           )}
-          {breakpointMD && sideMenuOpen && <Menu model={menuOrganization} />}
+          {breakpointMD && organizationMenuOpen && (
+            <Menu model={menuOrganization} />
+          )}
           {props.children}
         </BackOfficeBody>
       )}
