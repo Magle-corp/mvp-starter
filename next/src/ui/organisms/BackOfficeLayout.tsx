@@ -1,17 +1,17 @@
 import { ReactNode, useState } from 'react';
+import styled from 'styled-components';
 import { Avatar } from 'primereact/avatar';
 import menuAdmin from '@/cdn/conf/menuAdmin';
 import menuOrganization from '@/cdn/conf/menuOrganization';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
-import Admin from '@/ui/atoms/layout/Admin';
-import AdminHeader from '@/ui/atoms/layout/AdminHeader';
-import AdminBody from '@/ui/atoms/layout/AdminBody';
+import BackOffice from '@/ui/atoms/layout/BackOffice';
+import BackOfficeBody from '@/ui/atoms/layout/BackOfficeBody';
+import BackOfficeHeader from '@/ui/atoms/layout/BackOfficeHeader';
 import Menu from '@/ui/atoms/Menu';
 import Icon from '@/ui/atoms/Icon';
 import Button from '@/ui/atoms/Button';
-import styled from 'styled-components';
 import SideBar from '@/ui/atoms/SideBar';
 
 type BackOfficeLayout = {
@@ -76,10 +76,10 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
   );
 
   return (
-    <Admin>
-      <AdminHeader headerLeft={HeaderLeft} headerRight={HeaderRight} />
+    <BackOffice>
+      <BackOfficeHeader headerLeft={HeaderLeft} headerRight={HeaderRight} />
       {organization && (
-        <AdminBody>
+        <BackOfficeBody>
           {!breakpointMD && (
             <SideBar
               visible={sideMenuOpen}
@@ -89,10 +89,10 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
             </SideBar>
           )}
           {breakpointMD && sideMenuOpen && <Menu model={menuOrganization} />}
-        </AdminBody>
+          {props.children}
+        </BackOfficeBody>
       )}
-      {props.children}
-    </Admin>
+    </BackOffice>
   );
 };
 
