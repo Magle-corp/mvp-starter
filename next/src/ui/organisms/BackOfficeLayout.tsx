@@ -14,11 +14,11 @@ import Button from '@/ui/atoms/Button';
 import styled from 'styled-components';
 import SideBar from '@/ui/atoms/SideBar';
 
-type AdminTemplate = {
+type BackOfficeLayout = {
   children: ReactNode;
 };
 
-const AdminTemplate = (props: AdminTemplate) => {
+const BackOfficeLayout = (props: BackOfficeLayout) => {
   const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(false);
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(false);
   const { token, logout } = useAuthContext();
@@ -104,4 +104,4 @@ const LogoutButton = styled(Button)`
   margin: auto auto;
 `;
 
-export default AdminTemplate;
+export default BackOfficeLayout;
