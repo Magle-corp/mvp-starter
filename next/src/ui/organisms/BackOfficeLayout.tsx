@@ -81,22 +81,24 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
   return (
     <BackOffice>
       <BackOfficeHeader headerLeft={HeaderLeft} headerRight={HeaderRight} />
-      {organization && (
-        <BackOfficeBody>
-          {!breakpointMD && (
-            <SideBar
-              visible={organizationMenuOpen}
-              onHide={() => setOrganizationMenuOpen(!organizationMenuOpen)}
-            >
+      <BackOfficeBody>
+        {organization && (
+          <>
+            {!breakpointMD && (
+              <SideBar
+                visible={organizationMenuOpen}
+                onHide={() => setOrganizationMenuOpen(!organizationMenuOpen)}
+              >
+                <Menu model={menuOrganization} />
+              </SideBar>
+            )}
+            {breakpointMD && organizationMenuOpen && (
               <Menu model={menuOrganization} />
-            </SideBar>
-          )}
-          {breakpointMD && organizationMenuOpen && (
-            <Menu model={menuOrganization} />
-          )}
-          {props.children}
-        </BackOfficeBody>
-      )}
+            )}
+          </>
+        )}
+        {props.children}
+      </BackOfficeBody>
     </BackOffice>
   );
 };
