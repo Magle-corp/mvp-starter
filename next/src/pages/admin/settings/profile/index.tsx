@@ -5,6 +5,7 @@ import AuthGuard from '@/features/authentication/AuthGuard';
 import { OrganizationContextWrapper } from '@/features/organization/OrganizationContext';
 import OrganizationGuard from '@/features/organization/OrganizationGuard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
+import SettingsLayout from '@/ui/organisms/SettingsLayout';
 
 const Profile = (): JSX.Element => {
   return (
@@ -26,7 +27,9 @@ Profile.getLayout = function getLayout(page: ReactElement) {
       <AuthGuard>
         <OrganizationContextWrapper>
           <OrganizationGuard>
-            <BackOfficeLayout>{page}</BackOfficeLayout>
+            <BackOfficeLayout>
+              <SettingsLayout>{page}</SettingsLayout>
+            </BackOfficeLayout>
           </OrganizationGuard>
         </OrganizationContextWrapper>
       </AuthGuard>
