@@ -7,6 +7,7 @@ enum AppPages {
   ADMIN_DASHBOARD = '/admin/dashboard',
   ADMIN_ANIMALS = '/admin/animals',
   ADMIN_SETTINGS_PROFILE = '/admin/settings/profile',
+  ADMIN_SETTINGS_ORGANIZATION = '/admin/settings/organization',
 }
 
 export default AppPages;
