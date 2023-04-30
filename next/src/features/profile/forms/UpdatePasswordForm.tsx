@@ -74,11 +74,13 @@ const UpdatePasswordForm = (props: FormHandler<UpdatePassword>) => {
 };
 
 const StyledInputsWrapper = styled(InputsWrapper)`
-  > div {
-    width: 270px;
+  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+    > div {
+      width: 270px;
+    }
   }
 
-  @media screen and (${({ theme }) => theme.breakpoints.lg}) {
+  @media screen and (${({ theme }) => theme.breakpoints.xl}) {
     flex-direction: row;
   }
 `;

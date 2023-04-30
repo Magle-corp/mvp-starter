@@ -25,7 +25,7 @@ const Menu = (props: MenuProps) => {
 };
 
 const StyledMenu = styled(PMenu)`
-  height: 100%;
+  flex-shrink: 0;
   padding: 0;
   border: none;
   border-radius: 3px;
