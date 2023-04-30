@@ -12,7 +12,7 @@ type Card = {
 const Card = (props: Card) => {
   return (
     <StyledCard className={props.className}>
-      <Section titleSize={props.titleSize}>
+      <Section>
         {props.title && (
           <Title
             titleSize={props.titleSize}
@@ -37,27 +37,11 @@ const StyledCard = styled(PCard)`
   }
 `;
 
-const Section = styled.section<{ titleSize: Card['titleSize'] }>`
-  ${({ titleSize }) => getSectionVariant(titleSize)};
+const Section = styled.section`
   display: flex;
   flex-direction: column;
+  gap: 4rem;
 `;
-
-const getSectionVariant = (titleSize?: Card['titleSize']) => {
-  let variantGap: string;
-
-  switch (titleSize) {
-    case 'large':
-      variantGap = '4rem';
-      break;
-    default:
-      variantGap = '2rem';
-  }
-
-  return css`
-    gap: ${variantGap};
-  `;
-};
 
 const Title = styled.h1<{
   titleSize: Card['titleSize'];
