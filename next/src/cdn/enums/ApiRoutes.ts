@@ -7,6 +7,7 @@ enum ApiRoutes {
   AUTH_RESET_PASSWORD = '/auth/resetPassword',
   AUTH_REFRESH_TOKEN = '/auth/refreshToken',
   ORGANIZATION = '/organizations',
+  PROFILE_UPDATE_PASSWORD = '/profile/updatePassword',
 }
 
 export default ApiRoutes;
