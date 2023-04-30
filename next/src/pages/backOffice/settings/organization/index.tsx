@@ -4,6 +4,7 @@ import { AuthContextWrapper } from '@/features/authentication/AuthContext';
 import AuthGuard from '@/features/authentication/AuthGuard';
 import { OrganizationContextWrapper } from '@/features/organization/OrganizationContext';
 import OrganizationGuard from '@/features/organization/OrganizationGuard';
+import UpdateOrganizationCard from '@/features/organization/templates/UpdateOrganizationCard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
 import SettingsLayout from '@/ui/organisms/SettingsLayout';
 
@@ -16,7 +17,7 @@ const Organization = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <></>
+      <UpdateOrganizationCard />
     </>
   );
 };

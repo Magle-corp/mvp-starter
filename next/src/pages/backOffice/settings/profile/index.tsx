@@ -4,9 +4,9 @@ import { AuthContextWrapper } from '@/features/authentication/AuthContext';
 import AuthGuard from '@/features/authentication/AuthGuard';
 import { OrganizationContextWrapper } from '@/features/organization/OrganizationContext';
 import OrganizationGuard from '@/features/organization/OrganizationGuard';
+import UpdatePasswordCard from '@/features/profile/templates/UpdatePasswordCard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
 import SettingsLayout from '@/ui/organisms/SettingsLayout';
-import UpdatePasswordCard from '@/features/profile/templates/UpdatePasswordCard';
 
 const Profile = (): JSX.Element => {
   return (
