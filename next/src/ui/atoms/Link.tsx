@@ -14,6 +14,7 @@ const Link = (props: Link) => {
 
 const StyledLink = styled(NextLink)`
   position: relative;
+  width: max-content;
   color: ${({ theme }) => theme.colors.black};
   text-decoration: none;
   cursor: pointer;

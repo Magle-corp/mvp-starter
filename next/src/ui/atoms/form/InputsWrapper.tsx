@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-export default styled.fieldset`
+export default styled.fieldset<{ direction?: 'row' | 'column' }>`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ direction }) => (direction ? direction : 'column')};
   gap: 3rem;
   width: 100%;
   border: unset;
