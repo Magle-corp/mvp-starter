@@ -74,6 +74,7 @@ const SignUpForm = (props: FormHandler<SignUp>) => {
         onClick={form.handleSubmit(props.onSubmit)}
         loading={props.submitLoading}
         type="submit"
+        size="small"
       />
     </Form>
   );

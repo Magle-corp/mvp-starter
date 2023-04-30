@@ -79,7 +79,7 @@ const SignUpValidationCard = () => {
             recevoir un nouveau lien
           </p>
         </Wrapper>
-        <Button
+        <StyledButton
           onClick={reSendEmailSignUpValidation}
           loading={reSendSignUpValidationEmailMutation.isLoading}
           disabled={
@@ -87,6 +87,7 @@ const SignUpValidationCard = () => {
             reSendSignUpValidationEmailMutation.isSuccess
           }
           label="Recevoir un nouveau lien"
+          size="small"
         />
       </>
     );
@@ -160,8 +161,13 @@ const Wrapper = styled.div`
   text-align: center;
 `;
 
+// TODO: use appropriate component instead ?
 const Error = styled.p`
   color: ${({ theme }) => theme.colors.error};
+`;
+
+const StyledButton = styled(Button)`
+  margin: 0 auto;
 `;
 
 export default SignUpValidationCard;

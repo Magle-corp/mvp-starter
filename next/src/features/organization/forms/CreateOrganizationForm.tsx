@@ -1,11 +1,12 @@
+import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
+import { object, Schema, string } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { FormHandler } from '@/cdn/types/Form';
 import Organization from '@/features/organization/types/Organization';
-import { object, Schema, string } from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
-import Form from '@/ui/atoms/form/Form';
 import Button from '@/ui/atoms/Button';
+import Form from '@/ui/atoms/form/Form';
 
 const CreateOrganizationForm = (props: FormHandler<Organization>) => {
   const schema: Schema<Partial<Organization>> = object({
@@ -30,14 +31,19 @@ const CreateOrganizationForm = (props: FormHandler<Organization>) => {
         control={form.control}
         error={form.formState.errors.name?.message}
       />
-      <Button
+      <StyledButton
         label="Enregistrer"
         onClick={form.handleSubmit(props.onSubmit)}
         loading={props.submitLoading}
         type="submit"
+        size="small"
       />
     </Form>
   );
 };
+
+const StyledButton = styled(Button)`
+  margin: 0 auto;
+`;
 
 export default CreateOrganizationForm;

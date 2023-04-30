@@ -41,6 +41,7 @@ const ForgotPasswordForm = (props: FormHandler<ForgotPassword>) => {
         onClick={form.handleSubmit(props.onSubmit)}
         loading={props.submitLoading}
         type="submit"
+        size="small"
       />
     </Form>
   );
