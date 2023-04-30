@@ -7,5 +7,10 @@ export default styled(Card)`
 
   form {
     width: 90%;
+    margin: 0 auto;
+
+    button {
+      margin: 0 auto;
+    }
   }
 `;

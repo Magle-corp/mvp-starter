@@ -54,6 +54,7 @@ const SignInForm = (props: FormHandler<SignIn>) => {
         onClick={form.handleSubmit(props.onSubmit)}
         loading={props.submitLoading}
         type="submit"
+        size="small"
       />
     </Form>
   );

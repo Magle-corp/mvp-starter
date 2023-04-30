@@ -52,6 +52,7 @@ const ResetPasswordForm = (props: FormHandler<ResetPassword>) => {
         onClick={form.handleSubmit(props.onSubmit)}
         loading={props.submitLoading}
         type="submit"
+        size="small"
       />
     </Form>
   );
