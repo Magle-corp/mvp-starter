@@ -71,7 +71,11 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
             onHide={() => setAdminMenuOpen(!adminMenuOpen)}
           >
             <Menu model={menuAdmin} />
-            <LogoutButton variant="danger" onClick={() => logout()}>
+            <LogoutButton
+              variant="danger"
+              onClick={() => logout()}
+              size="small"
+            >
               Deconnexion
             </LogoutButton>
           </SideBar>
@@ -95,7 +99,7 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
               </SideBar>
             )}
             {breakpointMD && organizationMenuOpen && (
-              <Menu model={menuOrganization} />
+              <StyledMenu model={menuOrganization} />
             )}
           </>
         )}
@@ -113,8 +117,12 @@ const AdminAvatar = styled(Avatar)`
   cursor: pointer;
 `;
 
+const StyledMenu = styled(Menu)`
+  height: 90vh;
+`;
+
 const LogoutButton = styled(Button)`
-  margin: auto auto;
+  margin: auto auto 0 auto;
 `;
 
 const BodyItemsWrapper = styled.div`

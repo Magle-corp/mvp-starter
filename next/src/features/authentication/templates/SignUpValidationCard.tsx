@@ -9,6 +9,7 @@ import AuthCard from '@/features/authentication/components/AuthCard';
 import CongratsWrapper from '@/features/authentication/components/CongratsWrapper';
 import LinksWrapper from '@/features/authentication/components/LinksWrapper';
 import Button from '@/ui/atoms/Button';
+import FormError from '@/ui/atoms/form/FormError';
 import Link from '@/ui/atoms/Link';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
@@ -59,7 +60,9 @@ const SignUpValidationCard = () => {
   const SignUpValidationError = () => {
     return (
       <>
-        <Error>{signUpValidationMutation.error?.response?.data.message}</Error>
+        <FormError>
+          {signUpValidationMutation.error?.response?.data.message}
+        </FormError>
         <LinksWrapper>
           <Link href={AppPages.AUTH_SIGN_IN}>Se connecter</Link>
         </LinksWrapper>
@@ -71,9 +74,9 @@ const SignUpValidationCard = () => {
     return (
       <>
         <Wrapper>
-          <Error>
+          <FormError>
             {signUpValidationMutation.error?.response?.data.message}
-          </Error>
+          </FormError>
           <p>
             La validité du lien a expiré, cliquez sur le bouton suivant pour
             recevoir un nouveau lien
@@ -108,9 +111,9 @@ const SignUpValidationCard = () => {
   const ReSendSignUpValidationEmailError = () => {
     return (
       <Wrapper>
-        <Error>
+        <FormError>
           {reSendSignUpValidationEmailMutation.error?.response?.data.message}
-        </Error>
+        </FormError>
       </Wrapper>
     );
   };
@@ -159,11 +162,6 @@ const Wrapper = styled.div`
   align-items: center;
   gap: 1.5rem;
   text-align: center;
-`;
-
-// TODO: use appropriate component instead ?
-const Error = styled.p`
-  color: ${({ theme }) => theme.colors.error};
 `;
 
 const StyledButton = styled(Button)`

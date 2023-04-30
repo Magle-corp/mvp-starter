@@ -9,6 +9,10 @@ export default styled(Card)`
     width: 90%;
     margin: 0 auto;
 
+    p:first-child {
+      text-align: center;
+    }
+
     button {
       margin: 0 auto;
     }

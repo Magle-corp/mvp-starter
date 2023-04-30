@@ -47,10 +47,12 @@ const TabMenu = (props: TabMenuProps) => {
 const StyledTabMenu = styled(PTabMenu)`
   width: 100%;
   height: max-content;
-  border-radius: 3px 3px 0 0;
+  border-radius: 3px;
 
-  * {
-    font-weight: normal !important;
+  .p-tabmenu-nav {
+    * {
+      font-weight: normal !important;
+    }
   }
 `;
 

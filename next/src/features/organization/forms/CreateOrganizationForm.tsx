@@ -7,6 +7,8 @@ import Organization from '@/features/organization/types/Organization';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
 import Form from '@/ui/atoms/form/Form';
+import FormError from '@/ui/atoms/form/FormError';
+import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 
 const CreateOrganizationForm = (props: FormHandler<Organization>) => {
   const schema: Schema<Partial<Organization>> = object({
@@ -24,13 +26,19 @@ const CreateOrganizationForm = (props: FormHandler<Organization>) => {
 
   return (
     <Form>
-      {props.submitError && <p>{props.submitError}</p>}
-      <FormFieldText<Organization>
-        label="Nom de l'organisation"
-        name="name"
-        control={form.control}
-        error={form.formState.errors.name?.message}
-      />
+      {props.submitError && (
+        <StyledFormError>{props.submitError}</StyledFormError>
+      )}
+      <InputsWrapper>
+        <FormFieldText<Organization>
+          label="nom de l'organisation *"
+          name="name"
+          control={form.control}
+          error={form.formState.errors.name?.message}
+          help="Minimum 3 caractères, maximum 40"
+          required
+        />
+      </InputsWrapper>
       <StyledButton
         label="Enregistrer"
         onClick={form.handleSubmit(props.onSubmit)}
@@ -43,6 +51,10 @@ const CreateOrganizationForm = (props: FormHandler<Organization>) => {
 };
 
 const StyledButton = styled(Button)`
+  margin: 0 auto;
+`;
+
+const StyledFormError = styled(FormError)`
   margin: 0 auto;
 `;
 
