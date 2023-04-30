@@ -1,48 +1,52 @@
 <?php
 
-namespace App\Controller\authentication;
+namespace App\Controller\user;
 
-use App\Entity\TokenSignUp;
+use App\Entity\TokenResetPassword;
 use App\Entity\User;
 use App\Service\JWTService;
 use App\Service\ResponseService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsController]
-class SignUpValidationController extends AbstractController
+class ResetPasswordController extends AbstractController
 {
     private JWTService $JWTService;
     private ResponseService $responseService;
     private EntityManagerInterface $entityManager;
+    private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(
-        JWTService             $JWTService,
-        ResponseService        $responseService,
-        EntityManagerInterface $entityManager
+        JWTService                  $JWTService,
+        ResponseService             $responseService,
+        EntityManagerInterface      $entityManager,
+        UserPasswordHasherInterface $passwordHasher,
     )
     {
         $this->JWTService = $JWTService;
         $this->responseService = $responseService;
         $this->entityManager = $entityManager;
+        $this->passwordHasher = $passwordHasher;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request)
     {
         $requestContent = json_decode($request->getContent(), true);
 
-        if (!array_key_exists('token', $requestContent)) {
+        if (!array_key_exists('token', $requestContent) || !array_key_exists('password', $requestContent)) {
             return $this->responseService->error();
         }
 
-        $validationToken = $requestContent['token'];
+        $resetPasswordToken = $requestContent['token'];
+        $newPassword = $requestContent['password'];
 
-        $isExpiredToken = $this->JWTService->isExpired($validationToken);
-        $isValidToken = $this->JWTService->isValid($validationToken);
-        $isValidSecret = $this->JWTService->check($validationToken, getenv('JWT_SIGNUP_VALIDATION_SECRET'));
+        $isExpiredToken = $this->JWTService->isExpired($resetPasswordToken);
+        $isValidToken = $this->JWTService->isValid($resetPasswordToken);
+        $isValidSecret = $this->JWTService->check($resetPasswordToken, getenv('JWT_RESET_PASSWORD_SECRET'));
 
         if ($isExpiredToken) {
             return $this->responseService->create('Le lien n\'est plus valide', 401);
@@ -52,7 +56,7 @@ class SignUpValidationController extends AbstractController
             return $this->responseService->create('Le lien n\'est pas valide', 409);
         }
 
-        $tokenPayload = $this->JWTService->getPayload($validationToken);
+        $tokenPayload = $this->JWTService->getPayload($resetPasswordToken);
 
         if (!array_key_exists('user_id', $tokenPayload)) {
             return $this->responseService->error();
@@ -68,29 +72,25 @@ class SignUpValidationController extends AbstractController
             return $this->responseService->create('OK', 200);
         }
 
-        if ($user->isVerified()) {
-            return $this->responseService->create('Compte déjà vérifié', 409);
-        }
+        $tokenResetPasswordRepository = $this->entityManager->getRepository(TokenResetPassword::class);
+        $latestRegisteredTokenResetPassword = $tokenResetPasswordRepository->findOneBy(['username' => $user->getEmail()], ['id' => 'DESC']);
 
-        $tokenSignUpRepository = $this->entityManager->getRepository(TokenSignUp::class);
-        $latestRegisteredTokenSignUp = $tokenSignUpRepository->findOneBy(['username' => $user->getEmail()], ['id' => 'DESC']);
-
-        if (!$latestRegisteredTokenSignUp) {
+        if (!$latestRegisteredTokenResetPassword) {
             return $this->responseService->error();
         }
 
-        if ($latestRegisteredTokenSignUp->isUsed()) {
+        if ($latestRegisteredTokenResetPassword->isUsed()) {
             return $this->responseService->create('Le lien a déjà été utilisé', 409);
         }
 
-        if ($latestRegisteredTokenSignUp->getSignUpToken() !== $validationToken) {
+        if ($latestRegisteredTokenResetPassword->getResetPasswordToken() !== $resetPasswordToken) {
             return $this->responseService->create('Le lien n\'est pas valide', 409);
         }
 
-        $latestRegisteredTokenSignUp->setUsed(true);
-        $this->entityManager->persist($latestRegisteredTokenSignUp);
+        $latestRegisteredTokenResetPassword->setUsed(true);
+        $this->entityManager->persist($latestRegisteredTokenResetPassword);
 
-        $user->setVerified(true);
+        $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
         $this->entityManager->persist($user);
 
         $this->entityManager->flush();

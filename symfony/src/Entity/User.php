@@ -4,12 +4,12 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
-use App\Controller\authentication\ForgotPasswordController;
-use App\Controller\authentication\ReSendSignUpValidationEmailController;
-use App\Controller\authentication\ResetPasswordController;
-use App\Controller\authentication\SignUpController;
-use App\Controller\authentication\SignUpValidationController;
-use App\Controller\profile\UpdatePasswordController;
+use App\Controller\user\ForgotPasswordController;
+use App\Controller\user\ReSendSignUpValidationEmailController;
+use App\Controller\user\ResetPasswordController;
+use App\Controller\user\SignUpController;
+use App\Controller\user\SignUpValidationController;
+use App\Controller\user\UpdatePasswordController;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
