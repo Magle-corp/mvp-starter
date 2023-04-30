@@ -1,23 +1,23 @@
 import { SubmitHandler } from 'react-hook-form';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
-import { ResetPassword } from '@/features/profile/types/Profile';
-import ResetPasswordForm from '@/features/profile/forms/ResetPasswordForm';
+import { UpdatePassword } from '@/features/profile/types/Profile';
+import UpdatePasswordForm from '@/features/profile/forms/UpdatePasswordForm';
 import Card from '@/ui/atoms/Card';
 
-const ResetPasswordCard = () => {
-  const resetPasswordDefaultValues: ResetPassword = {
+const UpdatePasswordCard = () => {
+  const resetPasswordDefaultValues: UpdatePassword = {
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
   };
 
-  const resetPasswordMutation = usePost<ResetPassword>({
+  const resetPasswordMutation = usePost<UpdatePassword>({
     url: ApiRoutes.PROFILE_UPDATE_PASSWORD,
   });
 
-  const onSubmit: SubmitHandler<ResetPassword> = (
-    fieldValues: ResetPassword
+  const onSubmit: SubmitHandler<UpdatePassword> = (
+    fieldValues: UpdatePassword
   ) => {
     resetPasswordMutation.mutate(fieldValues);
   };
@@ -25,7 +25,7 @@ const ResetPasswordCard = () => {
   return (
     <Card title="Changer mon mot de passe">
       {!resetPasswordMutation.isSuccess && (
-        <ResetPasswordForm
+        <UpdatePasswordForm
           defaultValues={resetPasswordDefaultValues}
           onSubmit={onSubmit}
           submitLoading={resetPasswordMutation.isLoading}
@@ -37,4 +37,4 @@ const ResetPasswordCard = () => {
   );
 };
 
-export default ResetPasswordCard;
+export default UpdatePasswordCard;

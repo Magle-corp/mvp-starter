@@ -6,7 +6,7 @@ import { OrganizationContextWrapper } from '@/features/organization/Organization
 import OrganizationGuard from '@/features/organization/OrganizationGuard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
 import SettingsLayout from '@/ui/organisms/SettingsLayout';
-import ResetPasswordCard from '@/features/profile/templates/ResetPasswordCard';
+import UpdatePasswordCard from '@/features/profile/templates/UpdatePasswordCard';
 
 const Profile = (): JSX.Element => {
   return (
@@ -17,7 +17,7 @@ const Profile = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ResetPasswordCard />
+      <UpdatePasswordCard />
     </>
   );
 };
