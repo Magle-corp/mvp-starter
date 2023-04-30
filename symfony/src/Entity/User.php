@@ -9,6 +9,7 @@ use App\Controller\authentication\ReSendSignUpValidationEmailController;
 use App\Controller\authentication\ResetPasswordController;
 use App\Controller\authentication\SignUpController;
 use App\Controller\authentication\SignUpValidationController;
+use App\Controller\profile\UpdatePasswordController;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
@@ -40,6 +41,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
     new Post(
         uriTemplate: '/auth/resetPassword',
         controller: ResetPasswordController::class,
+    ),
+    new Post(
+        uriTemplate: '/profile/updatePassword',
+        controller: UpdatePasswordController::class,
     )
 ])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
