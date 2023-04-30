@@ -3,7 +3,7 @@ import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
-import { ForgotPassword } from '@/features/authentication/types/AuthFormSchema';
+import { ForgotPassword } from '@/features/authentication/types/Auth';
 import ForgotPasswordForm from '@/features/authentication/forms/ForgotPasswordForm';
 import AuthCard from '@/features/authentication/components/AuthCard';
 import LinksWrapper from '@/features/authentication/components/LinksWrapper';

@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, Schema, string } from 'yup';
 import { FormHandler } from '@/cdn/types/Form';
-import { ForgotPassword } from '@/features/authentication/types/AuthFormSchema';
+import { ForgotPassword } from '@/features/authentication/types/Auth';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
-import { SignUpValidation } from '@/features/authentication/types/AuthFormSchema';
+import { SignUpValidation } from '@/features/authentication/types/Auth';
 import AuthCard from '@/features/authentication/components/AuthCard';
 import CongratsWrapper from '@/features/authentication/components/CongratsWrapper';
 import LinksWrapper from '@/features/authentication/components/LinksWrapper';
