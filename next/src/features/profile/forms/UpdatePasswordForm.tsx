@@ -4,7 +4,7 @@ import { object, ref, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import AppPages from '@/cdn/enums/AppPages';
 import { FormHandler } from '@/cdn/types/Form';
-import { ResetPassword } from '@/features/profile/types/Profile';
+import { UpdatePassword } from '@/features/profile/types/Profile';
 import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';
 import Button from '@/ui/atoms/Button';
 import Form from '@/ui/atoms/form/Form';
@@ -12,8 +12,8 @@ import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 import Link from '@/ui/atoms/Link';
 
-const ResetPasswordForm = (props: FormHandler<ResetPassword>) => {
-  const schema: Schema<ResetPassword> = object({
+const UpdatePasswordForm = (props: FormHandler<UpdatePassword>) => {
+  const schema: Schema<UpdatePassword> = object({
     oldPassword: string().required('Champ requis'),
     newPassword: string()
       .min(8, 'Minimum 8 caractères')
@@ -24,7 +24,7 @@ const ResetPasswordForm = (props: FormHandler<ResetPassword>) => {
       .required('Champ requis'),
   });
 
-  const form = useForm<ResetPassword>({
+  const form = useForm<UpdatePassword>({
     mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: props.defaultValues,
@@ -83,4 +83,4 @@ const StyledInputsWrapper = styled(InputsWrapper)`
   }
 `;
 
-export default ResetPasswordForm;
+export default UpdatePasswordForm;
