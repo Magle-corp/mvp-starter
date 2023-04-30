@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\profile;
+namespace App\Controller\user;
 
 use App\Service\ResponseService;
 use Doctrine\ORM\EntityManagerInterface;

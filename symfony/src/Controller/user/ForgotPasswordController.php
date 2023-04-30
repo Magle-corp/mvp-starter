@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\authentication;
+namespace App\Controller\user;
 
 use App\Entity\TokenResetPassword;
 use App\Entity\User;
