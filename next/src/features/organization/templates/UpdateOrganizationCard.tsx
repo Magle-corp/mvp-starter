@@ -22,6 +22,7 @@ const UpdateOrganizationCard = () => {
   const organizationMutation = usePut<Partial<Organization>>({
     url: ApiRoutes.ORGANIZATION + '/' + organization?.id,
     token: token?.token ?? undefined,
+    key: QueryKeys.ORGANIZATIONS,
     onSuccess: () => {
       freshOrganizationMutation.refetch();
     },
