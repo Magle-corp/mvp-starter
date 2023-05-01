@@ -44,15 +44,12 @@ const UpdatePasswordCard = () => {
 
   return (
     <Card title="Changer mon mot de passe">
-      {!resetPasswordMutation.isSuccess && (
-        <UpdatePasswordForm
-          defaultValues={resetPasswordDefaultValues}
-          onSubmit={onSubmit}
-          submitLoading={resetPasswordMutation.isLoading}
-          submitError={resetPasswordMutation.error?.response?.data.message}
-        />
-      )}
-      {resetPasswordMutation.isSuccess && <p>Mot de passe enregistré 🔒</p>}
+      <UpdatePasswordForm
+        defaultValues={resetPasswordDefaultValues}
+        onSubmit={onSubmit}
+        submitLoading={resetPasswordMutation.isLoading}
+        submitError={resetPasswordMutation.error?.response?.data.message}
+      />
     </Card>
   );
 };
