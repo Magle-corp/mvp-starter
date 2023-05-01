@@ -67,7 +67,7 @@ const UpdatePasswordForm = (props: FormHandler<UpdatePassword>) => {
         size="small"
       />
       <Link href={AppPages.AUTH_FORGOT_PASSWORD}>
-        J'ai oublié mon mot de passe
+        J&apos;ai oublié mon mot de passe
       </Link>
     </Form>
   );
