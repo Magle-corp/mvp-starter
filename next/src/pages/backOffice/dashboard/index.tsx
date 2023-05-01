@@ -2,9 +2,11 @@ import { ReactElement } from 'react';
 import Head from 'next/head';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
 import AuthGuard from '@/features/authentication/AuthGuard';
+import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
 import { OrganizationContextWrapper } from '@/features/organization/OrganizationContext';
 import OrganizationGuard from '@/features/organization/OrganizationGuard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
+import Toast from '@/ui/atoms/Toast';
 
 const Dashboard = (): JSX.Element => {
   return (
@@ -24,11 +26,14 @@ Dashboard.getLayout = function getLayout(page: ReactElement) {
   return (
     <AuthContextWrapper>
       <AuthGuard>
-        <OrganizationContextWrapper>
-          <OrganizationGuard>
-            <BackOfficeLayout>{page}</BackOfficeLayout>
-          </OrganizationGuard>
-        </OrganizationContextWrapper>
+        <BackOfficeContextWrapper>
+          <OrganizationContextWrapper>
+            <OrganizationGuard>
+              <BackOfficeLayout>{page}</BackOfficeLayout>
+              <Toast />
+            </OrganizationGuard>
+          </OrganizationContextWrapper>
+        </BackOfficeContextWrapper>
       </AuthGuard>
     </AuthContextWrapper>
   );

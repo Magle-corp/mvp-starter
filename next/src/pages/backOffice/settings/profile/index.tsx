@@ -2,11 +2,13 @@ import { ReactElement } from 'react';
 import Head from 'next/head';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
 import AuthGuard from '@/features/authentication/AuthGuard';
+import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
 import { OrganizationContextWrapper } from '@/features/organization/OrganizationContext';
 import OrganizationGuard from '@/features/organization/OrganizationGuard';
 import UpdatePasswordCard from '@/features/profile/templates/UpdatePasswordCard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
 import SettingsLayout from '@/ui/organisms/SettingsLayout';
+import Toast from '@/ui/atoms/Toast';
 
 const Profile = (): JSX.Element => {
   return (
@@ -26,13 +28,16 @@ Profile.getLayout = function getLayout(page: ReactElement) {
   return (
     <AuthContextWrapper>
       <AuthGuard>
-        <OrganizationContextWrapper>
-          <OrganizationGuard>
-            <BackOfficeLayout>
-              <SettingsLayout>{page}</SettingsLayout>
-            </BackOfficeLayout>
-          </OrganizationGuard>
-        </OrganizationContextWrapper>
+        <BackOfficeContextWrapper>
+          <OrganizationContextWrapper>
+            <OrganizationGuard>
+              <BackOfficeLayout>
+                <SettingsLayout>{page}</SettingsLayout>
+              </BackOfficeLayout>
+              <Toast />
+            </OrganizationGuard>
+          </OrganizationContextWrapper>
+        </BackOfficeContextWrapper>
       </AuthGuard>
     </AuthContextWrapper>
   );
