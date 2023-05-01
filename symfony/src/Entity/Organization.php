@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource(
     operations: [
         new Get(),
-        new Post(),
-        new Put()
+        new Post(securityPostDenormalize: "is_granted('ORGANIZATION_CREATE', object)"),
+        new Put(security: "is_granted('ORGANIZATION_UPDATE', object)")
     ]
 )]
 class Organization

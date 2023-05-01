@@ -2,12 +2,21 @@
 
 namespace App\EventSubscriber;
 
+use App\Service\ResponseService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 final class ExceptionSubscriber implements EventSubscriberInterface
 {
+    private ResponseService $responseService;
+
+    public function __construct(ResponseService $responseService)
+    {
+        $this->responseService = $responseService;
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -17,9 +26,11 @@ final class ExceptionSubscriber implements EventSubscriberInterface
 
     public function customKernelEventExceptions(ExceptionEvent $event): void
     {
-        $eventThrowableClass = get_class($event->getThrowable());
-        $event->setThrowable(new $eventThrowableClass(
-            'Un problème technique est survenu, veuillez réessayer ultérieurement'
-        ));
+        if ($event->getThrowable() instanceof AccessDeniedHttpException) {
+            $event->setResponse($this->responseService->forbidden());
+            return;
+        }
+
+        $event->setResponse($this->responseService->error());
     }
 }
