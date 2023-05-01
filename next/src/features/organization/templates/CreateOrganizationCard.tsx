@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import ApiIris from '@/cdn/enums/ApiIris';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
+import QueryKeys from '@/cdn/enums/QueryKeys';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import Organization from '@/features/organization/types/Organization';
@@ -19,6 +20,7 @@ const CreateOrganizationCard = () => {
   const organizationMutation = usePost<Organization>({
     url: ApiRoutes.ORGANIZATION,
     token: token?.token ?? undefined,
+    key: QueryKeys.ORGANIZATIONS,
     onSuccess: () => {
       getFreshToken(token);
     },
