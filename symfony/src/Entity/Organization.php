@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\organization\DeleteOrganizationController;
 use App\Repository\OrganizationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,7 +16,11 @@ use Doctrine\ORM\Mapping as ORM;
     operations: [
         new Get(),
         new Post(securityPostDenormalize: "is_granted('ORGANIZATION_CREATE', object)"),
-        new Put(security: "is_granted('ORGANIZATION_UPDATE', object)")
+        new Put(security: "is_granted('ORGANIZATION_UPDATE', object)"),
+        new Delete(
+            controller: DeleteOrganizationController::class,
+            security: "is_granted('ORGANIZATION_DELETE', object)"
+        )
     ]
 )]
 class Organization
