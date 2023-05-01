@@ -1,18 +1,10 @@
+import { AxiosError } from 'axios';
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError, AxiosResponse } from 'axios';
 import api from '@/cdn/utils/api';
-import { ApiError } from '@/cdn/types/ApiResponse';
-import { AuthToken } from '@/features/authentication/types/AuthToken';
+import { ApiError } from '@/cdn/types/Api';
+import { UseMutation } from '@/cdn/types/Query';
 
-type UsePost<T> = {
-  url: string;
-  token?: AuthToken['token'];
-  key?: string;
-  onSuccess?: (data: AxiosResponse<T>) => void;
-  onError?: (error: AxiosError<ApiError> | unknown) => void;
-};
-
-const usePost = <T,>(props: UsePost<T>) => {
+const usePost = <T,>(props: UseMutation<T>) => {
   if (props.token) {
     api.defaults.headers.common.Authorization = `Bearer ${props.token}`;
   }

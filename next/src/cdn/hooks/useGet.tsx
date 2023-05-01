@@ -1,19 +1,10 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/cdn/utils/api';
-import { ApiError } from '@/cdn/types/ApiResponse';
-import { AuthToken } from '@/features/authentication/types/AuthToken';
+import { ApiError } from '@/cdn/types/Api';
+import { UseQuery } from '@/cdn/types/Query';
 
-type useGet<T> = {
-  url: string;
-  token?: AuthToken['token'];
-  key: string;
-  onSuccess?: (data: AxiosResponse<T>) => void;
-  onError?: (error: AxiosError<ApiError>) => void;
-  enabled?: boolean;
-};
-
-const useGet = <T,>(props: useGet<T>) => {
+const useGet = <T,>(props: UseQuery<T>) => {
   if (props.token) {
     api.defaults.headers.common.Authorization = `Bearer ${props.token}`;
   }
