@@ -6,6 +6,7 @@ import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
 import { OrganizationContextWrapper } from '@/features/organization/OrganizationContext';
 import OrganizationGuard from '@/features/organization/OrganizationGuard';
 import UpdateOrganizationCard from '@/features/organization/templates/UpdateOrganizationCard';
+import DeleteOrganizationCard from '@/features/organization/templates/DeleteOrganizationCard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
 import SettingsLayout from '@/ui/organisms/SettingsLayout';
 import Toast from '@/ui/atoms/Toast';
@@ -20,6 +21,7 @@ const Organization = (): JSX.Element => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <UpdateOrganizationCard />
+      <DeleteOrganizationCard />
     </>
   );
 };
