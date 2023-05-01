@@ -35,6 +35,7 @@ export function OrganizationContextWrapper({ children }: Props) {
     url: ApiRoutes.ORGANIZATION + '/' + tokenPayload?.organizations[0],
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
+    enabled: false,
     onSuccess: (data) => {
       setOrganization(data.data);
       setLoading(false);
@@ -43,7 +44,6 @@ export function OrganizationContextWrapper({ children }: Props) {
       setLoading(false);
       setError(true);
     },
-    enabled: false,
   });
 
   useEffect(() => {
