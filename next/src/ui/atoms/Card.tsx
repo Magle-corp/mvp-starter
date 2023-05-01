@@ -15,6 +15,7 @@ const Card = (props: Card) => {
       <Section>
         {props.title && (
           <Title
+            as="h2"
             titleSize={props.titleSize}
             titlePosition={props.titlePosition}
           >
