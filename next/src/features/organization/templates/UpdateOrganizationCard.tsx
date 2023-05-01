@@ -1,7 +1,9 @@
 import { SubmitHandler } from 'react-hook-form';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
+import QueryKeys from '@/cdn/enums/QueryKeys';
 import usePut from '@/cdn/hooks/usePut';
+import useGet from '@/cdn/hooks/useGet';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import Organization from '@/features/organization/types/Organization';
@@ -9,7 +11,7 @@ import UpdateOrganizationForm from '@/features/organization/forms/UpdateOrganiza
 import Card from '@/ui/atoms/Card';
 
 const UpdateOrganizationCard = () => {
-  const { token, getFreshToken } = useAuthContext();
+  const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
   const { toast } = useBackOfficeContext();
 
@@ -19,19 +21,29 @@ const UpdateOrganizationCard = () => {
 
   const organizationMutation = usePut<Partial<Organization>>({
     url: ApiRoutes.ORGANIZATION + '/' + organization?.id,
+    token: token?.token ?? undefined,
     onSuccess: () => {
-      getFreshToken(token);
-      toast.current.show({
-        severity: 'success',
-        summary: 'Organisation',
-        detail: 'Mise à jour avec succès',
-      });
+      freshOrganizationMutation.refetch();
     },
     onError: () => {
       toast.current.show({
         severity: 'error',
         summary: 'Organisation',
         detail: 'Un problème technique est survenu',
+      });
+    },
+  });
+
+  const freshOrganizationMutation = useGet<Organization>({
+    url: ApiRoutes.ORGANIZATION + '/' + organization?.id,
+    token: token?.token ?? undefined,
+    key: QueryKeys.ORGANIZATIONS,
+    enabled: false,
+    onSuccess: () => {
+      toast.current.show({
+        severity: 'success',
+        summary: 'Organisation',
+        detail: 'Mise à jour avec succès',
       });
     },
   });
