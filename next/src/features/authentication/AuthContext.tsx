@@ -58,7 +58,7 @@ export function AuthContextWrapper({ children }: Props) {
       const validFreshToken = authService.tokenCompleteCheck(freshToken);
 
       if (validFreshToken) {
-        setToken(token);
+        setToken(freshToken);
         setTokenPayload(authService.getAuthTokenPayload(freshToken));
         authService.setLocalAuthToken(freshToken);
       }

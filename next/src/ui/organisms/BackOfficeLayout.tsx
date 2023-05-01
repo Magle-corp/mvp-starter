@@ -72,12 +72,11 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
           >
             <Menu model={menuAdmin} />
             <LogoutButton
+              label="Deconnexion"
               variant="danger"
               onClick={() => logout()}
               size="small"
-            >
-              Deconnexion
-            </LogoutButton>
+            />
           </SideBar>
         </>
       )}
@@ -118,7 +117,7 @@ const AdminAvatar = styled(Avatar)`
 `;
 
 const StyledMenu = styled(Menu)`
-  height: 90vh;
+  min-height: 90vh;
 `;
 
 const LogoutButton = styled(Button)`

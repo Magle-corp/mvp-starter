@@ -50,6 +50,7 @@ export function OrganizationContextWrapper({ children }: Props) {
     if (tokenPayload && tokenPayload.organizations.length > 0) {
       organizationQuery.refetch();
     } else {
+      setOrganization(null);
       setLoading(false);
     }
   }, [unguardedPage, tokenPayload]);
