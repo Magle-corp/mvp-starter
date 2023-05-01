@@ -31,18 +31,7 @@ class OrganizationVoter extends Voter
     {
         switch ($attribute) {
             case self::ORGANIZATION_CREATE:
-                if ($subject->getOwner() != $token->getUser()) {
-                    return false;
-                }
-
-                $organizationRepository = $this->entityManager->getRepository(Organization::class);
-                $latestOrganization = $organizationRepository->findOneBy(['owner' => $subject->getOwner()->getId()], ['id' => 'DESC']);
-
-                if ($latestOrganization) {
-                    return false;
-                }
-
-                return true;
+                return $subject->getOwner() == $token->getUser();
             case self::ORGANIZATION_UPDATE:
                 return $subject->getOwner() == $token->getUser();
             default:
