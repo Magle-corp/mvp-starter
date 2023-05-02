@@ -18,7 +18,7 @@ const CreateOrganizationCard = () => {
   };
 
   const organizationMutation = usePost<Organization>({
-    url: ApiRoutes.ORGANIZATION,
+    url: ApiRoutes.ORGANIZATIONS,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
     onSuccess: () => {

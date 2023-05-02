@@ -32,7 +32,7 @@ export function OrganizationContextWrapper({ children }: Props) {
   const unguardedPage = unguardedPages.includes(router.pathname);
 
   const organizationQuery = useGet<Organization>({
-    url: ApiRoutes.ORGANIZATION + '/' + tokenPayload?.organizations[0],
+    url: ApiRoutes.ORGANIZATIONS + '/' + tokenPayload?.organizations[0],
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
     enabled: false,
