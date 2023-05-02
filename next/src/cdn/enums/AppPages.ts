@@ -6,6 +6,7 @@ enum AppPages {
   AUTH_RESET_PASSWORD = '/authentication/resetPassword',
   BO_DASHBOARD = '/backOffice/dashboard',
   BO_ANIMALS = '/backOffice/animals',
+  BO_ANIMALS_CREATE = '/backOffice/animals/create',
   BO_SETTINGS_PROFILE = '/backOffice/settings/profile',
   BO_SETTINGS_ORGANIZATION = '/backOffice/settings/organization',
 }
