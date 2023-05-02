@@ -35,6 +35,6 @@ class DeleteOrganizationController extends AbstractController
         $this->entityManager->remove($organization);
         $this->entityManager->flush();
 
-        return $this->responseService->create('OK', 200);
+        return $this->responseService->success();
     }
 }

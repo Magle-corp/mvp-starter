@@ -72,6 +72,6 @@ class SignUpController extends AbstractController
 
         $this->emailService->sendSignUpValidationEmail($newUser, $token);
 
-        return $this->responseService->create('OK', 200);
+        return $this->responseService->success();
     }
 }

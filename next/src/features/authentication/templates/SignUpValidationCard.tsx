@@ -60,9 +60,11 @@ const SignUpValidationCard = () => {
   const SignUpValidationError = () => {
     return (
       <>
-        <FormError>
-          {signUpValidationMutation.error?.response?.data.message}
-        </FormError>
+        <Wrapper>
+          <FormError>
+            {signUpValidationMutation.error?.response?.data.message}
+          </FormError>
+        </Wrapper>
         <LinksWrapper>
           <Link href={AppPages.AUTH_SIGN_IN}>Se connecter</Link>
         </LinksWrapper>

@@ -14,6 +14,11 @@ class ResponseService
         );
     }
 
+    public function success(): Response
+    {
+        return $this->create("OK", 200);
+    }
+
     public function forbidden(): Response
     {
         return $this->create("Vous n'avez pas les droits nécessaires pour administrer ce contenu", 403);

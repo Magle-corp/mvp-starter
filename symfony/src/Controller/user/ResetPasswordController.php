@@ -69,7 +69,7 @@ class ResetPasswordController extends AbstractController
 
         /* If the token user id isn't registered returns an HTTP response with status 200 to not communicate confidential information */
         if (!$user) {
-            return $this->responseService->create('OK', 200);
+            return $this->responseService->success();
         }
 
         $tokenResetPasswordRepository = $this->entityManager->getRepository(TokenResetPassword::class);
@@ -95,6 +95,6 @@ class ResetPasswordController extends AbstractController
 
         $this->entityManager->flush();
 
-        return $this->responseService->create('OK', 200);
+        return $this->responseService->success();
     }
 }
