@@ -9,12 +9,18 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class OrganizationVoter extends Voter
 {
     const ORGANIZATION_CREATE = 'ORGANIZATION_CREATE';
+    const ORGANIZATION_READ = 'ORGANIZATION_READ';
     const ORGANIZATION_UPDATE = 'ORGANIZATION_UPDATE';
     const ORGANIZATION_DELETE = 'ORGANIZATION_DELETE';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        $supportsAttribute = in_array($attribute, [self::ORGANIZATION_CREATE, self::ORGANIZATION_UPDATE, self::ORGANIZATION_DELETE]);
+        $supportsAttribute = in_array($attribute, [
+            self::ORGANIZATION_CREATE,
+            self::ORGANIZATION_READ,
+            self::ORGANIZATION_UPDATE,
+            self::ORGANIZATION_DELETE
+        ]);
         $supportsSubject = $subject instanceof Organization;
 
         return $supportsAttribute && $supportsSubject;
@@ -24,6 +30,8 @@ class OrganizationVoter extends Voter
     {
         switch ($attribute) {
             case self::ORGANIZATION_CREATE:
+                return $subject->getOwner() == $token->getUser();
+            case self::ORGANIZATION_READ:
                 return $subject->getOwner() == $token->getUser();
             case self::ORGANIZATION_UPDATE:
                 return $subject->getOwner() == $token->getUser();
