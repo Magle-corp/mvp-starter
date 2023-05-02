@@ -118,6 +118,10 @@ const AdminAvatar = styled(Avatar)`
 
 const StyledMenu = styled(Menu)`
   min-height: 90vh;
+
+  > ul {
+    margin-top: 0.5rem;
+  }
 `;
 
 const LogoutButton = styled(Button)`

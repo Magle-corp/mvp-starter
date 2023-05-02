@@ -8,6 +8,7 @@ import OrganizationGuard from '@/features/organization/OrganizationGuard';
 import UpdatePasswordCard from '@/features/profile/templates/UpdatePasswordCard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
 import SettingsLayout from '@/ui/organisms/SettingsLayout';
+import ConfirmDialog from '@/ui/atoms/ConfirmDialog';
 import Toast from '@/ui/atoms/Toast';
 
 const Profile = (): JSX.Element => {
@@ -35,6 +36,7 @@ Profile.getLayout = function getLayout(page: ReactElement) {
                 <SettingsLayout>{page}</SettingsLayout>
               </BackOfficeLayout>
               <Toast />
+              <ConfirmDialog />
             </OrganizationGuard>
           </OrganizationContextWrapper>
         </BackOfficeContextWrapper>

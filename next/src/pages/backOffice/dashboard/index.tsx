@@ -6,6 +6,7 @@ import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
 import { OrganizationContextWrapper } from '@/features/organization/OrganizationContext';
 import OrganizationGuard from '@/features/organization/OrganizationGuard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
+import ConfirmDialog from '@/ui/atoms/ConfirmDialog';
 import Toast from '@/ui/atoms/Toast';
 
 const Dashboard = (): JSX.Element => {
@@ -31,6 +32,7 @@ Dashboard.getLayout = function getLayout(page: ReactElement) {
             <OrganizationGuard>
               <BackOfficeLayout>{page}</BackOfficeLayout>
               <Toast />
+              <ConfirmDialog />
             </OrganizationGuard>
           </OrganizationContextWrapper>
         </BackOfficeContextWrapper>

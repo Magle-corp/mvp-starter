@@ -9,6 +9,7 @@ import UpdateOrganizationCard from '@/features/organization/templates/UpdateOrga
 import DeleteOrganizationCard from '@/features/organization/templates/DeleteOrganizationCard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
 import SettingsLayout from '@/ui/organisms/SettingsLayout';
+import ConfirmDialog from '@/ui/atoms/ConfirmDialog';
 import Toast from '@/ui/atoms/Toast';
 
 const Organization = (): JSX.Element => {
@@ -37,6 +38,7 @@ Organization.getLayout = function getLayout(page: ReactElement) {
                 <SettingsLayout>{page}</SettingsLayout>
               </BackOfficeLayout>
               <Toast />
+              <ConfirmDialog />
             </OrganizationGuard>
           </OrganizationContextWrapper>
         </BackOfficeContextWrapper>

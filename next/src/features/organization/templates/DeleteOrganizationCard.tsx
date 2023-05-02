@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
+import { confirmDialog } from 'primereact/confirmdialog';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import useDelete from '@/cdn/hooks/useDelete';
@@ -27,7 +28,13 @@ const DeleteOrganizationCard = () => {
   });
 
   const onSubmit: SubmitHandler<Partial<Organization>> = () => {
-    organizationMutation.mutate();
+    confirmDialog({
+      message:
+        'Cette action est irréversible, êtes-vous sûr de vouloir continuer ?',
+      header: 'Supprimer mon organisation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => organizationMutation.mutate(),
+    });
   };
 
   return (
