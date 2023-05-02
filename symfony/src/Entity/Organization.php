@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: OrganizationRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(),
+        new Get(security: "is_granted('ORGANIZATION_READ', object)"),
         new Post(securityPostDenormalize: "is_granted('ORGANIZATION_CREATE', object)"),
         new Put(security: "is_granted('ORGANIZATION_UPDATE', object)"),
         new Delete(
