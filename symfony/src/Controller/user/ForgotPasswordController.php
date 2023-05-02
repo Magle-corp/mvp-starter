@@ -48,7 +48,7 @@ class ForgotPasswordController extends AbstractController
 
         /* If the token user id isn't registered returns an HTTP response with status 200 to not communicate confidential information */
         if (!$user) {
-            return $this->responseService->create('OK', 200);
+            return $this->responseService->success();
         }
 
         $tokenPayload = ['user_id' => $user->getId()];
@@ -63,6 +63,6 @@ class ForgotPasswordController extends AbstractController
 
         $this->emailService->sendResetPasswordEmail($user, $token);
 
-        return $this->responseService->create('OK', 200);
+        return $this->responseService->success();
     }
 }
