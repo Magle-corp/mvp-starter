@@ -3,11 +3,18 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 use App\Repository\AnimalRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AnimalRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(security: "is_granted('ANIMAL_READ', object)"),
+        new Post(securityPostDenormalize: "is_granted('ANIMAL_CREATE', object)")
+    ]
+)]
 class Animal
 {
     #[ORM\Id]
