@@ -20,7 +20,7 @@ const UpdateOrganizationCard = () => {
   };
 
   const organizationMutation = usePut<Partial<Organization>>({
-    url: ApiRoutes.ORGANIZATION + '/' + organization?.id,
+    url: ApiRoutes.ORGANIZATIONS + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
     onSuccess: () => {
@@ -36,7 +36,7 @@ const UpdateOrganizationCard = () => {
   });
 
   const freshOrganizationMutation = useGet<Organization>({
-    url: ApiRoutes.ORGANIZATION + '/' + organization?.id,
+    url: ApiRoutes.ORGANIZATIONS + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
     enabled: false,
