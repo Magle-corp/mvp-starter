@@ -6,6 +6,7 @@ type Card = {
   title?: string;
   titleSize?: 'large';
   titlePosition?: 'center';
+  toolbar?: ReactNode;
   children: ReactNode;
 } & CardProps;
 
@@ -13,15 +14,18 @@ const Card = (props: Card) => {
   return (
     <StyledCard className={props.className}>
       <Section>
-        {props.title && (
-          <Title
-            as="h2"
-            titleSize={props.titleSize}
-            titlePosition={props.titlePosition}
-          >
-            {props.title}
-          </Title>
-        )}
+        <Header>
+          {props.title && (
+            <Title
+              as="h2"
+              titleSize={props.titleSize}
+              titlePosition={props.titlePosition}
+            >
+              {props.title}
+            </Title>
+          )}
+          {props.toolbar && <ToolBar>{props.toolbar}</ToolBar>}
+        </Header>
         {props.children}
       </Section>
     </StyledCard>
@@ -44,12 +48,23 @@ const Section = styled.section`
   gap: 4rem;
 `;
 
+const Header = styled.div`
+  display: flex;
+`;
+
+const ToolBar = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+`;
+
 const Title = styled.h1<{
   titleSize: Card['titleSize'];
   titlePosition: Card['titlePosition'];
 }>`
   ${({ titleSize, titlePosition }) =>
     getTitleVariant(titleSize, titlePosition)};
+  width: 100%;
   font-weight: 700;
   line-height: 1.25;
 `;

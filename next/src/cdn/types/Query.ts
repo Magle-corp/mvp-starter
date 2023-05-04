@@ -14,9 +14,10 @@ type UseQuery<T> = {
   url: string;
   key: string;
   token?: AuthToken['token'];
-  onSuccess?: (data: AxiosResponse<T>) => void;
+  onSuccess?: (data: T) => void;
   onError?: (error: AxiosError<ApiError>) => void;
   enabled?: boolean;
+  staleTime?: number;
 };
 
 export type { UseMutation, UseQuery };

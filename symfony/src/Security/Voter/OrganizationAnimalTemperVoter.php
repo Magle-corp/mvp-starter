@@ -7,12 +7,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class AnimalVoter extends Voter
+class OrganizationAnimalTemperVoter extends Voter
 {
-    const ANIMAL_CREATE = 'ANIMAL_CREATE';
-    const ANIMAL_READ = 'ANIMAL_READ';
-    const ANIMALS_READ = 'ANIMALS_READ';
-    const ANIMAL_UPDATE = 'ANIMAL_UPDATE';
+    const ANIMAL_TEMPERS_READ = 'ANIMAL_TEMPERS_READ';
+    const ORG_ANIMAL_TEMPER_CREATE = 'ORG_ANIMAL_TEMPER_CREATE';
 
     private VoterService $voterService;
     private RequestStack $requestStack;
@@ -29,20 +27,18 @@ class AnimalVoter extends Voter
     protected function supports(string $attribute, mixed $subject): bool
     {
         return in_array($attribute, [
-            self::ANIMAL_CREATE,
-            self::ANIMAL_READ,
-            self::ANIMALS_READ,
-            self::ANIMAL_UPDATE
+            self::ANIMAL_TEMPERS_READ,
+            self::ORG_ANIMAL_TEMPER_CREATE,
         ]);
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        if ($attribute === self::ANIMAL_CREATE || $attribute === self::ANIMAL_READ || $attribute === self::ANIMAL_UPDATE) {
+        if ($attribute === self::ORG_ANIMAL_TEMPER_CREATE) {
             return $this->voterService->userHasOrganization($token->getUser(), $subject->getOrganization()->getId());
         }
 
-        if ($attribute === self::ANIMALS_READ) {
+        if ($attribute === self::ANIMAL_TEMPERS_READ) {
             $requestAnimalsOrganizationId = $this->requestStack->getCurrentRequest()->attributes->get('id');
             return $this->voterService->userHasOrganization($token->getUser(), $requestAnimalsOrganizationId);
         }

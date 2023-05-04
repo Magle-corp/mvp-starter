@@ -6,9 +6,11 @@ enum ApiRoutes {
   AUTH_FORGOT_PASSWORD = '/auth/forgotPassword',
   AUTH_RESET_PASSWORD = '/auth/resetPassword',
   AUTH_REFRESH_TOKEN = '/auth/refreshToken',
-  ORGANIZATIONS = '/organizations',
   PROFILE_UPDATE_PASSWORD = '/profile/updatePassword',
+  ORGANIZATIONS = '/organizations',
   ANIMALS = '/animals',
+  ANIMALS_ORG = '/animals/organization',
+  ANIMAL_TEMPERS_ORG = '/animal_tempers/organization',
 }
 
 export default ApiRoutes;

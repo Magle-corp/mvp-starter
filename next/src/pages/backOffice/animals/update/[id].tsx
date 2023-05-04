@@ -5,26 +5,29 @@ import AuthGuard from '@/features/authentication/AuthGuard';
 import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
 import { OrganizationContextWrapper } from '@/features/organization/OrganizationContext';
 import OrganizationGuard from '@/features/organization/OrganizationGuard';
-import AnimalsTableCard from '@/features/animals/templates/AnimalsTableCard';
+import UpdateAnimalCard from '@/features/animals/templates/UpdateAnimalCard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
 import ConfirmDialog from '@/ui/atoms/ConfirmDialog';
 import Toast from '@/ui/atoms/Toast';
 
-const Animals = (): JSX.Element => {
+const UpdateAnimal = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Animaux</title>
-        <meta name="Animaux" content="Animaux" />
+        <title>Mettre à jour un animal</title>
+        <meta
+          name="Mettre à jour un animal"
+          content="Mettre à jour un animal"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AnimalsTableCard />
+      <UpdateAnimalCard />
     </>
   );
 };
 
-Animals.getLayout = function getLayout(page: ReactElement) {
+UpdateAnimal.getLayout = function getLayout(page: ReactElement) {
   return (
     <AuthContextWrapper>
       <AuthGuard>
@@ -42,4 +45,4 @@ Animals.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default Animals;
+export default UpdateAnimal;
