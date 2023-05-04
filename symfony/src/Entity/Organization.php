@@ -7,7 +7,6 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\Controller\organization\DeleteOrganizationController;
 use App\Repository\OrganizationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,7 +19,6 @@ use Doctrine\ORM\Mapping as ORM;
         new Post(securityPostDenormalize: "is_granted('ORGANIZATION_CREATE', object)"),
         new Put(security: "is_granted('ORGANIZATION_UPDATE', object)"),
         new Delete(
-            controller: DeleteOrganizationController::class,
             security: "is_granted('ORGANIZATION_DELETE', object)"
         )
     ]
