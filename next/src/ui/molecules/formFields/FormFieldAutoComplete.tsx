@@ -1,16 +1,20 @@
 import styled from 'styled-components';
 import { Controller, FieldValues } from 'react-hook-form';
-import { Password, PasswordProps } from 'primereact/password';
+import {
+  AutoComplete as PAutoComplete,
+  AutoCompleteProps,
+} from 'primereact/autocomplete';
 import { FormField } from '@/cdn/types/Form';
-import FloatLabel from '@/ui/atoms/form/FloatLabel';
 import InputWrapper from '@/ui/atoms/form/InputWrapper';
-import InputHelp from '@/ui/atoms/form/InputHelp';
 import InputError from '@/ui/atoms/form/InputError';
+import InputHelp from '@/ui/atoms/form/InputHelp';
+import FloatLabel from '@/ui/atoms/form/FloatLabel';
 
-type FormFieldPassword<T extends FieldValues> = FormField<T> & PasswordProps;
+type FormFieldAutoComplete<T extends FieldValues> = FormField<T> &
+  AutoCompleteProps;
 
-const FormFieldPassword = <T extends FieldValues>(
-  props: FormFieldPassword<T>
+const FormFieldAutoComplete = <T extends FieldValues>(
+  props: FormFieldAutoComplete<T>
 ) => {
   return (
     <InputWrapper direction="column">
@@ -19,12 +23,13 @@ const FormFieldPassword = <T extends FieldValues>(
           name={props.name}
           control={props.control}
           render={({ field }) => (
-            <StyledInputPassword
+            <StyledAutoComplete
               id={props.name}
               className={props.error ? 'p-invalid' : ''}
+              showEmptyMessage
+              emptyMessage="Pas de résultats"
               {...field}
               {...props}
-              aria-required={props.required}
               aria-invalid={!!props.error}
               aria-describedby={
                 (props.error ? `${props.name}-error` : '') +
@@ -45,12 +50,19 @@ const FormFieldPassword = <T extends FieldValues>(
   );
 };
 
-const StyledInputPassword = styled(Password)`
+const StyledAutoComplete = styled(PAutoComplete)`
   width: 100%;
 
-  .p-password-input {
+  > ul {
+    display: flex;
+    gap: 0.5rem;
     width: 100%;
+    padding: 0.5rem !important;
+
+    li {
+      margin-right: 0 !important;
+    }
   }
 `;
 
-export default FormFieldPassword;
+export default FormFieldAutoComplete;

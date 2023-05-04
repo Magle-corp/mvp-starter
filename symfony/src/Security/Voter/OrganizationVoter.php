@@ -28,17 +28,15 @@ class OrganizationVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        switch ($attribute) {
-            case self::ORGANIZATION_CREATE:
-                return $subject->getOwner() == $token->getUser();
-            case self::ORGANIZATION_READ:
-                return $subject->getOwner() == $token->getUser();
-            case self::ORGANIZATION_UPDATE:
-                return $subject->getOwner() == $token->getUser();
-            case self::ORGANIZATION_DELETE:
-                return $subject->getOwner() == $token->getUser();
-            default:
-                return false;
+        if (
+            $attribute === self::ORGANIZATION_CREATE ||
+            $attribute === self::ORGANIZATION_READ ||
+            $attribute === self::ORGANIZATION_UPDATE ||
+            $attribute === self::ORGANIZATION_DELETE
+        ) {
+            return $subject->getOwner() == $token->getUser();
         }
+
+        return false;
     }
 }

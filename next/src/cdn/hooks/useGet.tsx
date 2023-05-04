@@ -11,16 +11,17 @@ const useGet = <T,>(props: UseQuery<T>) => {
 
   return useQuery([props.key], {
     queryFn: () => {
-      return api.get(props.url);
+      return api.get<T>(props.url);
     },
-    retry: false,
-    onSuccess: (data) => {
+    onSuccess: ({ data }) => {
       props.onSuccess && props.onSuccess(data);
     },
     onError: (error: AxiosError<ApiError>) => {
       props.onError && props.onError(error);
     },
+    retry: false,
     enabled: props.enabled ?? true,
+    staleTime: props.staleTime ?? 180000,
   });
 };
 

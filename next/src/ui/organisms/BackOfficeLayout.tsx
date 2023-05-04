@@ -118,17 +118,13 @@ const AdminAvatar = styled(Avatar)`
 
 const StyledMenu = styled(Menu)`
   min-height: 90vh;
-
-  > ul {
-    margin-top: 0.5rem;
-  }
 `;
 
 const LogoutButton = styled(Button)`
   margin: auto auto 0 auto;
 `;
 
-const BodyItemsWrapper = styled.div`
+const BodyItemsWrapper = styled.main`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

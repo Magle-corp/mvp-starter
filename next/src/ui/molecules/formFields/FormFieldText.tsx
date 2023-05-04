@@ -1,11 +1,11 @@
+import styled from 'styled-components';
 import { Controller, FieldValues } from 'react-hook-form';
-import { InputTextProps } from 'primereact/inputtext';
+import { InputText, InputTextProps } from 'primereact/inputtext';
 import { FormField } from '@/cdn/types/Form';
 import FloatLabel from '@/ui/atoms/form/FloatLabel';
 import InputWrapper from '@/ui/atoms/form/InputWrapper';
 import InputHelp from '@/ui/atoms/form/InputHelp';
 import InputError from '@/ui/atoms/form/InputError';
-import InputText from '@/ui/atoms/inputs/InputText';
 
 type FormFieldText<T extends FieldValues> = FormField<T> & InputTextProps;
 
@@ -17,7 +17,7 @@ const FormFieldText = <T extends FieldValues>(props: FormFieldText<T>) => {
           name={props.name}
           control={props.control}
           render={({ field }) => (
-            <InputText
+            <StyledInputText
               id={props.name}
               className={props.error ? 'p-invalid' : ''}
               {...field}
@@ -42,5 +42,9 @@ const FormFieldText = <T extends FieldValues>(props: FormFieldText<T>) => {
     </InputWrapper>
   );
 };
+
+const StyledInputText = styled(InputText)`
+  width: 100%;
+`;
 
 export default FormFieldText;

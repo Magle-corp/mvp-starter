@@ -37,7 +37,7 @@ export function OrganizationContextWrapper({ children }: Props) {
     key: QueryKeys.ORGANIZATIONS,
     enabled: false,
     onSuccess: (data) => {
-      setOrganization(data.data);
+      setOrganization(data);
       setLoading(false);
     },
     onError: () => {
