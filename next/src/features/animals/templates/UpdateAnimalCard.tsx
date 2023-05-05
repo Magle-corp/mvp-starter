@@ -1,16 +1,20 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
+import { confirmDialog } from 'primereact/confirmdialog';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiIris from '@/cdn/enums/ApiIris';
+import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
+import useDelete from '@/cdn/hooks/useDelete';
 import useGet from '@/cdn/hooks/useGet';
 import usePut from '@/cdn/hooks/usePut';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import { Animal } from '@/features/animals/types/Animal';
 import AnimalForm from '@/features/animals/forms/AnimalForm';
+import Button from '@/ui/atoms/Button';
 import Card from '@/ui/atoms/Card';
 
 const UpdateAnimalCard = () => {
@@ -40,7 +44,7 @@ const UpdateAnimalCard = () => {
     }
   }, [animalQueryId]);
 
-  const animalMutation = usePut<Animal>({
+  const animalUpdateMutation = usePut<Animal>({
     url: ApiRoutes.ANIMALS + '/' + animalQueryId,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMALS,
@@ -60,8 +64,39 @@ const UpdateAnimalCard = () => {
     },
   });
 
+  const animalDeleteMutation = useDelete<Animal>({
+    url: ApiRoutes.ANIMALS + '/' + animalQueryId,
+    token: token?.token ?? undefined,
+    key: QueryKeys.ANIMALS,
+    onSuccess: () => {
+      toast.current.show({
+        severity: 'success',
+        summary: 'Animal',
+        detail: 'Supprimé avec succès',
+      });
+      router.push(AppPages.BO_ANIMALS);
+    },
+    onError: () => {
+      toast.current.show({
+        severity: 'error',
+        summary: 'Animal',
+        detail: 'Un problème technique est survenu',
+      });
+    },
+  });
+
+  const deleteAnimal = () => {
+    confirmDialog({
+      message:
+        'Cette action est irréversible, êtes-vous sûr de vouloir continuer ?',
+      header: 'Supprimer un animal',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => animalDeleteMutation.mutate(),
+    });
+  };
+
   const onSubmit: SubmitHandler<Animal> = (fieldValues: Animal) => {
-    animalMutation.mutate({
+    animalUpdateMutation.mutate({
       ...fieldValues,
       // @ts-ignore
       tempers: fieldValues.tempers.map(
@@ -70,13 +105,26 @@ const UpdateAnimalCard = () => {
     });
   };
 
+  const Toolbar = (
+    <Button
+      icon="pi pi-trash"
+      onClick={deleteAnimal}
+      variant="danger"
+      loading={animalDeleteMutation.isLoading}
+      size="small"
+    />
+  );
+
   return (
-    <Card title="Mettre à jour un animal">
+    <Card title="Mettre à jour un animal" toolbar={Toolbar}>
       <AnimalForm
         defaultValues={animalQuery.data?.data ?? animalDefaultValues}
         onSubmit={onSubmit}
-        submitLoading={animalMutation.isLoading}
-        submitError={animalMutation.error?.response?.data.message}
+        submitLoading={animalUpdateMutation.isLoading}
+        submitError={
+          animalUpdateMutation.error?.response?.data.message ||
+          animalDeleteMutation.error?.response?.data.message
+        }
       />
     </Card>
   );
