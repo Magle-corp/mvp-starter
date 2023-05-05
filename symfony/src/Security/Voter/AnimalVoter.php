@@ -13,6 +13,7 @@ class AnimalVoter extends Voter
     const ANIMAL_READ = 'ANIMAL_READ';
     const ANIMALS_READ = 'ANIMALS_READ';
     const ANIMAL_UPDATE = 'ANIMAL_UPDATE';
+    const ANIMAL_DELETE = 'ANIMAL_DELETE';
 
     private VoterService $voterService;
     private RequestStack $requestStack;
@@ -32,13 +33,19 @@ class AnimalVoter extends Voter
             self::ANIMAL_CREATE,
             self::ANIMAL_READ,
             self::ANIMALS_READ,
-            self::ANIMAL_UPDATE
+            self::ANIMAL_UPDATE,
+            self::ANIMAL_DELETE
         ]);
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        if ($attribute === self::ANIMAL_CREATE || $attribute === self::ANIMAL_READ || $attribute === self::ANIMAL_UPDATE) {
+        if (
+            $attribute === self::ANIMAL_CREATE ||
+            $attribute === self::ANIMAL_READ ||
+            $attribute === self::ANIMAL_UPDATE ||
+            $attribute === self::ANIMAL_DELETE
+        ) {
             return $this->voterService->userHasOrganization($token->getUser(), $subject->getOrganization()->getId());
         }
 

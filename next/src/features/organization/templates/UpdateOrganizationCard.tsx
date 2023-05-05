@@ -40,6 +40,7 @@ const UpdateOrganizationCard = () => {
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
     enabled: false,
+    staleTime: 0,
     onSuccess: () => {
       toast.current.show({
         severity: 'success',

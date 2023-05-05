@@ -72,7 +72,7 @@ const AnimalForm = (props: FormHandler<Animal>) => {
           required
         />
       </StyledInputsWrapper>
-      <StyledInputsWrapper>
+      <InputsWrapper>
         <FormFieldAutoComplete
           label="caractère(s)"
           name="tempers"
@@ -91,7 +91,7 @@ const AnimalForm = (props: FormHandler<Animal>) => {
             )
           }
         />
-      </StyledInputsWrapper>
+      </InputsWrapper>
       <Button
         label="Enregistrer"
         onClick={form.handleSubmit(props.onSubmit)}
