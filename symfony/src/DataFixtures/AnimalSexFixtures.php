@@ -11,21 +11,21 @@ class AnimalSexFixtures extends AbstractFixtures
 
     public function load(ObjectManager $manager): void
     {
-//        $animalSexes = [
-//            'Male',
-//            'Femelle',
-//            'Inconu'
-//        ];
-//
-//        foreach ($animalSexes as $index => $sex) {
-//            $animalSex = new AnimalSex();
-//            $animalSex->setName($sex);
-//
-//            $manager->persist($animalSex);
-//
-//            $this->setReference(self::REF_SEX . '_' . $index, $animalSex);
-//        }
-//
-//        $manager->flush();
+        $animalSexes = [
+            'Male',
+            'Femelle',
+            'Inconu'
+        ];
+
+        foreach ($animalSexes as $index => $sex) {
+            $animalSex = new AnimalSex();
+            $animalSex->setName($sex);
+
+            $manager->persist($animalSex);
+
+            $this->setReference(self::REF_SEX . '_' . $index, $animalSex);
+        }
+
+        $manager->flush();
     }
 }
