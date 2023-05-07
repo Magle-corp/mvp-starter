@@ -38,7 +38,7 @@ class Organization
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['organization_read'])]
+    #[Groups(['organization_read', 'animal_read' ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]

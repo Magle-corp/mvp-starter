@@ -56,7 +56,7 @@ class Animal
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['animal_write'])]
+    #[Groups(['animal_read', 'animal_write'])]
     private ?Organization $organization = null;
 
     #[ORM\ManyToMany(targetEntity: AnimalTemper::class)]

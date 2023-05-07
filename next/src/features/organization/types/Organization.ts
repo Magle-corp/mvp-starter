@@ -2,7 +2,7 @@
 // TODO: add relation with owner ?
 
 type Organization = {
-  id?: number;
+  id: number;
   name: string;
   owner: string;
 };
