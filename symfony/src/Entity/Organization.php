@@ -59,11 +59,15 @@ class Organization
     #[ORM\OneToMany(mappedBy: 'organization', targetEntity: OrganizationAnimalType::class, orphanRemoval: true)]
     private Collection $animalTypes;
 
+    #[ORM\OneToMany(mappedBy: 'organization', targetEntity: OrganizationAnimalRace::class, orphanRemoval: true)]
+    private Collection $animalRaces;
+
     public function __construct()
     {
         $this->animals = new ArrayCollection();
         $this->animalTempers = new ArrayCollection();
         $this->animalTypes = new ArrayCollection();
+        $this->animalRaces = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,6 +183,36 @@ class Organization
             // set the owning side to null (unless already changed)
             if ($animalType->getOrganization() === $this) {
                 $animalType->setOrganization(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrganizationAnimalRace>
+     */
+    public function getAnimalRaces(): Collection
+    {
+        return $this->animalRaces;
+    }
+
+    public function addAnimalRace(OrganizationAnimalRace $animalRace): self
+    {
+        if (!$this->animalRaces->contains($animalRace)) {
+            $this->animalRaces->add($animalRace);
+            $animalRace->setOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnimalRace(OrganizationAnimalRace $animalRace): self
+    {
+        if ($this->animalRaces->removeElement($animalRace)) {
+            // set the owning side to null (unless already changed)
+            if ($animalRace->getOrganization() === $this) {
+                $animalRace->setOrganization(null);
             }
         }
 

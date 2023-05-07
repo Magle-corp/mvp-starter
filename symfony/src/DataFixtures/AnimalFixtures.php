@@ -15,12 +15,12 @@ class AnimalFixtures extends AbstractFixtures implements DependentFixtureInterfa
 
             $animal->setOrganization($this->getReference(OrganizationFixtures::REF_ORGANIZATION . '_' . $this->faker->numberBetween(0, 4)));
 
-//            $animalRaceFixturesRef = [
-//                AnimalTypeFixtures::REF_CAT . '_' . $this->faker->numberBetween(0, 19),
-//                AnimalTypeFixtures::REF_DOG . '_' . $this->faker->numberBetween(0, 22)
-//            ];
+            $animalRaceFixturesRef = [
+                AnimalTypeFixtures::REF_CAT . '_' . $this->faker->numberBetween(0, 19),
+                AnimalTypeFixtures::REF_DOG . '_' . $this->faker->numberBetween(0, 22)
+            ];
 
-//            $animal->setRace($this->getReference($animalRaceFixturesRef[$this->faker->numberBetween(0, count($animalRaceFixturesRef) - 1)]));
+            $animal->setRace($this->getReference($animalRaceFixturesRef[$this->faker->numberBetween(0, count($animalRaceFixturesRef) - 1)]));
             $animal->setName($this->faker->firstName());
 //            $animal->setSex($this->getReference(AnimalSexFixtures::REF_SEX . '_' . $this->faker->numberBetween(0, 2)));
 
@@ -37,7 +37,7 @@ class AnimalFixtures extends AbstractFixtures implements DependentFixtureInterfa
     public function getDependencies(): array
     {
         return [
-//            AnimalRaceFixtures::class,
+            AnimalRaceFixtures::class,
 //            AnimalTypeFixtures::class,
             OrganizationFixtures::class
         ];
