@@ -1,16 +1,17 @@
 import styled from 'styled-components';
 import { Controller, FieldValues } from 'react-hook-form';
-import { Dropdown, DropdownProps } from 'primereact/dropdown';
+import { MultiSelect, MultiSelectProps } from 'primereact/multiselect';
 import { FormField } from '@/cdn/types/Form';
 import FloatLabel from '@/ui/atoms/form/FloatLabel';
 import InputWrapper from '@/ui/atoms/form/InputWrapper';
 import InputError from '@/ui/atoms/form/InputError';
 import InputHelp from '@/ui/atoms/form/InputHelp';
 
-type FormFieldDropdown<T extends FieldValues> = FormField<T> & DropdownProps;
+type FormFieldMultiSelect<T extends FieldValues> = FormField<T> &
+  MultiSelectProps;
 
-const FormFieldDropdown = <T extends FieldValues>(
-  props: FormFieldDropdown<T>
+const FormFieldMultiSelect = <T extends FieldValues>(
+  props: FormFieldMultiSelect<T>
 ) => {
   return (
     <InputWrapper direction="column">
@@ -19,7 +20,7 @@ const FormFieldDropdown = <T extends FieldValues>(
           name={props.name}
           control={props.control}
           render={({ field }) => (
-            <StyledDropdown
+            <StyledMultiSelect
               id={props.name}
               className={props.error ? 'p-invalid' : ''}
               {...field}
@@ -45,8 +46,8 @@ const FormFieldDropdown = <T extends FieldValues>(
   );
 };
 
-const StyledDropdown = styled(Dropdown)`
+const StyledMultiSelect = styled(MultiSelect)`
   width: 100%;
 `;
 
-export default FormFieldDropdown;
+export default FormFieldMultiSelect;

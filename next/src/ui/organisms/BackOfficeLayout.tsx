@@ -1,10 +1,9 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Avatar } from 'primereact/avatar';
-import LocalStorageKeys from '@/cdn/enums/LocalStorageKeys';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import menuAdmin from '@/cdn/conf/menuAdmin';
 import menuOrganization from '@/cdn/conf/menuOrganization';
-import useLocalStorage from '@/cdn/hooks/useLocalStorage';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
@@ -21,11 +20,14 @@ type BackOfficeLayout = {
 };
 
 const BackOfficeLayout = (props: BackOfficeLayout) => {
-  const [adminMenuOpen, setAdminMenuOpen] = useState<boolean>(false);
-  const [organizationMenuOpen, setOrganizationMenuOpen] =
-    useLocalStorage<boolean>(LocalStorageKeys.BO_ORGANIZATION_MENU, true);
   const { token, logout } = useAuthContext();
   const { organization } = useOrganizationContext();
+  const {
+    adminMenuOpen,
+    setAdminMenuOpen,
+    organizationMenuOpen,
+    setOrganizationMenuOpen,
+  } = useBackOfficeContext();
   const { breakpointSM, breakpointMD } = useBreakpoints();
 
   const HeaderLeft = (

@@ -1,13 +1,33 @@
+import Organization from '@/features/organization/types/Organization';
+
 type Animal = {
-  id?: number;
+  id: number;
   name: string;
-  organization: string;
+  organization: Organization;
   tempers: AnimalTemper[];
+  race: AnimalRace;
+  sex: AnimalSex;
 };
 
 type AnimalTemper = {
-  id?: number;
+  id: number;
   name: string;
 };
 
-export type { Animal, AnimalTemper };
+type AnimalType = {
+  id: number;
+  name: string;
+};
+
+type AnimalRace = {
+  id: number;
+  name: string;
+  type: AnimalType;
+};
+
+type AnimalSex = {
+  id: number;
+  name: string;
+};
+
+export type { Animal, AnimalTemper, AnimalType, AnimalRace, AnimalSex };
