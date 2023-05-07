@@ -68,6 +68,11 @@ class Animal
     #[Groups(['animal_read', 'animal_write', 'animal_update'])]
     private ?AnimalRace $race = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['animal_read', 'animal_write', 'animal_update'])]
+    private ?AnimalSex $sex = null;
+
     public function __construct()
     {
         $this->tempers = new ArrayCollection();
@@ -134,6 +139,18 @@ class Animal
     public function setRace(?AnimalRace $race): self
     {
         $this->race = $race;
+
+        return $this;
+    }
+
+    public function getSex(): ?AnimalSex
+    {
+        return $this->sex;
+    }
+
+    public function setSex(?AnimalSex $sex): self
+    {
+        $this->sex = $sex;
 
         return $this;
     }
