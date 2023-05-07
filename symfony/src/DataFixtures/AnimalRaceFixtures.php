@@ -59,27 +59,27 @@ class AnimalRaceFixtures extends AbstractFixtures implements DependentFixtureInt
             "Terre-neuve"
         ];
 
-//        foreach ($catRaces as $index => $race) {
-//            $animalRace = new AdminAnimalRace();
-//            $animalRace->setName($race);
-//            $animalRace->setType($this->getReference(AnimalTypeFixtures::REF_CAT));
-//
-//            $manager->persist($animalRace);
-//
-//            $this->setReference(AnimalTypeFixtures::REF_CAT . '_' . $index, $animalRace);
-//        }
-//
-//        foreach ($dogRaces as $index => $race) {
-//            $animalRace = new AdminAnimalRace();
-//            $animalRace->setName($race);
-//            $animalRace->setType($this->getReference(AnimalTypeFixtures::REF_DOG));
-//
-//            $manager->persist($animalRace);
-//
-//            $this->setReference(AnimalTypeFixtures::REF_DOG . '_' . $index, $animalRace);
-//        }
-//
-//        $manager->flush();
+        foreach ($catRaces as $index => $race) {
+            $animalRace = new AdminAnimalRace();
+            $animalRace->setName($race);
+            $animalRace->setType($this->getReference(AnimalTypeFixtures::REF_CAT));
+
+            $manager->persist($animalRace);
+
+            $this->setReference(AnimalTypeFixtures::REF_CAT . '_' . $index, $animalRace);
+        }
+
+        foreach ($dogRaces as $index => $race) {
+            $animalRace = new AdminAnimalRace();
+            $animalRace->setName($race);
+            $animalRace->setType($this->getReference(AnimalTypeFixtures::REF_DOG));
+
+            $manager->persist($animalRace);
+
+            $this->setReference(AnimalTypeFixtures::REF_DOG . '_' . $index, $animalRace);
+        }
+
+        $manager->flush();
     }
 
     public function getDependencies(): array

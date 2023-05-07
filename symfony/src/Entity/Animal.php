@@ -63,6 +63,11 @@ class Animal
     #[Groups(['animal_read', 'animal_write', 'animal_update'])]
     private Collection $tempers;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['animal_read', 'animal_write', 'animal_update'])]
+    private ?AnimalRace $race = null;
+
     public function __construct()
     {
         $this->tempers = new ArrayCollection();
@@ -117,6 +122,18 @@ class Animal
     public function removeTemper(AnimalTemper $temper): self
     {
         $this->tempers->removeElement($temper);
+
+        return $this;
+    }
+
+    public function getRace(): ?AnimalRace
+    {
+        return $this->race;
+    }
+
+    public function setRace(?AnimalRace $race): self
+    {
+        $this->race = $race;
 
         return $this;
     }
