@@ -14,7 +14,7 @@ class AnimalSexFixtures extends AbstractFixtures
         $animalSexes = [
             'Male',
             'Femelle',
-            'Inconu'
+            'Inconnu'
         ];
 
         foreach ($animalSexes as $index => $sex) {

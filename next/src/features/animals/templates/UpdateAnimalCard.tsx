@@ -40,14 +40,14 @@ const UpdateAnimalCard = () => {
         tempers: data.tempers.map((temper) => temper.id),
         race: data.race.id,
         sex: data.sex.id,
+        registered: new Date(data.registered),
       }),
-    onError: () => {
+    onError: () =>
       toast.current.show({
         severity: 'error',
         summary: 'Animal',
         detail: 'Un problème technique est survenu',
-      });
-    },
+      }),
   });
 
   useEffect(() => {
@@ -118,6 +118,7 @@ const UpdateAnimalCard = () => {
       ),
       race: ApiIris.ANIMAL_RACES + fieldValues.race,
       sex: ApiIris.ANIMAL_SEXES + fieldValues.sex,
+      registered: fieldValues.registered,
     });
   };
 

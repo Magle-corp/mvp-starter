@@ -7,6 +7,7 @@ type Animal = {
   tempers: AnimalTemper[];
   race: AnimalRace;
   sex: AnimalSex;
+  registered: string;
 };
 
 type AnimalTemper = {

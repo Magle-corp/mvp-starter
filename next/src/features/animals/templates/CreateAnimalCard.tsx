@@ -25,6 +25,7 @@ const CreateAnimalCard = () => {
     tempers: [],
     race: '',
     sex: '',
+    registered: new Date(),
   };
 
   const animalMutation = usePost<AnimalFormSchema>({
@@ -59,6 +60,7 @@ const CreateAnimalCard = () => {
       ),
       race: ApiIris.ANIMAL_RACES + fieldValues.race,
       sex: ApiIris.ANIMAL_SEXES + fieldValues.sex,
+      registered: fieldValues.registered,
     });
   };
 
