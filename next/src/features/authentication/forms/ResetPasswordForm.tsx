@@ -1,16 +1,22 @@
+import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, ref, Schema, string } from 'yup';
 import { FormHandler } from '@/cdn/types/Form';
-import { ResetPassword } from '@/features/authentication/types/Auth';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';
 import Button from '@/ui/atoms/Button';
 
-const ResetPasswordForm = (props: FormHandler<ResetPassword>) => {
-  const schema: Schema<ResetPassword> = object({
+export type ResetPasswordFormSchema = {
+  token?: string;
+  password: string;
+  confirmPassword: string;
+};
+
+const ResetPasswordForm = (props: FormHandler<ResetPasswordFormSchema>) => {
+  const schema: Schema<ResetPasswordFormSchema> = object({
     password: string()
       .min(8, 'Minimum 8 caractères')
       .max(25, 'Maximum 25 caractères')
@@ -20,7 +26,7 @@ const ResetPasswordForm = (props: FormHandler<ResetPassword>) => {
       .required('Champ requis'),
   });
 
-  const form = useForm<ResetPassword>({
+  const form = useForm<ResetPasswordFormSchema>({
     mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: props.defaultValues,
@@ -29,8 +35,8 @@ const ResetPasswordForm = (props: FormHandler<ResetPassword>) => {
   return (
     <Form>
       {props.submitError && <FormError>{props.submitError}</FormError>}
-      <InputsWrapper>
-        <FormFieldPassword<ResetPassword>
+      <StyledInputsWrapper>
+        <FormFieldPassword<ResetPasswordFormSchema>
           label="mot de passe *"
           name="password"
           control={form.control}
@@ -38,7 +44,7 @@ const ResetPasswordForm = (props: FormHandler<ResetPassword>) => {
           help="Minimum 8 caractères, maximum 25"
           required
         />
-        <FormFieldPassword<ResetPassword>
+        <FormFieldPassword<ResetPasswordFormSchema>
           label="confirmer mot de passe *"
           name="confirmPassword"
           control={form.control}
@@ -46,7 +52,7 @@ const ResetPasswordForm = (props: FormHandler<ResetPassword>) => {
           required
           feedback={false}
         />
-      </InputsWrapper>
+      </StyledInputsWrapper>
       <Button
         label="Enregistrer mot de passe"
         onClick={form.handleSubmit(props.onSubmit)}
@@ -57,5 +63,11 @@ const ResetPasswordForm = (props: FormHandler<ResetPassword>) => {
     </Form>
   );
 };
+
+const StyledInputsWrapper = styled(InputsWrapper)`
+  > div {
+    grid-column: 1/12;
+  }
+`;
 
 export default ResetPasswordForm;

@@ -3,22 +3,27 @@ import { useForm } from 'react-hook-form';
 import { object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormHandler } from '@/cdn/types/Form';
-import Organization from '@/features/organization/types/Organization';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 
-const CreateOrganizationForm = (props: FormHandler<Organization>) => {
-  const schema: Schema<Partial<Organization>> = object({
+export type OrganizationFormSchema = {
+  name: string;
+  owner: string;
+};
+
+const CreateOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
+  const schema: Schema<OrganizationFormSchema> = object({
     name: string()
       .min(3, 'Minimum 3 caractères')
       .max(40, 'Maximum 40 caractères')
       .required('Champ requis'),
+    owner: string().required(),
   });
 
-  const form = useForm<Organization>({
+  const form = useForm<OrganizationFormSchema>({
     mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: props.defaultValues,
@@ -29,8 +34,8 @@ const CreateOrganizationForm = (props: FormHandler<Organization>) => {
       {props.submitError && (
         <StyledFormError>{props.submitError}</StyledFormError>
       )}
-      <InputsWrapper>
-        <FormFieldText<Organization>
+      <StyledInputsWrappers>
+        <FormFieldText<OrganizationFormSchema>
           label="nom de l'organisation *"
           name="name"
           control={form.control}
@@ -38,7 +43,7 @@ const CreateOrganizationForm = (props: FormHandler<Organization>) => {
           help="Minimum 3 caractères, maximum 40"
           required
         />
-      </InputsWrapper>
+      </StyledInputsWrappers>
       <StyledButton
         label="Enregistrer"
         onClick={form.handleSubmit(props.onSubmit)}
@@ -49,6 +54,12 @@ const CreateOrganizationForm = (props: FormHandler<Organization>) => {
     </Form>
   );
 };
+
+const StyledInputsWrappers = styled(InputsWrapper)`
+  > div {
+    grid-column: 1/12;
+  }
+`;
 
 const StyledButton = styled(Button)`
   margin: 0 auto;

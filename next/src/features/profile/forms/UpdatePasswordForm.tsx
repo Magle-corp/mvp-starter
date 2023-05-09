@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { object, ref, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
 import { FormHandler } from '@/cdn/types/Form';
-import { UpdatePassword } from '@/features/profile/types/Profile';
 import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';
 import Button from '@/ui/atoms/Button';
 import Form from '@/ui/atoms/form/Form';
@@ -12,8 +12,16 @@ import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 import Link from '@/ui/atoms/Link';
 
-const UpdatePasswordForm = (props: FormHandler<UpdatePassword>) => {
-  const schema: Schema<UpdatePassword> = object({
+export type PasswordFormSchema = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
+const UpdatePasswordForm = (props: FormHandler<PasswordFormSchema>) => {
+  const { organizationMenuOpen } = useBackOfficeContext();
+
+  const schema: Schema<PasswordFormSchema> = object({
     oldPassword: string().required('Champ requis'),
     newPassword: string()
       .min(8, 'Minimum 8 caractères')
@@ -24,7 +32,7 @@ const UpdatePasswordForm = (props: FormHandler<UpdatePassword>) => {
       .required('Champ requis'),
   });
 
-  const form = useForm<UpdatePassword>({
+  const form = useForm<PasswordFormSchema>({
     mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: props.defaultValues,
@@ -33,8 +41,8 @@ const UpdatePasswordForm = (props: FormHandler<UpdatePassword>) => {
   return (
     <Form>
       {props.submitError && <FormError>{props.submitError}</FormError>}
-      <StyledInputsWrapper>
-        <FormFieldPassword
+      <StyledInputsWrapper organizationMenuOpen={organizationMenuOpen}>
+        <FormFieldPassword<PasswordFormSchema>
           label="mot de passe actuel *"
           name="oldPassword"
           control={form.control}
@@ -42,7 +50,7 @@ const UpdatePasswordForm = (props: FormHandler<UpdatePassword>) => {
           required
           feedback={false}
         />
-        <FormFieldPassword
+        <FormFieldPassword<PasswordFormSchema>
           label="nouveau mot de passe *"
           name="newPassword"
           control={form.control}
@@ -50,7 +58,7 @@ const UpdatePasswordForm = (props: FormHandler<UpdatePassword>) => {
           help="Minimum 8 caractères, maximum 25"
           required
         />
-        <FormFieldPassword
+        <FormFieldPassword<PasswordFormSchema>
           label="confirmer mot de passe *"
           name="confirmPassword"
           control={form.control}
@@ -74,14 +82,31 @@ const UpdatePasswordForm = (props: FormHandler<UpdatePassword>) => {
 };
 
 const StyledInputsWrapper = styled(InputsWrapper)`
-  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+  @media screen and (${({ theme }) => theme.breakpoints.md}) {
     > div {
-      width: 270px;
+      grid-column: 1/6;
+    }
+  }
+
+  @media screen and (${({ theme }) => theme.breakpoints.lg}) {
+    > div {
+      grid-column: 1/5;
     }
   }
 
   @media screen and (${({ theme }) => theme.breakpoints.xl}) {
-    flex-direction: row;
+    > div:nth-child(1) {
+      grid-column: 1/4;
+    }
+
+    > div:nth-child(2) {
+      grid-column: 4/8;
+    }
+
+    > div:nth-child(3) {
+      grid-column: 8/12;
+    }
+  }
   }
 `;
 

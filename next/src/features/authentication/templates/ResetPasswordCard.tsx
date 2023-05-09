@@ -3,7 +3,7 @@ import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
-import { ResetPassword } from '@/features/authentication/types/Auth';
+import { ResetPasswordFormSchema } from '@/features/authentication/forms/ResetPasswordForm';
 import ResetPasswordForm from '@/features/authentication/forms/ResetPasswordForm';
 import AuthCard from '@/features/authentication/components/AuthCard';
 import CongratsWrapper from '@/features/authentication/components/CongratsWrapper';
@@ -14,17 +14,17 @@ const ResetPasswordCard = () => {
   const router = useRouter();
   const { token } = router.query;
 
-  const resetPasswordDefaultValues: ResetPassword = {
+  const resetPasswordDefaultValues: ResetPasswordFormSchema = {
     password: '',
     confirmPassword: '',
   };
 
-  const resetPasswordMutation = usePost<ResetPassword>({
+  const resetPasswordMutation = usePost<ResetPasswordFormSchema>({
     url: ApiRoutes.AUTH_RESET_PASSWORD,
   });
 
-  const onSubmit: SubmitHandler<ResetPassword> = (
-    fieldValues: ResetPassword
+  const onSubmit: SubmitHandler<ResetPasswordFormSchema> = (
+    fieldValues: ResetPasswordFormSchema
   ) => {
     resetPasswordMutation.mutate({ ...fieldValues, token: token as string });
   };

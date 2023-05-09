@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
-import { SignUpValidation } from '@/features/authentication/types/Auth';
 import AuthCard from '@/features/authentication/components/AuthCard';
 import CongratsWrapper from '@/features/authentication/components/CongratsWrapper';
 import LinksWrapper from '@/features/authentication/components/LinksWrapper';
@@ -13,17 +12,22 @@ import FormError from '@/ui/atoms/form/FormError';
 import Link from '@/ui/atoms/Link';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
+type SignUpValidationFormSchema = {
+  token: string;
+};
+
 const SignUpValidationCard = () => {
   const router = useRouter();
   const { token } = router.query;
 
-  const signUpValidationMutation = usePost<SignUpValidation>({
+  const signUpValidationMutation = usePost<SignUpValidationFormSchema>({
     url: ApiRoutes.AUTH_SIGN_UP_VALIDATION,
   });
 
-  const reSendSignUpValidationEmailMutation = usePost<SignUpValidation>({
-    url: ApiRoutes.AUTH_RE_SEND_SIGN_UP_VALIDATION_EMAIL,
-  });
+  const reSendSignUpValidationEmailMutation =
+    usePost<SignUpValidationFormSchema>({
+      url: ApiRoutes.AUTH_RE_SEND_SIGN_UP_VALIDATION_EMAIL,
+    });
 
   useEffect(() => {
     if (token && typeof token === 'string') {

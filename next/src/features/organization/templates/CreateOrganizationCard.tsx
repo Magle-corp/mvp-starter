@@ -1,33 +1,47 @@
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiIris from '@/cdn/enums/ApiIris';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import Organization from '@/features/organization/types/Organization';
+import { OrganizationFormSchema } from '@/features/organization/forms/CreateOrganizationForm';
 import CreateOrganizationForm from '@/features/organization/forms/CreateOrganizationForm';
 import Card from '@/ui/atoms/Card';
 
 const CreateOrganizationCard = () => {
   const { token, tokenPayload, getFreshToken } = useAuthContext();
+  const { toast } = useBackOfficeContext();
 
-  const organizationDefaultValues: Organization = {
+  const organizationDefaultValues: OrganizationFormSchema = {
     name: '',
-    owner: ApiIris.USER + tokenPayload?.user_id ?? 0,
+    owner: tokenPayload?.user_id.toString() ?? '',
   };
 
-  const organizationMutation = usePost<Organization>({
+  const organizationMutation = usePost<OrganizationFormSchema>({
     url: ApiRoutes.ORGANIZATIONS,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
     onSuccess: () => {
       getFreshToken(token);
     },
+    onError: () => {
+      toast.current.show({
+        severity: 'error',
+        summary: 'Organisation',
+        detail: 'Un problème technique est survenu',
+      });
+    },
   });
 
-  const onSubmit: SubmitHandler<Organization> = (fieldValues: Organization) => {
-    organizationMutation.mutate(fieldValues);
+  const onSubmit: SubmitHandler<OrganizationFormSchema> = (
+    fieldValues: OrganizationFormSchema
+  ) => {
+    organizationMutation.mutate({
+      name: fieldValues.name,
+      owner: ApiIris.USER + fieldValues.owner,
+    });
   };
 
   return (

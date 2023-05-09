@@ -2,7 +2,7 @@ import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
-import { SignUp } from '@/features/authentication/types/Auth';
+import { SignUpFormSchema } from '@/features/authentication/forms/SignUpForm';
 import SignUpForm from '@/features/authentication/forms/SignUpForm';
 import AuthCard from '@/features/authentication/components/AuthCard';
 import LinksWrapper from '@/features/authentication/components/LinksWrapper';
@@ -10,16 +10,20 @@ import CongratsWrapper from '@/features/authentication/components/CongratsWrappe
 import Link from '@/ui/atoms/Link';
 
 const SignUpCard = () => {
-  const signUpDefaultValues: SignUp = {
+  const signUpDefaultValues: SignUpFormSchema = {
     email: '',
     password: '',
     confirmPassword: '',
     acceptCGU: false,
   };
 
-  const signUpMutation = usePost<SignUp>({ url: ApiRoutes.AUTH_SIGN_UP });
+  const signUpMutation = usePost<SignUpFormSchema>({
+    url: ApiRoutes.AUTH_SIGN_UP,
+  });
 
-  const onSubmit: SubmitHandler<SignUp> = (fieldValues: SignUp) => {
+  const onSubmit: SubmitHandler<SignUpFormSchema> = (
+    fieldValues: SignUpFormSchema
+  ) => {
     signUpMutation.mutate(fieldValues);
   };
 

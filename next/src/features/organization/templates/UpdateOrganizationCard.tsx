@@ -1,5 +1,6 @@
 import { SubmitHandler } from 'react-hook-form';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import ApiIris from '@/cdn/enums/ApiIris';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import usePut from '@/cdn/hooks/usePut';
@@ -7,6 +8,7 @@ import useGet from '@/cdn/hooks/useGet';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import Organization from '@/features/organization/types/Organization';
+import { OrganizationFormSchema } from '@/features/organization/forms/UpdateOrganizationForm';
 import UpdateOrganizationForm from '@/features/organization/forms/UpdateOrganizationForm';
 import Card from '@/ui/atoms/Card';
 
@@ -15,11 +17,12 @@ const UpdateOrganizationCard = () => {
   const { organization } = useOrganizationContext();
   const { toast } = useBackOfficeContext();
 
-  const organizationDefaultValue: Partial<Organization> = {
+  const organizationDefaultValue: OrganizationFormSchema = {
     name: organization?.name ?? '',
+    owner: organization?.owner.id.toString() ?? '',
   };
 
-  const organizationMutation = usePut<Partial<Organization>>({
+  const organizationMutation = usePut<OrganizationFormSchema>({
     url: ApiRoutes.ORGANIZATIONS + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
@@ -50,10 +53,13 @@ const UpdateOrganizationCard = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<Partial<Organization>> = (
-    fieldValues: Partial<Organization>
+  const onSubmit: SubmitHandler<OrganizationFormSchema> = (
+    fieldValues: OrganizationFormSchema
   ) => {
-    organizationMutation.mutate(fieldValues);
+    organizationMutation.mutate({
+      name: fieldValues.name,
+      owner: ApiIris.USER + fieldValues.owner,
+    });
   };
 
   return (
