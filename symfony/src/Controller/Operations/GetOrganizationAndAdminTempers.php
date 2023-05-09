@@ -32,6 +32,13 @@ class GetOrganizationAndAdminTempers extends AbstractController
         $organizationAnimalTemperRepository = $this->manager->getRepository(OrganizationAnimalTemper::class);
         $organizationAnimalTempers = $organizationAnimalTemperRepository->findBy(['organization' => $id]);
 
-        return array_merge($organizationAnimalTempers, $adminAnimalTempers);
+        $allAnimalTempers = array_merge($organizationAnimalTempers, $adminAnimalTempers);
+
+        usort($allAnimalTempers, function ($a, $b): int
+        {
+            return strcmp($a->getName(), $b->getName());
+        });
+
+        return $allAnimalTempers;
     }
 }

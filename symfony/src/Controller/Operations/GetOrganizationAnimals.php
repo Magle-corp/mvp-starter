@@ -25,6 +25,13 @@ class GetOrganizationAnimals extends AbstractController
     public function __invoke(string $id): array
     {
         $animalRepository = $this->manager->getRepository(Animal::class);
-        return $animalRepository->findBy(['organization' => $id]);
+        $animals = $animalRepository->findBy(['organization' => $id]);
+
+        usort($animals, function ($a, $b): int
+        {
+            return strcmp($a->getName(), $b->getName());
+        });
+
+        return $animals;
     }
 }

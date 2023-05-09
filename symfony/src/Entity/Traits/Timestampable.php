@@ -24,7 +24,15 @@ trait Timestampable
 
     #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'update')]
-    #[Groups(['animals_read', 'animal_read'])]
+    #[Groups([
+        'animals_read',
+        'animal_read',
+        'animal_races_read',
+        'animal_sexes_read',
+        'animal_tempers_read',
+        'animal_types_read',
+        'organization_read'
+    ])]
     private DateTime $updated;
 
     public function getCreated()

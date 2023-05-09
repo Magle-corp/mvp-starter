@@ -32,6 +32,13 @@ class GetOrganizationAndAdminTypes extends AbstractController
         $organizationAnimalTypeRepository = $this->manager->getRepository(OrganizationAnimalType::class);
         $organizationAnimalTypes = $organizationAnimalTypeRepository->findBy(['organization' => $id]);
 
-        return array_merge($organizationAnimalTypes, $adminAnimalTypes);
+        $allAnimalTypes = array_merge($organizationAnimalTypes, $adminAnimalTypes);
+
+        usort($allAnimalTypes, function ($a, $b): int
+        {
+            return strcmp($a->getName(), $b->getName());
+        });
+
+        return $allAnimalTypes;
     }
 }
