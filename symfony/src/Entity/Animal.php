@@ -65,12 +65,12 @@ class Animal
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['animal_read', 'animal_write', 'animal_update'])]
+    #[Groups(['animals_read', 'animal_read', 'animal_write', 'animal_update'])]
     private ?AnimalRace $race = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['animal_read', 'animal_write', 'animal_update'])]
+    #[Groups(['animals_read', 'animal_read', 'animal_write', 'animal_update'])]
     private ?AnimalSex $sex = null;
 
     public function __construct()

@@ -19,11 +19,11 @@ class AnimalSex
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['animal_read', 'animal_sexes_read'])]
+    #[Groups(['animals_read', 'animal_read', 'animal_sexes_read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
-    #[Groups(['animal_read', 'animal_sexes_read'])]
+    #[Groups(['animals_read', 'animal_read', 'animal_sexes_read'])]
     private ?string $name = null;
 
     public function getId(): ?int
