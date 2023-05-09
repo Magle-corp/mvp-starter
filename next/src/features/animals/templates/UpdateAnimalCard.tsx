@@ -16,6 +16,7 @@ import AnimalForm from '@/features/animals/forms/AnimalForm';
 import { AnimalFormSchema } from '@/features/animals/forms/AnimalForm';
 import Button from '@/ui/atoms/Button';
 import Card from '@/ui/atoms/Card';
+import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
 const UpdateAnimalCard = () => {
   const [animalDefaultValues, setAnimalDefaultValues] =
@@ -35,7 +36,7 @@ const UpdateAnimalCard = () => {
     onSuccess: (data) =>
       setAnimalDefaultValues({
         name: data.name,
-        organization: data.organization.id,
+        organization: data.organization.id.toString(),
         tempers: data.tempers.map((temper) => temper.id),
         race: data.race.id,
         sex: data.sex.id,
@@ -143,6 +144,7 @@ const UpdateAnimalCard = () => {
           }
         />
       )}
+      {animalQuery.isLoading && <ProgressSpinner />}
     </Card>
   );
 };

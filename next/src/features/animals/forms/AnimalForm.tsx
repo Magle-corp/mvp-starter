@@ -25,7 +25,7 @@ import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 
 export type AnimalFormSchema = {
   name: string;
-  organization: string | number;
+  organization: string;
   tempers: (number | string)[];
   race: string | number;
   sex: string | number;
@@ -85,7 +85,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
     <Form>
       {props.submitError && <FormError>{props.submitError}</FormError>}
       <IdentityInputsWrapper organizationMenuOpen={organizationMenuOpen}>
-        <FormFieldText
+        <FormFieldText<AnimalFormSchema>
           label="nom *"
           name="name"
           control={form.control}
@@ -93,7 +93,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
           help="Minimum 2 caractères, maximum 30"
           required
         />
-        <FormFieldDropdown
+        <FormFieldDropdown<AnimalFormSchema>
           label="race *"
           name="race"
           control={form.control}
@@ -104,7 +104,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
           optionLabel="name"
           optionValue="id"
         />
-        <FormFieldDropdown
+        <FormFieldDropdown<AnimalFormSchema>
           label="sex *"
           name="sex"
           control={form.control}
@@ -116,7 +116,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
         />
       </IdentityInputsWrapper>
       <DetailInputsWrapper organizationMenuOpen={organizationMenuOpen}>
-        <FormFieldMultiSelect
+        <FormFieldMultiSelect<AnimalFormSchema>
           label="caractère(s)"
           name="tempers"
           control={form.control}
@@ -137,9 +137,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
   );
 };
 
-const IdentityInputsWrapper = styled(InputsWrapper)<{
-  organizationMenuOpen: boolean;
-}>`
+const IdentityInputsWrapper = styled(InputsWrapper)`
   @media screen and (${({ theme }) => theme.breakpoints.md}) {
     > div:nth-child(1) {
       grid-column: 1/6;
@@ -153,12 +151,32 @@ const IdentityInputsWrapper = styled(InputsWrapper)<{
       grid-column: 9/12;
     }
   }
+
+  @media screen and (${({ theme }) => theme.breakpoints.xl}) {
+    > div:nth-child(1) {
+      grid-column: 1/5;
+    }
+
+    > div:nth-child(2) {
+      grid-column: 5/7;
+    }
+
+    > div:nth-child(3) {
+      grid-column: 7/9;
+    }
+  }
 `;
 
 const DetailInputsWrapper = styled(InputsWrapper)`
   @media screen and (${({ theme }) => theme.breakpoints.md}) {
     > div {
       grid-column: 1/6;
+    }
+  }
+
+  @media screen and (${({ theme }) => theme.breakpoints.xl}) {
+    > div {
+      grid-column: 1/5;
     }
   }
 `;

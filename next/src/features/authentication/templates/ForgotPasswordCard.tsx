@@ -3,7 +3,7 @@ import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
-import { ForgotPassword } from '@/features/authentication/types/Auth';
+import { ForgotPasswordFormSchema } from '@/features/authentication/forms/ForgotPasswordForm';
 import ForgotPasswordForm from '@/features/authentication/forms/ForgotPasswordForm';
 import AuthCard from '@/features/authentication/components/AuthCard';
 import LinksWrapper from '@/features/authentication/components/LinksWrapper';
@@ -11,16 +11,16 @@ import CongratsWrapper from '@/features/authentication/components/CongratsWrappe
 import Link from '@/ui/atoms/Link';
 
 const ForgotPasswordCard = () => {
-  const forgotPasswordDefaultValues: ForgotPassword = {
+  const forgotPasswordDefaultValues: ForgotPasswordFormSchema = {
     email: '',
   };
 
-  const forgotPasswordMutation = usePost<ForgotPassword>({
+  const forgotPasswordMutation = usePost<ForgotPasswordFormSchema>({
     url: ApiRoutes.AUTH_FORGOT_PASSWORD,
   });
 
-  const onSubmit: SubmitHandler<ForgotPassword> = (
-    fieldValues: ForgotPassword
+  const onSubmit: SubmitHandler<ForgotPasswordFormSchema> = (
+    fieldValues: ForgotPasswordFormSchema
   ) => {
     forgotPasswordMutation.mutate(fieldValues);
   };

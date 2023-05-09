@@ -1,33 +1,42 @@
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import { confirmDialog } from 'primereact/confirmdialog';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import useDelete from '@/cdn/hooks/useDelete';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
-import Organization from '@/features/organization/types/Organization';
+import { OrganizationFormSchema } from '@/features/organization/forms/DeleteOrganizationForm';
 import DeleteOrganizationForm from '@/features/organization/forms/DeleteOrganizationForm';
 import Card from '@/ui/atoms/Card';
 
 const DeleteOrganizationCard = () => {
   const { token, getFreshToken } = useAuthContext();
   const { organization } = useOrganizationContext();
+  const { toast } = useBackOfficeContext();
 
-  const formDefaultValues: Partial<Organization> = {
+  const formDefaultValues: OrganizationFormSchema = {
     name: '',
   };
 
-  const organizationMutation = useDelete<Partial<Organization>>({
+  const organizationMutation = useDelete<OrganizationFormSchema>({
     url: ApiRoutes.ORGANIZATIONS + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
     onSuccess: () => {
       getFreshToken(token);
     },
+    onError: () => {
+      toast.current.show({
+        severity: 'error',
+        summary: 'Organisation',
+        detail: 'Un problème technique est survenu',
+      });
+    },
   });
 
-  const onSubmit: SubmitHandler<Partial<Organization>> = () => {
+  const onSubmit: SubmitHandler<OrganizationFormSchema> = () => {
     confirmDialog({
       message:
         'Cette action est irréversible, êtes-vous sûr de vouloir continuer ?',

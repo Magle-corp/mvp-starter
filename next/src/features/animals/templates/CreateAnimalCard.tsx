@@ -21,7 +21,7 @@ const CreateAnimalCard = () => {
 
   const animalDefaultValues: AnimalFormSchema = {
     name: '',
-    organization: organization?.id ?? '',
+    organization: organization?.id.toString() ?? '',
     tempers: [],
     race: '',
     sex: '',

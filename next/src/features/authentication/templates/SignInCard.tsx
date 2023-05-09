@@ -4,7 +4,7 @@ import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import { SignIn } from '@/features/authentication/types/Auth';
+import { SignInFormSchema } from '@/features/authentication/forms/SignInForm';
 import SignInForm from '@/features/authentication/forms/SignInForm';
 import AuthCard from '@/features/authentication/components/AuthCard';
 import LinksWrapper from '@/features/authentication/components/LinksWrapper';
@@ -14,12 +14,12 @@ const SignInCard = () => {
   const router = useRouter();
   const { login } = useAuthContext();
 
-  const signInDefaultValues: SignIn = {
+  const signInDefaultValues: SignInFormSchema = {
     email: '',
     password: '',
   };
 
-  const signInMutation = usePost<SignIn>({
+  const signInMutation = usePost<SignInFormSchema>({
     url: ApiRoutes.AUTH_SIGN_IN,
     onSuccess: ({ data }) => {
       login(data);
@@ -27,7 +27,9 @@ const SignInCard = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<SignIn> = (fieldValues: SignIn) => {
+  const onSubmit: SubmitHandler<SignInFormSchema> = (
+    fieldValues: SignInFormSchema
+  ) => {
     signInMutation.mutate(fieldValues);
   };
 

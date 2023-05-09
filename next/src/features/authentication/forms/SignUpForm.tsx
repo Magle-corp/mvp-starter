@@ -1,8 +1,8 @@
+import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { boolean, object, ref, Schema, string } from 'yup';
 import { FormHandler } from '@/cdn/types/Form';
-import { SignUp } from '@/features/authentication/types/Auth';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
@@ -11,8 +11,15 @@ import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';
 import Button from '@/ui/atoms/Button';
 
-const SignUpForm = (props: FormHandler<SignUp>) => {
-  const schema: Schema<SignUp> = object({
+export type SignUpFormSchema = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  acceptCGU: boolean;
+};
+
+const SignUpForm = (props: FormHandler<SignUpFormSchema>) => {
+  const schema: Schema<SignUpFormSchema> = object({
     email: string()
       .min(5, 'Minimum 5 caractères')
       .max(80, 'Maximum 80 caractères')
@@ -28,7 +35,7 @@ const SignUpForm = (props: FormHandler<SignUp>) => {
     acceptCGU: boolean().oneOf([true], 'Accord nécessaire').required(),
   });
 
-  const form = useForm<SignUp>({
+  const form = useForm<SignUpFormSchema>({
     mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: props.defaultValues,
@@ -37,15 +44,15 @@ const SignUpForm = (props: FormHandler<SignUp>) => {
   return (
     <Form>
       {props.submitError && <FormError>{props.submitError}</FormError>}
-      <InputsWrapper>
-        <FormFieldText<SignUp>
+      <StyledInputsWrapper>
+        <FormFieldText<SignUpFormSchema>
           label="adresse email *"
           name="email"
           control={form.control}
           error={form.formState.errors.email?.message}
           required
         />
-        <FormFieldPassword<SignUp>
+        <FormFieldPassword<SignUpFormSchema>
           label="mot de passe *"
           name="password"
           control={form.control}
@@ -53,7 +60,7 @@ const SignUpForm = (props: FormHandler<SignUp>) => {
           help="Minimum 8 caractères, maximum 25"
           required
         />
-        <FormFieldPassword<SignUp>
+        <FormFieldPassword<SignUpFormSchema>
           label="confirmer mot de passe *"
           name="confirmPassword"
           control={form.control}
@@ -61,14 +68,14 @@ const SignUpForm = (props: FormHandler<SignUp>) => {
           feedback={false}
           required
         />
-        <FormFieldCheckbox<SignUp>
+        <FormFieldCheckbox<SignUpFormSchema>
           label="J'accepte les conditions générales d'utilisation *"
           name="acceptCGU"
           control={form.control}
           error={form.formState.errors.acceptCGU?.message}
           required
         />
-      </InputsWrapper>
+      </StyledInputsWrapper>
       <Button
         label="S'inscrire"
         onClick={form.handleSubmit(props.onSubmit)}
@@ -79,5 +86,11 @@ const SignUpForm = (props: FormHandler<SignUp>) => {
     </Form>
   );
 };
+
+const StyledInputsWrapper = styled(InputsWrapper)`
+  > div {
+    grid-column: 1/12;
+  }
+`;
 
 export default SignUpForm;

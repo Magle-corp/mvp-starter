@@ -1,10 +1,9 @@
-// TODO: add relation with animal ?
-// TODO: add relation with owner ?
+import User from '@/features/profile/types/User';
 
 type Organization = {
   id: number;
   name: string;
-  owner: string;
+  owner: User;
 };
 
 export default Organization;

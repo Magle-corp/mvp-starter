@@ -3,7 +3,7 @@ import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import { UpdatePassword } from '@/features/profile/types/Profile';
+import { PasswordFormSchema } from '@/features/profile/forms/UpdatePasswordForm';
 import UpdatePasswordForm from '@/features/profile/forms/UpdatePasswordForm';
 import Card from '@/ui/atoms/Card';
 
@@ -11,13 +11,13 @@ const UpdatePasswordCard = () => {
   const { token } = useAuthContext();
   const { toast } = useBackOfficeContext();
 
-  const resetPasswordDefaultValues: UpdatePassword = {
+  const resetPasswordDefaultValues: PasswordFormSchema = {
     oldPassword: '',
     newPassword: '',
     confirmPassword: '',
   };
 
-  const resetPasswordMutation = usePost<UpdatePassword>({
+  const resetPasswordMutation = usePost<PasswordFormSchema>({
     url: ApiRoutes.PROFILE_UPDATE_PASSWORD,
     token: token?.token ?? undefined,
     onSuccess: () => {
@@ -36,8 +36,8 @@ const UpdatePasswordCard = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<UpdatePassword> = (
-    fieldValues: UpdatePassword
+  const onSubmit: SubmitHandler<PasswordFormSchema> = (
+    fieldValues: PasswordFormSchema
   ) => {
     resetPasswordMutation.mutate(fieldValues);
   };
