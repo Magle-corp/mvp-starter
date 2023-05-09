@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Entity\Traits\Timestampable;
 use App\Repository\OrganizationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -35,10 +36,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class Organization
 {
+    use Timestampable;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['organization_read', 'animal_read' ])]
+    #[Groups(['organization_read', 'animal_read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]

@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Controller\Operations\GetOrganizationAndAdminTypes;
+use App\Entity\Traits\Timestampable;
 use App\Repository\AnimalTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -29,6 +30,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class AnimalType
 {
+    use Timestampable;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
