@@ -14,6 +14,7 @@ import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import useGet from '@/cdn/hooks/useGet';
+import { dateToString } from '@/cdn/utils/dateService';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import { Animal } from '@/features/animals/types/Animal';
@@ -63,8 +64,16 @@ const AnimalsTableCard = () => {
       <ColumnItemWrapper>
         {props.sex.name === 'Male' && <TbGenderMale />}
         {props.sex.name === 'Femelle' && <TbGenderFemale />}
-        {props.sex.name === 'Inconu' && <TbGenderAgender />}
+        {props.sex.name === 'Inconnu' && <TbGenderAgender />}
         <p>{props.race.name}</p>
+      </ColumnItemWrapper>
+    );
+  };
+
+  const RegisteredColumnItemTemplate = (props: Animal) => {
+    return (
+      <ColumnItemWrapper>
+        <p>{dateToString(new Date(props.registered))}</p>
       </ColumnItemWrapper>
     );
   };
@@ -101,6 +110,12 @@ const AnimalsTableCard = () => {
           header="Race"
           sortable
           body={RaceColumnItemTemplate}
+        />
+        <Column
+          field="registered"
+          header="Arrivé"
+          sortable
+          body={RegisteredColumnItemTemplate}
         />
         <Column className="custom-row-actions" body={rowActions} />
       </Table>

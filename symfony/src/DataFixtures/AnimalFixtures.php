@@ -12,6 +12,7 @@ class AnimalFixtures extends AbstractFixtures implements DependentFixtureInterfa
     {
         for ($i = 0; $i < 10; $i++) {
             $animal = new Animal();
+            $animal->setRegistered($this->faker->dateTimeBetween('-1 year'));
 
             $animal->setOrganization($this->getReference(OrganizationFixtures::REF_ORGANIZATION . '_' . $this->faker->numberBetween(0, 4)));
 

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import { array, object, Schema, string } from 'yup';
+import { array, date, object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  TbDog,
   TbCat,
+  TbDog,
   TbGenderAgender,
   TbGenderFemale,
   TbGenderMale,
@@ -22,6 +22,7 @@ import {
   AnimalSex,
   AnimalTemper,
 } from '@/features/animals/types/Animal';
+import FormFieldCalendar from '@/ui/molecules/formFields/FormFieldCalendar';
 import FormFieldDropdown from '@/ui/molecules/formFields/FormFieldDropdown';
 import FormFieldMultiSelect from '@/ui/molecules/formFields/FormFieldMultiSelect';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
@@ -36,6 +37,7 @@ export type AnimalFormSchema = {
   tempers: (number | string)[];
   race: string | number;
   sex: string | number;
+  registered: Date;
 };
 
 const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
@@ -80,6 +82,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
     tempers: array().required(),
     race: string().required('Champ requis'),
     sex: string().required('Champ requis'),
+    registered: date().required('Champ requis'),
   });
 
   const form = useForm<AnimalFormSchema>({
@@ -103,7 +106,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
       <DropdownItemWrapper>
         {props.name === 'Male' && <TbGenderMale />}
         {props.name === 'Femelle' && <TbGenderFemale />}
-        {props.name === 'Inconu' && <TbGenderAgender />}
+        {props.name === 'Inconnu' && <TbGenderAgender />}
         <p>{props.name}</p>
       </DropdownItemWrapper>
     );
@@ -112,7 +115,18 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
   return (
     <Form>
       {props.submitError && <FormError>{props.submitError}</FormError>}
-      <IdentityInputsWrapper>
+      <AdministrativeInputsWrapper organizationMenuOpen={organizationMenuOpen}>
+        <FormFieldCalendar<AnimalFormSchema>
+          label="arrivé le *"
+          name="registered"
+          control={form.control}
+          error={form.formState.errors.registered?.message}
+          required
+          showIcon
+          iconPos="left"
+        />
+      </AdministrativeInputsWrapper>
+      <IdentityInputsWrapper organizationMenuOpen={organizationMenuOpen}>
         <FormFieldText<AnimalFormSchema>
           label="nom *"
           name="name"
@@ -134,7 +148,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
           itemTemplate={RaceDropdownItemTemplate}
         />
         <FormFieldDropdown<AnimalFormSchema>
-          label="sex *"
+          label="sexe *"
           name="sex"
           control={form.control}
           error={form.formState.errors.sex?.message}
@@ -145,7 +159,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
           itemTemplate={SexDropdownItemTemplate}
         />
       </IdentityInputsWrapper>
-      <DetailInputsWrapper>
+      <DetailInputsWrapper organizationMenuOpen={organizationMenuOpen}>
         <FormFieldMultiSelect<AnimalFormSchema>
           label="caractère(s)"
           name="tempers"
@@ -171,6 +185,26 @@ const DropdownItemWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75rem;
+`;
+
+const AdministrativeInputsWrapper = styled(InputsWrapper)`
+  @media screen and (${({ theme }) => theme.breakpoints.md}) {
+    > div {
+      grid-column: 1/6;
+    }
+  }
+
+  @media screen and (${({ theme }) => theme.breakpoints.lg}) {
+    > div {
+      grid-column: 1/5;
+    }
+  }
+
+  @media screen and (${({ theme }) => theme.breakpoints.xl}) {
+    > div {
+      grid-column: 1/4;
+    }
+  }
 `;
 
 const IdentityInputsWrapper = styled(InputsWrapper)`

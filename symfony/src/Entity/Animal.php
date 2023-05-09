@@ -11,8 +11,10 @@ use ApiPlatform\Metadata\Put;
 use App\Controller\Operations\GetOrganizationAnimals;
 use App\Entity\Traits\Timestampable;
 use App\Repository\AnimalRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -75,6 +77,10 @@ class Animal
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['animals_read', 'animal_read', 'animal_write', 'animal_update'])]
     private ?AnimalSex $sex = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['animals_read', 'animal_read', 'animal_write', 'animal_update'])]
+    private ?DateTimeInterface $registered = null;
 
     public function __construct()
     {
@@ -154,6 +160,18 @@ class Animal
     public function setSex(?AnimalSex $sex): self
     {
         $this->sex = $sex;
+
+        return $this;
+    }
+
+    public function getRegistered(): ?DateTimeInterface
+    {
+        return $this->registered;
+    }
+
+    public function setRegistered(DateTimeInterface $registered): self
+    {
+        $this->registered = $registered;
 
         return $this;
     }
