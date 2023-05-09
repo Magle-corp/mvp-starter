@@ -3,6 +3,13 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { array, object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import {
+  TbDog,
+  TbCat,
+  TbGenderAgender,
+  TbGenderFemale,
+  TbGenderMale,
+} from 'react-icons/tb';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
@@ -81,10 +88,31 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
     defaultValues: props.defaultValues,
   });
 
+  const RaceDropdownItemTemplate = (props: AnimalRace) => {
+    return (
+      <DropdownItemWrapper>
+        {props.type.name === 'Chien' && <TbDog />}
+        {props.type.name === 'Chat' && <TbCat />}
+        <p>{props.name}</p>
+      </DropdownItemWrapper>
+    );
+  };
+
+  const SexDropdownItemTemplate = (props: AnimalSex) => {
+    return (
+      <DropdownItemWrapper>
+        {props.name === 'Male' && <TbGenderMale />}
+        {props.name === 'Femelle' && <TbGenderFemale />}
+        {props.name === 'Inconu' && <TbGenderAgender />}
+        <p>{props.name}</p>
+      </DropdownItemWrapper>
+    );
+  };
+
   return (
     <Form>
       {props.submitError && <FormError>{props.submitError}</FormError>}
-      <IdentityInputsWrapper organizationMenuOpen={organizationMenuOpen}>
+      <IdentityInputsWrapper>
         <FormFieldText<AnimalFormSchema>
           label="nom *"
           name="name"
@@ -103,6 +131,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
           options={animalRaces}
           optionLabel="name"
           optionValue="id"
+          itemTemplate={RaceDropdownItemTemplate}
         />
         <FormFieldDropdown<AnimalFormSchema>
           label="sex *"
@@ -113,9 +142,10 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
           options={animalSexes}
           optionLabel="name"
           optionValue="id"
+          itemTemplate={SexDropdownItemTemplate}
         />
       </IdentityInputsWrapper>
-      <DetailInputsWrapper organizationMenuOpen={organizationMenuOpen}>
+      <DetailInputsWrapper>
         <FormFieldMultiSelect<AnimalFormSchema>
           label="caractère(s)"
           name="tempers"
@@ -137,6 +167,12 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
   );
 };
 
+const DropdownItemWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+`;
+
 const IdentityInputsWrapper = styled(InputsWrapper)`
   @media screen and (${({ theme }) => theme.breakpoints.md}) {
     > div:nth-child(1) {
@@ -152,17 +188,31 @@ const IdentityInputsWrapper = styled(InputsWrapper)`
     }
   }
 
-  @media screen and (${({ theme }) => theme.breakpoints.xl}) {
+  @media screen and (${({ theme }) => theme.breakpoints.lg}) {
     > div:nth-child(1) {
       grid-column: 1/5;
     }
 
     > div:nth-child(2) {
-      grid-column: 5/7;
+      grid-column: 5/8;
     }
 
     > div:nth-child(3) {
-      grid-column: 7/9;
+      grid-column: 8/11;
+    }
+  }
+
+  @media screen and (${({ theme }) => theme.breakpoints.xl}) {
+    > div:nth-child(1) {
+      grid-column: 1/4;
+    }
+
+    > div:nth-child(2) {
+      grid-column: 4/7;
+    }
+
+    > div:nth-child(3) {
+      grid-column: 7/10;
     }
   }
 `;
@@ -174,9 +224,15 @@ const DetailInputsWrapper = styled(InputsWrapper)`
     }
   }
 
-  @media screen and (${({ theme }) => theme.breakpoints.xl}) {
+  @media screen and (${({ theme }) => theme.breakpoints.lg}) {
     > div {
       grid-column: 1/5;
+    }
+  }
+
+  @media screen and (${({ theme }) => theme.breakpoints.xl}) {
+    > div {
+      grid-column: 1/4;
     }
   }
 `;

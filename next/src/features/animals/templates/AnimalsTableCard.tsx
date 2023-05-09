@@ -1,7 +1,15 @@
+import styled from 'styled-components';
 import { useState } from 'react';
 import { FilterMatchMode } from 'primereact/api';
 import { Column } from 'primereact/column';
 import { DataTableFilterMeta } from 'primereact/datatable';
+import {
+  TbCat,
+  TbDog,
+  TbGenderAgender,
+  TbGenderFemale,
+  TbGenderMale,
+} from 'react-icons/tb';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
@@ -40,6 +48,27 @@ const AnimalsTableCard = () => {
     <LinkButton label="Ajouter" href={AppPages.BO_ANIMAL_CREATE} />
   );
 
+  const NameColumnItemTemplate = (props: Animal) => {
+    return (
+      <ColumnItemWrapper>
+        {props.race.type.name === 'Chien' && <TbDog />}
+        {props.race.type.name === 'Chat' && <TbCat />}
+        <p>{props.name}</p>
+      </ColumnItemWrapper>
+    );
+  };
+
+  const RaceColumnItemTemplate = (props: Animal) => {
+    return (
+      <ColumnItemWrapper>
+        {props.sex.name === 'Male' && <TbGenderMale />}
+        {props.sex.name === 'Femelle' && <TbGenderFemale />}
+        {props.sex.name === 'Inconu' && <TbGenderAgender />}
+        <p>{props.race.name}</p>
+      </ColumnItemWrapper>
+    );
+  };
+
   const rowActions = (props: Animal) => {
     return (
       <LinkButton
@@ -65,11 +94,24 @@ const AnimalsTableCard = () => {
           sortable
           filter
           filterPlaceholder="Rechercher"
+          body={NameColumnItemTemplate}
+        />
+        <Column
+          field="race.name"
+          header="Race"
+          sortable
+          body={RaceColumnItemTemplate}
         />
         <Column className="custom-row-actions" body={rowActions} />
       </Table>
     </Card>
   );
 };
+
+const ColumnItemWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+`;
 
 export default AnimalsTableCard;
