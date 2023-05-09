@@ -16,7 +16,6 @@ class UserFixtures extends AbstractFixtures
     public function load(ObjectManager $manager): void
     {
         $adminUser = new User();
-        $adminUser->setCreated(new DateTime());
         $adminUser->setEmail('admin@magle.fr');
         $adminUser->setRoles([]);
         $adminUser->setVerified(1);
@@ -28,7 +27,6 @@ class UserFixtures extends AbstractFixtures
 
         for ($i = 1; $i < 6; $i++) {
             $user = new User();
-            $user->setCreated(new DateTime());
             $user->setEmail($this->faker->email());
             $user->setRoles([]);
             $user->setVerified(1);

@@ -10,6 +10,7 @@ use App\Controller\User\ResetPasswordController;
 use App\Controller\User\SignUpController;
 use App\Controller\User\SignUpValidationController;
 use App\Controller\User\UpdatePasswordController;
+use App\Entity\Traits\Timestampable;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
@@ -50,9 +51,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 ])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use Timestampable;
+
     public function __construct()
     {
-        $this->created = new DateTime();
         $this->organizations = new ArrayCollection();
     }
 
@@ -70,9 +72,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?string $password = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTimeInterface $created;
 
     #[ORM\Column]
     private ?bool $verified = false;
@@ -148,18 +147,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function getCreated(): ?DateTimeInterface
-    {
-        return $this->created;
-    }
-
-    public function setCreated(DateTimeInterface $created): self
-    {
-        $this->created = $created;
-
-        return $this;
     }
 
     public function isVerified(): ?bool
