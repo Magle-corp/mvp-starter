@@ -13,7 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(normalizationContext: ['groups' => ['animal_sexes_read']])
-    ]
+    ],
+    order: ['name' => 'ASC']
 )]
 class AnimalSex
 {

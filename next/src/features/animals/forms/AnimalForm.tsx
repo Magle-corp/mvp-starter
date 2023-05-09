@@ -165,6 +165,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
           name="tempers"
           control={form.control}
           error={form.formState.errors.tempers?.message}
+          filter
           options={animalTempers}
           optionLabel="name"
           optionValue="id"
@@ -254,19 +255,19 @@ const IdentityInputsWrapper = styled(InputsWrapper)`
 const DetailInputsWrapper = styled(InputsWrapper)`
   @media screen and (${({ theme }) => theme.breakpoints.md}) {
     > div {
-      grid-column: 1/6;
+      grid-column: 1/9;
     }
   }
 
   @media screen and (${({ theme }) => theme.breakpoints.lg}) {
     > div {
-      grid-column: 1/5;
+      grid-column: 1/8;
     }
   }
 
   @media screen and (${({ theme }) => theme.breakpoints.xl}) {
     > div {
-      grid-column: 1/4;
+      grid-column: 1/7;
     }
   }
 `;
