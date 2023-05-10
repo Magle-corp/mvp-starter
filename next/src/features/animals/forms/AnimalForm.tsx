@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { array, date, object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Chip } from 'primereact/chip';
 import {
   TbCat,
   TbDog,
@@ -112,6 +113,12 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
     );
   };
 
+  const TemperMultiselectValueTemplate = (value: number) => {
+    const relatedLabel = animalTempers.find((temper) => temper.id === value);
+
+    return <Chip label={relatedLabel?.name.toLowerCase()} />;
+  };
+
   return (
     <Form>
       {props.submitError && <FormError>{props.submitError}</FormError>}
@@ -160,7 +167,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
         />
       </IdentityInputsWrapper>
       <DetailInputsWrapper organizationMenuOpen={organizationMenuOpen}>
-        <FormFieldMultiSelect<AnimalFormSchema>
+        <StyledFormFieldMultiSelect
           label="caractère(s)"
           name="tempers"
           control={form.control}
@@ -169,6 +176,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
           options={animalTempers}
           optionLabel="name"
           optionValue="id"
+          selectedItemTemplate={TemperMultiselectValueTemplate}
         />
       </DetailInputsWrapper>
       <Button
@@ -268,6 +276,20 @@ const DetailInputsWrapper = styled(InputsWrapper)`
   @media screen and (${({ theme }) => theme.breakpoints.xl}) {
     > div {
       grid-column: 1/7;
+    }
+  }
+`;
+
+const StyledFormFieldMultiSelect = styled(
+  FormFieldMultiSelect<AnimalFormSchema>
+)`
+  .p-multiselect-items-label {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.45rem;
+
+    .p-chip-text {
+      line-height: 1rem;
     }
   }
 `;

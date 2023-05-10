@@ -10,9 +10,11 @@ import {
   TbGenderFemale,
   TbGenderMale,
 } from 'react-icons/tb';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
+import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import useGet from '@/cdn/hooks/useGet';
 import { dateToString } from '@/cdn/utils/dateService';
 import { useAuthContext } from '@/features/authentication/AuthContext';
@@ -31,8 +33,10 @@ const AnimalsTableCard = () => {
   const [tableFilters, setTableFilters] =
     useState<DataTableFilterMeta>(tableInitialFilters);
 
+  const { breakpointSM, breakpointMD } = useBreakpoints();
   const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
+  const { organizationMenuOpen } = useBackOfficeContext();
 
   const animalsQuery = useGet<Animal>({
     url: ApiRoutes.ANIMALS_ORG + '/' + organization?.id,
@@ -89,10 +93,12 @@ const AnimalsTableCard = () => {
 
   return (
     <Card title="Mes animaux" toolbar={Toolbar}>
-      <Table
+      <StyledTable
         value={animals}
         filters={tableFilters}
-        filterDisplay="row"
+        filterDisplay={
+          breakpointMD ? (organizationMenuOpen ? 'menu' : 'row') : 'menu'
+        }
         onFilter={(event) => setTableFilters(event.filters)}
         stateKey="animals_table"
         loading={animalsQuery.isLoading}
@@ -101,24 +107,28 @@ const AnimalsTableCard = () => {
           field="name"
           header="Nom"
           sortable
-          filter
+          filter={breakpointMD}
           filterPlaceholder="Rechercher"
           body={NameColumnItemTemplate}
         />
-        <Column
-          field="race.name"
-          header="Race"
-          sortable
-          body={RaceColumnItemTemplate}
-        />
-        <Column
-          field="registered"
-          header="Arrivé"
-          sortable
-          body={RegisteredColumnItemTemplate}
-        />
+        {breakpointSM && (
+          <Column
+            field="race.name"
+            header="Race"
+            sortable
+            body={RaceColumnItemTemplate}
+          />
+        )}
+        {breakpointMD && (
+          <Column
+            field="registered"
+            header="Arrivé"
+            sortable
+            body={RegisteredColumnItemTemplate}
+          />
+        )}
         <Column className="custom-row-actions" body={rowActions} />
-      </Table>
+      </StyledTable>
     </Card>
   );
 };
@@ -127,6 +137,34 @@ const ColumnItemWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75rem;
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`;
+
+const StyledTable = styled(Table)`
+  .p-datatable-tbody {
+    > tr {
+      td:nth-child(1) {
+        width: 300px;
+      }
+
+      td:nth-child(2) {
+        width: 300px;
+      }
+
+      td:nth-child(3) {
+        width: 150px;
+      }
+
+      td:last-child {
+        width: unset;
+      }
+    }
+  }
 `;
 
 export default AnimalsTableCard;
