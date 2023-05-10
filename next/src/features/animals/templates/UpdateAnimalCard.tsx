@@ -76,6 +76,21 @@ const UpdateAnimalCard = () => {
     },
   });
 
+  const onSubmit: SubmitHandler<AnimalFormSchema> = (
+    fieldValues: AnimalFormSchema
+  ) => {
+    animalUpdateMutation.mutate({
+      name: fieldValues.name,
+      organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
+      tempers: fieldValues.tempers?.map(
+        (temper) => ApiIris.ANIMAL_TEMPERS + temper.toString()
+      ),
+      race: ApiIris.ANIMAL_RACES + fieldValues.race,
+      sex: ApiIris.ANIMAL_SEXES + fieldValues.sex,
+      registered: fieldValues.registered,
+    });
+  };
+
   const animalDeleteMutation = useDelete<Animal>({
     url: ApiRoutes.ANIMALS + '/' + animalQueryId,
     token: token?.token ?? undefined,
@@ -104,21 +119,6 @@ const UpdateAnimalCard = () => {
       header: 'Supprimer un animal',
       icon: 'pi pi-exclamation-triangle',
       accept: () => animalDeleteMutation.mutate(),
-    });
-  };
-
-  const onSubmit: SubmitHandler<AnimalFormSchema> = (
-    fieldValues: AnimalFormSchema
-  ) => {
-    animalUpdateMutation.mutate({
-      name: fieldValues.name,
-      organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
-      tempers: fieldValues.tempers?.map(
-        (temper) => ApiIris.ANIMAL_TEMPERS + temper.toString()
-      ),
-      race: ApiIris.ANIMAL_RACES + fieldValues.race,
-      sex: ApiIris.ANIMAL_SEXES + fieldValues.sex,
-      registered: fieldValues.registered,
     });
   };
 

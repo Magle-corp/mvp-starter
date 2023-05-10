@@ -50,6 +50,8 @@ const Section = styled.section`
 
 const Header = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 `;
 
 const ToolBar = styled.div`
@@ -64,7 +66,6 @@ const Title = styled.h1<{
 }>`
   ${({ titleSize, titlePosition }) =>
     getTitleVariant(titleSize, titlePosition)};
-  width: 100%;
   font-weight: 700;
   line-height: 1.25;
 `;
@@ -73,6 +74,7 @@ const getTitleVariant = (
   titleSize?: Card['titleSize'],
   titlePosition?: Card['titlePosition']
 ) => {
+  let variantWidth: string;
   let variantSize: string;
   let variantPosition: string;
 
@@ -86,13 +88,16 @@ const getTitleVariant = (
 
   switch (titlePosition) {
     case 'center':
+      variantWidth = '100%';
       variantPosition = 'center';
       break;
     default:
+      variantWidth = 'max-content';
       variantPosition = 'left';
   }
 
   return css`
+    width: ${variantWidth};
     font-size: ${variantSize};
     text-align: ${variantPosition};
   `;

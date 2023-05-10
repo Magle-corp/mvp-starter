@@ -36,7 +36,7 @@ const Table = <T extends DataTableValueArray>(props: DataTableProps<T>) => {
 export default styled(Table)`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 3rem;
 
   .p-datatable-wrapper {
     border-radius: 3px;
@@ -44,8 +44,14 @@ export default styled(Table)`
 
   .custom-row-actions {
     .p-column-header-content {
-      display: flex;
-      justify-content: end;
+      width: 100%;
+      .p-column-title {
+        display: flex;
+        width: 100%;
+        > div {
+          margin-left: auto;
+        }
+      }
     }
   }
 

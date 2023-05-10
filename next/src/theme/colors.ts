@@ -4,7 +4,7 @@ const colors = {
   white: '#f9f9fa',
   black: '#495057',
   gray: '#adadad',
-  warning: '#F9DC5C',
+  warning: '#ffcc00',
   error: '#e93535',
   transparent: 'transparent',
 };

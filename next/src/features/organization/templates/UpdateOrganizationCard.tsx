@@ -14,7 +14,7 @@ import Card from '@/ui/atoms/Card';
 
 const UpdateOrganizationCard = () => {
   const { token } = useAuthContext();
-  const { organization } = useOrganizationContext();
+  const { organization, setOrganization } = useOrganizationContext();
   const { toast } = useBackOfficeContext();
 
   const organizationDefaultValue: OrganizationFormSchema = {
@@ -43,8 +43,8 @@ const UpdateOrganizationCard = () => {
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
     enabled: false,
-    staleTime: 0,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setOrganization(data);
       toast.current.show({
         severity: 'success',
         summary: 'Organisation',

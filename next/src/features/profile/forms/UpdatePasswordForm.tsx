@@ -84,7 +84,7 @@ const UpdatePasswordForm = (props: FormHandler<PasswordFormSchema>) => {
 const StyledInputsWrapper = styled(InputsWrapper)`
   @media screen and (${({ theme }) => theme.breakpoints.md}) {
     > div {
-      grid-column: 1/6;
+      grid-column: 1/7;
     }
   }
 

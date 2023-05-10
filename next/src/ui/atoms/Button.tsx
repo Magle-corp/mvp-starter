@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { Button } from 'primereact/button';
 import Colors from '@/theme/colors';
 
-type ButtonVariant = 'danger';
+type ButtonVariant = 'danger' | 'warning';
 
 export default styled(Button)<{ variant?: ButtonVariant }>`
   ${({ variant }) => getVariant(variant)};
@@ -11,23 +11,32 @@ export default styled(Button)<{ variant?: ButtonVariant }>`
 
 const getVariant = (variant?: ButtonVariant) => {
   let variantColor: string;
+  let contentColor: string;
 
   switch (variant) {
     case 'danger':
       variantColor = Colors.error;
+      contentColor = Colors.white;
+      break;
+    case 'warning':
+      variantColor = Colors.warning;
+      contentColor = Colors.black;
       break;
     default:
       variantColor = Colors.primary;
+      contentColor = Colors.white;
   }
 
   return css`
     background-color: ${variantColor};
     border: 1px solid ${variantColor};
+    color: ${contentColor};
 
     &:enabled:hover,
     &:enabled:active {
       background-color: ${variantColor};
       border: 1px solid ${variantColor};
+      color: ${contentColor};
     }
 
     &:focus {

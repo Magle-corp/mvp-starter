@@ -58,6 +58,7 @@ export function OrganizationContextWrapper({ children }: Props) {
   const sharedStates: OrganizationContext = {
     unguardedPage,
     organization,
+    setOrganization,
     loading,
     error,
   };
