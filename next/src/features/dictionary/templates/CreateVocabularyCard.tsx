@@ -16,6 +16,7 @@ import { VocabularyTypes } from '@/features/dictionary/types/Dictionary';
 import TemperForm, {
   TemperFormSchema,
 } from '@/features/dictionary/forms/TemperForm';
+import TypeForm, { TypeFormSchema } from '@/features/dictionary/forms/TypeForm';
 import VocabularyDropdown from '@/features/dictionary/components/VocabularyDropdown';
 import Card from '@/ui/atoms/Card';
 
@@ -46,28 +47,49 @@ const CreateVocabularyCard = () => {
     }
   }, [organization, vocabularyQueryId]);
 
+  const successToast = () =>
+    toast.current.show({
+      severity: 'success',
+      summary: 'Dictionnaire',
+      detail: 'Enregistré avec succès',
+    });
+
+  const errorToast = () =>
+    toast.current.show({
+      severity: 'error',
+      summary: 'Dictionnaire',
+      detail: 'Un problème technique est survenu',
+    });
+
   const temperMutation = usePost<TemperFormSchema>({
     url: ApiRoutes.ORGANIZATION_TEMPER,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TEMPERS,
-    onSuccess: () =>
-      toast.current.show({
-        severity: 'success',
-        summary: 'Dictionnaire',
-        detail: 'Enregistré avec succès',
-      }),
-    onError: () =>
-      toast.current.show({
-        severity: 'error',
-        summary: 'Dictionnaire',
-        detail: 'Un problème technique est survenu',
-      }),
+    onSuccess: () => successToast(),
+    onError: () => errorToast(),
   });
 
   const onSubmitTemperForm: SubmitHandler<TemperFormSchema> = (
     fieldValues: TemperFormSchema
   ) => {
     temperMutation.mutate({
+      name: fieldValues.name,
+      organization: ApiIris.ORGANIZATIONS + organization?.id,
+    });
+  };
+
+  const typeMutation = usePost<TypeFormSchema>({
+    url: ApiRoutes.ORGANIZATION_TYPES,
+    token: token?.token ?? undefined,
+    key: QueryKeys.ANIMAL_TYPES,
+    onSuccess: () => successToast(),
+    onError: () => errorToast(),
+  });
+
+  const onSubmitTypeForm: SubmitHandler<TypeFormSchema> = (
+    fieldValues: TypeFormSchema
+  ) => {
+    typeMutation.mutate({
       name: fieldValues.name,
       organization: ApiIris.ORGANIZATIONS + organization?.id,
     });
@@ -102,6 +124,14 @@ const CreateVocabularyCard = () => {
           onSubmit={onSubmitTemperForm}
           submitLoading={temperMutation.isLoading}
           submitError={temperMutation.error?.response?.data.message}
+        />
+      )}
+      {formConfiguration?.type === VocabularyTypes.TYPE && (
+        <TypeForm
+          defaultValues={formConfiguration.formDefaultValues}
+          onSubmit={onSubmitTypeForm}
+          submitLoading={typeMutation.isLoading}
+          submitError={typeMutation.error?.response?.data.message}
         />
       )}
     </Card>

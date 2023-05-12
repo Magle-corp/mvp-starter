@@ -9,6 +9,7 @@ enum ApiRoutes {
   PROFILE_UPDATE_PASSWORD = '/profile/updatePassword',
   ORGANIZATIONS = '/organizations',
   ORGANIZATION_TEMPER = '/organization_animal_tempers',
+  ORGANIZATION_TYPES = '/organization_animal_types',
   ANIMALS = '/animals',
   ANIMALS_ORG = '/animals/organization',
   ANIMAL_TEMPERS_ORG = '/animal_tempers/organization',
