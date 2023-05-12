@@ -7,7 +7,11 @@ import QueryKeys from '@/cdn/enums/QueryKeys';
 import useGet from '@/cdn/hooks/useGet';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
-import { AnimalRace, AnimalTemper } from '@/features/animals/types/Animal';
+import {
+  AnimalRace,
+  AnimalTemper,
+  AnimalType,
+} from '@/features/animals/types/Animal';
 import vocabularyDropdownOptions from '@/features/dictionary/conf/vocabularyDropdownOptions';
 import { VocabularyTypes } from '@/features/dictionary/types/Dictionary';
 import VocabularyDropdown from '@/features/dictionary/components/VocabularyDropdown';
@@ -31,6 +35,9 @@ const VocabularyTableCard = () => {
       case VocabularyTypes.RACE:
         racesVocabularyQuery.refetch();
         break;
+      case VocabularyTypes.TYPE:
+        typesVocabularyQuery.refetch();
+        break;
     }
   }, [vocabularyType]);
 
@@ -49,6 +56,17 @@ const VocabularyTableCard = () => {
     url: ApiRoutes.ANIMAL_RACES_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_RACES,
+    enabled: false,
+    onSuccess: (data) =>
+      // @ts-ignore
+      setVocabulary(data['hydra:member']),
+    onError: () => errorToast(),
+  });
+
+  const typesVocabularyQuery = useGet<AnimalType>({
+    url: ApiRoutes.ANIMAL_TYPES_ORG + '/' + organization?.id,
+    token: token?.token ?? undefined,
+    key: QueryKeys.ANIMAL_TYPES,
     enabled: false,
     onSuccess: (data) =>
       // @ts-ignore
