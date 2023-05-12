@@ -50,6 +50,7 @@ const UpdateAnimalCard = () => {
       }),
   });
 
+  // TODO: need use effect of animalQueryId always available ?
   useEffect(() => {
     if (animalQueryId) {
       animalQuery.refetch();

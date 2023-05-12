@@ -13,6 +13,7 @@ type Animal = {
 type AnimalTemper = {
   id: number;
   name: string;
+  organization?: Organization;
 };
 
 type AnimalType = {

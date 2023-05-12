@@ -3,7 +3,7 @@ const colors = {
   secondary: '#673ab7',
   white: '#f9f9fa',
   black: '#495057',
-  gray: '#adadad',
+  gray: '#495057',
   warning: '#ffcc00',
   error: '#e93535',
   transparent: 'transparent',
