@@ -52,6 +52,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
   const { organization } = useOrganizationContext();
   const { organizationMenuOpen } = useBackOfficeContext();
 
+  // TODO : toast on fetch error
   useGet<AnimalTemper[]>({
     url: ApiRoutes.ANIMAL_TEMPERS_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
@@ -60,6 +61,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
     onSuccess: (data) => setAnimalTempers(data['hydra:member']),
   });
 
+  // TODO : toast on fetch error
   useGet<AnimalRace[]>({
     url: ApiRoutes.ANIMAL_RACES_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
@@ -68,6 +70,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
     onSuccess: (data) => setAnimalRaces(data['hydra:member']),
   });
 
+  // TODO : toast on fetch error
   useGet<AnimalSex[]>({
     url: ApiRoutes.ANIMAL_SEXES,
     token: token?.token ?? undefined,
@@ -121,6 +124,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
     return <Chip label={relatedLabel?.name.toLowerCase()} />;
   };
 
+  // TODO: hide form if one the fetch is on error
   return (
     <Form>
       {props.submitError && <FormError>{props.submitError}</FormError>}

@@ -41,7 +41,7 @@ const UpdatePasswordForm = (props: FormHandler<PasswordFormSchema>) => {
   return (
     <Form>
       {props.submitError && <FormError>{props.submitError}</FormError>}
-      <StyledInputsWrapper>
+      <StyledInputsWrapper organizationMenuOpen={organizationMenuOpen}>
         <FormFieldPassword<PasswordFormSchema>
           label="mot de passe actuel *"
           name="oldPassword"
