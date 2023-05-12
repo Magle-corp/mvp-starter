@@ -10,34 +10,34 @@ import { FormHandler } from '@/cdn/types/Form';
 import useGet from '@/cdn/hooks/useGet';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
-import { AnimalTemper } from '@/features/animals/types/Animal';
+import { AnimalType } from '@/features/animals/types/Animal';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 
-export type TemperFormSchema = {
+export type TypeFormSchema = {
   name: string;
   organization: string;
 };
 
-const TemperForm = (props: FormHandler<TemperFormSchema>) => {
-  const [animalTempers, setAnimalTempers] = useState<AnimalTemper[]>();
+const TypeForm = (props: FormHandler<TypeFormSchema>) => {
+  const [animalTypes, setAnimalTypes] = useState<AnimalType[]>();
 
   const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
   const { organizationMenuOpen } = useBackOfficeContext();
 
-  useGet<AnimalTemper[]>({
-    url: ApiRoutes.ANIMAL_TEMPERS_ORG + '/' + organization?.id,
+  useGet<AnimalType[]>({
+    url: ApiRoutes.ANIMAL_TYPES_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
-    key: QueryKeys.ANIMAL_TEMPERS,
+    key: QueryKeys.ANIMAL_TYPES,
     // @ts-ignore
-    onSuccess: (data) => setAnimalTempers(data['hydra:member']),
+    onSuccess: (data) => setAnimalTypes(data['hydra:member']),
   });
 
-  const schema: Schema<TemperFormSchema> = object({
+  const schema: Schema<TypeFormSchema> = object({
     name: string()
       .min(2, 'Minimum 2 caractères')
       .max(30, 'Maximum 30 caractères')
@@ -45,7 +45,7 @@ const TemperForm = (props: FormHandler<TemperFormSchema>) => {
     organization: string().required(),
   });
 
-  const form = useForm<TemperFormSchema>({
+  const form = useForm<TypeFormSchema>({
     mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: props.defaultValues,
@@ -95,4 +95,4 @@ const StyledInputsWrapper = styled(InputsWrapper)`
   }
 `;
 
-export default TemperForm;
+export default TypeForm;

@@ -1,7 +1,8 @@
 import { VocabularyTypes } from '@/features/dictionary/types/Dictionary';
 import { TemperFormSchema } from '@/features/dictionary/forms/TemperForm';
+import { TypeFormSchema } from '@/features/dictionary/forms/TypeForm';
 
-export type VocabularyFormSchemas = TemperFormSchema;
+export type VocabularyFormSchemas = TemperFormSchema | TypeFormSchema;
 
 export type VocabularyFormConfiguration = {
   type: VocabularyTypes;
@@ -27,7 +28,7 @@ const formConfigurations: VocabularyFormConfigurations = {
   },
   type: {
     type: VocabularyTypes.TYPE,
-    cardTitle: 'Ajouter un caractère',
+    cardTitle: 'Ajouter un type',
     formDefaultValues: { name: '', organization: '' },
   },
 };
