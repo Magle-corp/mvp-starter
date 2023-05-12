@@ -28,6 +28,7 @@ const CreateAnimalCard = () => {
     registered: new Date(),
   };
 
+  // TODO: short all onSuccess and onError, see createVocabulary example.
   const animalMutation = usePost<AnimalFormSchema>({
     url: ApiRoutes.ANIMALS,
     token: token?.token ?? undefined,
