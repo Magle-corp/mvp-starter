@@ -26,6 +26,7 @@ type AnimalRace = {
   id: number;
   name: string;
   type: AnimalType;
+  organization?: Organization;
 };
 
 type AnimalSex = {

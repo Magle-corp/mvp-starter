@@ -1,8 +1,12 @@
 import { VocabularyTypes } from '@/features/dictionary/types/Dictionary';
+import { RaceFormSchema } from '@/features/dictionary/forms/RaceForm';
 import { TemperFormSchema } from '@/features/dictionary/forms/TemperForm';
 import { TypeFormSchema } from '@/features/dictionary/forms/TypeForm';
 
-export type VocabularyFormSchemas = TemperFormSchema | TypeFormSchema;
+export type VocabularyFormSchemas =
+  | RaceFormSchema
+  | TemperFormSchema
+  | TypeFormSchema;
 
 export type VocabularyFormConfiguration = {
   type: VocabularyTypes;
@@ -16,14 +20,14 @@ export type VocabularyFormConfigurations = Record<
 >;
 
 const formConfigurations: VocabularyFormConfigurations = {
-  temper: {
-    type: VocabularyTypes.TEMPER,
-    cardTitle: 'Ajouter un caractère',
-    formDefaultValues: { name: '', organization: '' },
-  },
   race: {
     type: VocabularyTypes.RACE,
     cardTitle: 'Ajouter une race',
+    formDefaultValues: { name: '', organization: '', type: '' },
+  },
+  temper: {
+    type: VocabularyTypes.TEMPER,
+    cardTitle: 'Ajouter un caractère',
     formDefaultValues: { name: '', organization: '' },
   },
   type: {
