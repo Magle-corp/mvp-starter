@@ -8,6 +8,9 @@ enum AppPages {
   BO_ANIMALS = '/backOffice/animals',
   BO_ANIMAL_CREATE = '/backOffice/animals/create',
   BO_ANIMAL_UPDATE = '/backOffice/animals/update',
+  BO_DICTIONARY = '/backOffice/dictionary',
+  BO_DICTIONARY_CREATE = '/backOffice/dictionary/create',
+  BO_DICTIONARY_UPDATE = '/backOffice/dictionary/update',
   BO_SETTINGS_PROFILE = '/backOffice/settings/profile',
   BO_SETTINGS_ORGANIZATION = '/backOffice/settings/organization',
 }
