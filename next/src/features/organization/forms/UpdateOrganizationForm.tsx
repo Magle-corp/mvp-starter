@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
@@ -15,6 +16,8 @@ export type OrganizationFormSchema = {
 };
 
 const UpdateOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
+  const { organizationMenuOpen } = useBackOfficeContext();
+
   const schema: Schema<OrganizationFormSchema> = object({
     name: string()
       .min(3, 'Minimum 3 caractères')
@@ -32,7 +35,7 @@ const UpdateOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
   return (
     <Form>
       {props.submitError && <FormError>{props.submitError}</FormError>}
-      <StyledInputsWrapper>
+      <StyledInputsWrapper organizationMenuOpen={organizationMenuOpen}>
         <FormFieldText<OrganizationFormSchema>
           label="nom de l'organisation *"
           name="name"
