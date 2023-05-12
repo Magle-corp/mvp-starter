@@ -29,6 +29,7 @@ const TypeForm = (props: FormHandler<TypeFormSchema>) => {
   const { organization } = useOrganizationContext();
   const { organizationMenuOpen } = useBackOfficeContext();
 
+  // TODO: handle error
   useGet<AnimalType[]>({
     url: ApiRoutes.ANIMAL_TYPES_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
@@ -55,7 +56,7 @@ const TypeForm = (props: FormHandler<TypeFormSchema>) => {
     <Form>
       {props.submitError && <FormError>{props.submitError}</FormError>}
       <StyledInputsWrapper organizationMenuOpen={organizationMenuOpen}>
-        <FormFieldText
+        <FormFieldText<TypeFormSchema>
           label="nom *"
           name="name"
           control={form.control}

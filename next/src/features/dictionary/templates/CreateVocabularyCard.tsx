@@ -17,6 +17,7 @@ import TemperForm, {
   TemperFormSchema,
 } from '@/features/dictionary/forms/TemperForm';
 import TypeForm, { TypeFormSchema } from '@/features/dictionary/forms/TypeForm';
+import RaceForm, { RaceFormSchema } from '@/features/dictionary/forms/RaceForm';
 import VocabularyDropdown from '@/features/dictionary/components/VocabularyDropdown';
 import Card from '@/ui/atoms/Card';
 
@@ -74,7 +75,7 @@ const CreateVocabularyCard = () => {
   ) => {
     temperMutation.mutate({
       name: fieldValues.name,
-      organization: ApiIris.ORGANIZATIONS + organization?.id,
+      organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
     });
   };
 
@@ -91,7 +92,25 @@ const CreateVocabularyCard = () => {
   ) => {
     typeMutation.mutate({
       name: fieldValues.name,
-      organization: ApiIris.ORGANIZATIONS + organization?.id,
+      organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
+    });
+  };
+
+  const raceMutation = usePost<RaceFormSchema>({
+    url: ApiRoutes.ORGANIZATION_RACES,
+    token: token?.token ?? undefined,
+    key: QueryKeys.ANIMAL_RACES,
+    onSuccess: () => successToast(),
+    onError: () => errorToast(),
+  });
+
+  const onSubmitRaceForm: SubmitHandler<RaceFormSchema> = (
+    fieldValues: RaceFormSchema
+  ) => {
+    raceMutation.mutate({
+      name: fieldValues.name,
+      organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
+      type: ApiIris.ANIMAL_TYPES + fieldValues.type,
     });
   };
 
@@ -132,6 +151,14 @@ const CreateVocabularyCard = () => {
           onSubmit={onSubmitTypeForm}
           submitLoading={typeMutation.isLoading}
           submitError={typeMutation.error?.response?.data.message}
+        />
+      )}
+      {formConfiguration?.type === VocabularyTypes.RACE && (
+        <RaceForm
+          defaultValues={formConfiguration.formDefaultValues as RaceFormSchema}
+          onSubmit={onSubmitRaceForm}
+          submitLoading={raceMutation.isLoading}
+          submitError={raceMutation.error?.response?.data.message}
         />
       )}
     </Card>
