@@ -21,7 +21,7 @@ class OrganizationAnimalType extends AnimalType
 {
     #[ORM\ManyToOne(inversedBy: 'animalTypes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['org_animal_type_write'])]
+    #[Groups(['org_animal_type_write', 'animal_types_read'])]
     private ?Organization $organization = null;
 
     public function getOrganization(): ?Organization
