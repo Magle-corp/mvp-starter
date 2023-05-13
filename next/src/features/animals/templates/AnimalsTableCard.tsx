@@ -58,8 +58,10 @@ const AnimalsTableCard = () => {
     <LinkButton label="Ajouter" href={AppPages.BO_ANIMAL_CREATE} />
   );
 
+  const cardDescription = <p>administrez les animaux de votre organisation</p>;
+
   return (
-    <Card title="Mes animaux" toolbar={Toolbar}>
+    <Card title="Mes animaux" description={cardDescription} toolbar={Toolbar}>
       <StyledTable
         value={animalsQuery.data?.data['hydra:member']}
         filters={tableFilters}

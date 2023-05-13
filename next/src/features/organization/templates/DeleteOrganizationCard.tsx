@@ -42,20 +42,17 @@ const DeleteOrganizationCard = () => {
       accept: () => organizationMutation.mutate(),
     });
 
-  return (
-    <StyledCard title="Supprimer mon organisation">
-      <InfoWrapper>
-        <div>
-          <p>
-            <BoldInfo>Action irréversible</BoldInfo>, toutes les données liées à
-            cette organisation seront{' '}
-            <BoldInfo>définitivement effacées</BoldInfo>.
-          </p>
-          <p>
-            Assurez-vous de sauvegarder toutes les informations importantes
-            avant de procéder à la suppression.
-          </p>
-        </div>
+  const cardDescription = (
+    <DescriptionWrapper>
+      <p>
+        action irréversible, toutes les données liées à cette organisation
+        seront définitivement effacées.
+      </p>
+      <div>
+        <p>
+          Assurez-vous de sauvegarder toutes les informations importantes avant
+          de procéder à la suppression.
+        </p>
         <p>
           <BoldInfo>
             Pour confirmer la suppression veuillez saisir le nom de votre
@@ -64,7 +61,15 @@ const DeleteOrganizationCard = () => {
           {' : '}
           <OrganisationName>{organization?.name}</OrganisationName>
         </p>
-      </InfoWrapper>
+      </div>
+    </DescriptionWrapper>
+  );
+
+  return (
+    <StyledCard
+      title="Supprimer mon organisation"
+      description={cardDescription}
+    >
       <DeleteOrganizationForm
         defaultValues={formDefaultValues}
         onSubmit={onSubmit}
@@ -79,7 +84,7 @@ const StyledCard = styled(Card)`
   border-left: 3px solid ${({ theme }) => theme.colors.error};
 `;
 
-const InfoWrapper = styled.div`
+const DescriptionWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

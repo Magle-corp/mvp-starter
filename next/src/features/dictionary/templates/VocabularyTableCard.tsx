@@ -78,7 +78,11 @@ const VocabularyTableCard = () => {
     <ToolbarWrapper>
       <LinkButton
         label="Ajouter"
-        href={AppPages.BO_DICTIONARY_CREATE + '/any'}
+        href={
+          AppPages.BO_DICTIONARY_CREATE +
+          '/' +
+          (vocabularyType != undefined ? vocabularyType : 'any')
+        }
       />
       <VocabularyDropdown
         placeholder="type de vocabulaire"
@@ -89,8 +93,12 @@ const VocabularyTableCard = () => {
     </ToolbarWrapper>
   );
 
+  const cardDescription = (
+    <p>administrez le vocabulaire de votre organisation</p>
+  );
+
   return (
-    <Card title="Dictionnaire" toolbar={Toolbar}>
+    <Card title="Dictionnaire" description={cardDescription} toolbar={Toolbar}>
       {vocabularyType && vocabulary && (
         <VocabularyTable
           vocabulary={vocabulary}
