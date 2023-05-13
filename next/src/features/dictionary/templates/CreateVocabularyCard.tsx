@@ -4,6 +4,7 @@ import { SubmitHandler } from 'react-hook-form';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiIris from '@/cdn/enums/ApiIris';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
+import AppPages from '@/cdn/enums/AppPages';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
@@ -49,25 +50,14 @@ const CreateVocabularyCard = () => {
     }
   }, [organization, vocabularyQueryId]);
 
-  const successToast = () =>
-    toast.current.show({
-      severity: 'success',
-      summary: 'Dictionnaire',
-      detail: 'Enregistré avec succès',
-    });
-
-  const errorToast = () =>
-    toast.current.show({
-      severity: 'error',
-      summary: 'Dictionnaire',
-      detail: 'Un problème technique est survenu',
-    });
-
   const temperMutation = usePost<TemperFormSchema>({
     url: ApiRoutes.ORGANIZATION_TEMPER,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TEMPERS,
-    onSuccess: () => successToast(),
+    onSuccess: () => {
+      successToast();
+      router.push(AppPages.BO_DICTIONARY + '?vocabulary=temper');
+    },
     onError: () => errorToast(),
   });
 
@@ -83,7 +73,10 @@ const CreateVocabularyCard = () => {
     url: ApiRoutes.ORGANIZATION_TYPES,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TYPES,
-    onSuccess: () => successToast(),
+    onSuccess: () => {
+      successToast();
+      router.push(AppPages.BO_DICTIONARY + '?vocabulary=type');
+    },
     onError: () => errorToast(),
   });
 
@@ -99,7 +92,10 @@ const CreateVocabularyCard = () => {
     url: ApiRoutes.ORGANIZATION_RACES,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_RACES,
-    onSuccess: () => successToast(),
+    onSuccess: () => {
+      successToast();
+      router.push(AppPages.BO_DICTIONARY + '?vocabulary=race');
+    },
     onError: () => errorToast(),
   });
 
@@ -112,21 +108,28 @@ const CreateVocabularyCard = () => {
       type: ApiIris.ANIMAL_TYPES + fieldValues.type,
     });
 
+  const successToast = () =>
+    toast.current.show({
+      severity: 'success',
+      summary: 'Dictionnaire',
+      detail: 'Enregistré avec succès',
+    });
+
+  const errorToast = () =>
+    toast.current.show({
+      severity: 'error',
+      summary: 'Dictionnaire',
+      detail: 'Un problème technique est survenu',
+    });
+
   const Toolbar = (
     <VocabularyDropdown
       placeholder="type de vocabulaire"
       value={formConfiguration?.type}
       options={vocabularyDropdownOptions}
-      onChange={(event) => {
-        if (organization) {
-          setFormConfiguration(
-            getVocabularyFormConfiguration(
-              event.value,
-              organization?.id.toString()
-            )
-          );
-        }
-      }}
+      onChange={(event) =>
+        router.push(AppPages.BO_DICTIONARY_CREATE + '/' + event.value)
+      }
     />
   );
 
