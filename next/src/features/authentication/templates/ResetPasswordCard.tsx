@@ -25,9 +25,7 @@ const ResetPasswordCard = () => {
 
   const onSubmit: SubmitHandler<ResetPasswordFormSchema> = (
     fieldValues: ResetPasswordFormSchema
-  ) => {
-    resetPasswordMutation.mutate({ ...fieldValues, token: token as string });
-  };
+  ) => resetPasswordMutation.mutate({ ...fieldValues, token: token as string });
 
   return (
     <AuthCard

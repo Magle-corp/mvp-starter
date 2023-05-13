@@ -21,9 +21,7 @@ const ForgotPasswordCard = () => {
 
   const onSubmit: SubmitHandler<ForgotPasswordFormSchema> = (
     fieldValues: ForgotPasswordFormSchema
-  ) => {
-    forgotPasswordMutation.mutate(fieldValues);
-  };
+  ) => forgotPasswordMutation.mutate(fieldValues);
 
   return (
     <AuthCard

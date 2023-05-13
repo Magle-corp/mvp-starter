@@ -23,9 +23,7 @@ const SignUpCard = () => {
 
   const onSubmit: SubmitHandler<SignUpFormSchema> = (
     fieldValues: SignUpFormSchema
-  ) => {
-    signUpMutation.mutate(fieldValues);
-  };
+  ) => signUpMutation.mutate(fieldValues);
 
   return (
     <AuthCard title="Inscription" titleSize="large" titlePosition="center">
