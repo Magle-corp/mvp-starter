@@ -5,7 +5,6 @@ import AuthGuard from '@/features/authentication/AuthGuard';
 import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
 import { OrganizationContextWrapper } from '@/features/organization/OrganizationContext';
 import OrganizationGuard from '@/features/organization/OrganizationGuard';
-import UpdateVocabularyCard from '@/features/dictionary/templates/UpdateVocabularyCard';
 import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
 import ConfirmDialog from '@/ui/atoms/ConfirmDialog';
 import Toast from '@/ui/atoms/Toast';
@@ -22,7 +21,6 @@ const UpdateVocabulary = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <UpdateVocabularyCard />
     </>
   );
 };
