@@ -4,10 +4,9 @@ import ApiIris from '@/cdn/enums/ApiIris';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import usePut from '@/cdn/hooks/usePut';
-import useGet from '@/cdn/hooks/useGet';
+import useGetOrganization from '@/cdn/queries/useGetOrganization';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
-import Organization from '@/features/organization/types/Organization';
 import { OrganizationFormSchema } from '@/features/organization/forms/UpdateOrganizationForm';
 import UpdateOrganizationForm from '@/features/organization/forms/UpdateOrganizationForm';
 import Card from '@/ui/atoms/Card';
@@ -27,7 +26,7 @@ const UpdateOrganizationCard = () => {
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
     onSuccess: () => {
-      freshOrganizationMutation.refetch();
+      organizationQuery.refetch();
     },
     onError: () => {
       toast.current.show({
@@ -38,10 +37,9 @@ const UpdateOrganizationCard = () => {
     },
   });
 
-  const freshOrganizationMutation = useGet<Organization>({
-    url: ApiRoutes.ORGANIZATIONS + '/' + organization?.id,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ORGANIZATIONS,
+  const organizationQuery = useGetOrganization({
+    entityId: organization?.id,
+    token: token?.token,
     enabled: false,
     onSuccess: (data) => {
       setOrganization(data);

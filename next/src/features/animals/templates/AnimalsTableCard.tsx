@@ -12,10 +12,8 @@ import {
 } from 'react-icons/tb';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
-import ApiRoutes from '@/cdn/enums/ApiRoutes';
-import QueryKeys from '@/cdn/enums/QueryKeys';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
-import useGet from '@/cdn/hooks/useGet';
+import useGetAnimals from '@/cdn/queries/useGetAnimals';
 import { dateToString } from '@/cdn/utils/dateService';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
@@ -37,10 +35,9 @@ const AnimalsTableCard = () => {
   const { organization } = useOrganizationContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  const animalsQuery = useGet<Animal[]>({
-    url: ApiRoutes.ANIMALS_ORG + '/' + organization?.id,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ANIMALS,
+  const animalsQuery = useGetAnimals({
+    organizationId: organization?.id,
+    token: token?.token,
     onError: () =>
       toast.current.show({
         severity: 'error',

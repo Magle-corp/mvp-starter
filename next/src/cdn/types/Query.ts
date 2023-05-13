@@ -14,10 +14,44 @@ type UseQuery<T> = {
   url: string;
   key: string;
   token?: AuthToken['token'];
+  onSuccess?: (data: T) => void;
+  onError?: (error: AxiosError<ApiError>) => void;
+  enabled?: boolean;
+  staleTime?: number;
+};
+
+type UseGet<T> = {
+  entityId?: number;
+  token?: UseQuery<T>['token'];
+  onSuccess?: UseQuery<T>['onSuccess'];
+  onError?: UseQuery<T>['onError'];
+  enabled?: UseQuery<T>['enabled'];
+  staleTime?: UseQuery<T>['staleTime'];
+};
+
+type UseQueryCollection<T> = {
+  url: string;
+  key: string;
+  token?: AuthToken['token'];
   onSuccess?: (data: Hydra<T>) => void;
   onError?: (error: AxiosError<ApiError>) => void;
   enabled?: boolean;
   staleTime?: number;
 };
 
-export type { UseMutation, UseQuery };
+type UseGetCollection<T> = {
+  organizationId?: number;
+  token?: UseQueryCollection<T>['token'];
+  onSuccess?: UseQueryCollection<T>['onSuccess'];
+  onError?: UseQueryCollection<T>['onError'];
+  enabled?: UseQueryCollection<T>['enabled'];
+  staleTime?: UseQueryCollection<T>['staleTime'];
+};
+
+export type {
+  UseMutation,
+  UseQuery,
+  UseGet,
+  UseQueryCollection,
+  UseGetCollection,
+};

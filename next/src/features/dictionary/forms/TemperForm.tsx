@@ -4,13 +4,10 @@ import { useForm } from 'react-hook-form';
 import { object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
-import ApiRoutes from '@/cdn/enums/ApiRoutes';
-import QueryKeys from '@/cdn/enums/QueryKeys';
 import { FormHandler } from '@/cdn/types/Form';
-import useGet from '@/cdn/hooks/useGet';
+import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
-import { AnimalTemper } from '@/features/animals/types/Animal';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
 import Form from '@/ui/atoms/form/Form';
@@ -27,10 +24,9 @@ const TemperForm = (props: FormHandler<TemperFormSchema>) => {
   const { organization } = useOrganizationContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  const tempersQuery = useGet<AnimalTemper[]>({
-    url: ApiRoutes.ANIMAL_TEMPERS_ORG + '/' + organization?.id,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ANIMAL_TEMPERS,
+  const tempersQuery = useGetAnimalTempers({
+    organizationId: organization?.id,
+    token: token?.token,
     enabled: false,
     onError: () =>
       toast.current.show({

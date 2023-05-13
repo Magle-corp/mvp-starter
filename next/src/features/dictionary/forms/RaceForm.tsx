@@ -4,13 +4,11 @@ import { useForm } from 'react-hook-form';
 import { object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
-import ApiRoutes from '@/cdn/enums/ApiRoutes';
-import QueryKeys from '@/cdn/enums/QueryKeys';
 import { FormHandler } from '@/cdn/types/Form';
-import useGet from '@/cdn/hooks/useGet';
+import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
+import useGetAnimalTypes from '@/cdn/queries/useGetAnimalTypes';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
-import { AnimalRace, AnimalType } from '@/features/animals/types/Animal';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import FormFieldDropdown from '@/ui/molecules/formFields/FormFieldDropdown';
 import Button from '@/ui/atoms/Button';
@@ -29,18 +27,16 @@ const RaceForm = (props: FormHandler<RaceFormSchema>) => {
   const { organization } = useOrganizationContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  const racesQuery = useGet<AnimalRace[]>({
-    url: ApiRoutes.ANIMAL_RACES_ORG + '/' + organization?.id,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ANIMAL_RACES,
+  const racesQuery = useGetAnimalRaces({
+    organizationId: organization?.id,
+    token: token?.token,
     enabled: false,
     onError: () => errorToast(),
   });
 
-  const typesQuery = useGet<AnimalType[]>({
-    url: ApiRoutes.ANIMAL_TYPES_ORG + '/' + organization?.id,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ANIMAL_TYPES,
+  const typesQuery = useGetAnimalTypes({
+    organizationId: organization?.id,
+    token: token?.token,
     enabled: false,
     onError: () => errorToast(),
   });

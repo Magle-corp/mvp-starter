@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
-import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import AppPages from '@/cdn/enums/AppPages';
-import QueryKeys from '@/cdn/enums/QueryKeys';
-import useGet from '@/cdn/hooks/useGet';
+import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
+import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
+import useGetAnimalTypes from '@/cdn/queries/useGetAnimalTypes';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import {
@@ -43,28 +43,25 @@ const VocabularyTableCard = () => {
     }
   }, [vocabularyType]);
 
-  const tempersQuery = useGet<AnimalTemper[]>({
-    url: ApiRoutes.ANIMAL_TEMPERS_ORG + '/' + organization?.id,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ANIMAL_TEMPERS,
+  const tempersQuery = useGetAnimalTempers({
+    organizationId: organization?.id,
+    token: token?.token,
     enabled: false,
     onSuccess: (data) => setVocabulary(data['hydra:member']),
     onError: () => errorToast(),
   });
 
-  const racesQuery = useGet<AnimalRace[]>({
-    url: ApiRoutes.ANIMAL_RACES_ORG + '/' + organization?.id,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ANIMAL_RACES,
+  const racesQuery = useGetAnimalRaces({
+    organizationId: organization?.id,
+    token: token?.token,
     enabled: false,
     onSuccess: (data) => setVocabulary(data['hydra:member']),
     onError: () => errorToast(),
   });
 
-  const typesQuery = useGet<AnimalType[]>({
-    url: ApiRoutes.ANIMAL_TYPES_ORG + '/' + organization?.id,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ANIMAL_TYPES,
+  const typesQuery = useGetAnimalTypes({
+    organizationId: organization?.id,
+    token: token?.token,
     enabled: false,
     onSuccess: (data) => setVocabulary(data['hydra:member']),
     onError: () => errorToast(),
