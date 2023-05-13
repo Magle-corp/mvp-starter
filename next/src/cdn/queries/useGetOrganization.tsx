@@ -7,10 +7,8 @@ import Organization from '@/features/organization/types/Organization';
 const useGetOrganization = (props: UseGet<Organization>) => {
   return useGet<Organization>({
     url: ApiRoutes.ORGANIZATIONS + '/' + props.entityId,
-    token: props.token,
     key: QueryKeys.ORGANIZATIONS,
-    onSuccess: props.onSuccess,
-    onError: props.onError,
+    ...props,
   });
 };
 

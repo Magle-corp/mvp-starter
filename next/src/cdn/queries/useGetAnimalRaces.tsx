@@ -7,10 +7,8 @@ import { AnimalRace } from '@/features/animals/types/Animal';
 const useGetAnimalRaces = (props: UseGetCollection<AnimalRace[]>) => {
   return useGetCollection<AnimalRace[]>({
     url: ApiRoutes.ANIMAL_RACES_ORG + '/' + props.organizationId,
-    token: props.token,
     key: QueryKeys.ANIMAL_RACES,
-    onSuccess: props.onSuccess,
-    onError: props.onError,
+    ...props,
   });
 };
 
