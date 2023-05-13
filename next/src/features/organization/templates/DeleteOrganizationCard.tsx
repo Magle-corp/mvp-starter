@@ -24,19 +24,16 @@ const DeleteOrganizationCard = () => {
     url: ApiRoutes.ORGANIZATIONS + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
-    onSuccess: () => {
-      getFreshToken(token);
-    },
-    onError: () => {
+    onSuccess: () => getFreshToken(token),
+    onError: () =>
       toast.current.show({
         severity: 'error',
         summary: 'Organisation',
         detail: 'Un problème technique est survenu',
-      });
-    },
+      }),
   });
 
-  const onSubmit: SubmitHandler<OrganizationFormSchema> = () => {
+  const onSubmit: SubmitHandler<OrganizationFormSchema> = () =>
     confirmDialog({
       message:
         'Cette action est irréversible, êtes-vous sûr de vouloir continuer ?',
@@ -44,7 +41,6 @@ const DeleteOrganizationCard = () => {
       icon: 'pi pi-exclamation-triangle',
       accept: () => organizationMutation.mutate(),
     });
-  };
 
   return (
     <StyledCard title="Supprimer mon organisation">

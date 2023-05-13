@@ -25,16 +25,13 @@ const UpdateOrganizationCard = () => {
     url: ApiRoutes.ORGANIZATIONS + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
-    onSuccess: () => {
-      organizationQuery.refetch();
-    },
-    onError: () => {
+    onSuccess: () => organizationQuery.refetch(),
+    onError: () =>
       toast.current.show({
         severity: 'error',
         summary: 'Organisation',
         detail: 'Un problème technique est survenu',
-      });
-    },
+      }),
   });
 
   const organizationQuery = useGetOrganization({
@@ -53,12 +50,11 @@ const UpdateOrganizationCard = () => {
 
   const onSubmit: SubmitHandler<OrganizationFormSchema> = (
     fieldValues: OrganizationFormSchema
-  ) => {
+  ) =>
     organizationMutation.mutate({
       name: fieldValues.name,
       owner: ApiIris.USER + fieldValues.owner,
     });
-  };
 
   return (
     <Card title="Mettre à jour mon organisation">

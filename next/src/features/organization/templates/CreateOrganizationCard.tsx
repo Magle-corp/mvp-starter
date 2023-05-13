@@ -23,26 +23,22 @@ const CreateOrganizationCard = () => {
     url: ApiRoutes.ORGANIZATIONS,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATIONS,
-    onSuccess: () => {
-      getFreshToken(token);
-    },
-    onError: () => {
+    onSuccess: () => getFreshToken(token),
+    onError: () =>
       toast.current.show({
         severity: 'error',
         summary: 'Organisation',
         detail: 'Un problème technique est survenu',
-      });
-    },
+      }),
   });
 
   const onSubmit: SubmitHandler<OrganizationFormSchema> = (
     fieldValues: OrganizationFormSchema
-  ) => {
+  ) =>
     organizationMutation.mutate({
       name: fieldValues.name,
       owner: ApiIris.USER + fieldValues.owner,
     });
-  };
 
   return (
     <StyledCard
