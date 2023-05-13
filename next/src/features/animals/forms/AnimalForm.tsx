@@ -152,6 +152,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
             loading={props.submitLoading}
             type="submit"
             size="small"
+            disabled={!form.formState.isDirty}
           />
         </Form>
       )}

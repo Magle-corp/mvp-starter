@@ -51,6 +51,7 @@ const UpdateOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
         loading={props.submitLoading}
         type="submit"
         size="small"
+        disabled={!form.formState.isDirty}
       />
     </Form>
   );

@@ -100,6 +100,7 @@ const RaceForm = (props: FormHandler<RaceFormSchema>) => {
             loading={props.submitLoading}
             type="submit"
             size="small"
+            disabled={!form.formState.isDirty}
           />
         </Form>
       )}

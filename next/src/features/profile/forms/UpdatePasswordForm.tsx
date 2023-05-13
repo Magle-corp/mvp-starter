@@ -73,6 +73,7 @@ const UpdatePasswordForm = (props: FormHandler<PasswordFormSchema>) => {
         loading={props.submitLoading}
         type="submit"
         size="small"
+        disabled={!form.formState.isDirty}
       />
       <Link href={AppPages.AUTH_FORGOT_PASSWORD}>
         J&apos;ai oublié mon mot de passe

@@ -75,6 +75,7 @@ const TemperForm = (props: FormHandler<TemperFormSchema>) => {
             loading={props.submitLoading}
             type="submit"
             size="small"
+            disabled={!form.formState.isDirty}
           />
         </Form>
       )}
