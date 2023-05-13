@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { object, Schema, string } from 'yup';
@@ -25,30 +25,37 @@ export type RaceFormSchema = {
 };
 
 const RaceForm = (props: FormHandler<RaceFormSchema>) => {
-  const [animalRaces, setAnimalRaces] = useState<AnimalRace[]>();
-  const [animalTypes, setAnimalTypes] = useState<AnimalType[]>();
-
   const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
-  const { organizationMenuOpen } = useBackOfficeContext();
+  const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  // TODO: handle error
-  useGet<AnimalRace[]>({
+  const racesQuery = useGet<AnimalRace[]>({
     url: ApiRoutes.ANIMAL_RACES_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_RACES,
-    // @ts-ignore
-    onSuccess: (data) => setAnimalRaces(data['hydra:member']),
+    enabled: false,
+    onError: () => errorToast(),
   });
 
-  // TODO: handle error
-  useGet<AnimalRace[]>({
+  const typesQuery = useGet<AnimalType[]>({
     url: ApiRoutes.ANIMAL_TYPES_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TYPES,
-    // @ts-ignore
-    onSuccess: (data) => setAnimalTypes(data['hydra:member']),
+    enabled: false,
+    onError: () => errorToast(),
   });
+
+  const errorToast = () =>
+    toast.current.show({
+      severity: 'error',
+      summary: 'Dictionnaire',
+      detail: 'Un problème technique est survenu',
+    });
+
+  useEffect(() => {
+    racesQuery.refetch();
+    typesQuery.refetch();
+  }, []);
 
   const schema: Schema<RaceFormSchema> = object({
     name: string()
@@ -66,37 +73,41 @@ const RaceForm = (props: FormHandler<RaceFormSchema>) => {
   });
 
   return (
-    <Form>
-      {props.submitError && <FormError>{props.submitError}</FormError>}
-      <StyledInputsWrapper organizationMenuOpen={organizationMenuOpen}>
-        <FormFieldText<RaceFormSchema>
-          label="nom *"
-          name="name"
-          control={form.control}
-          error={form.formState.errors.name?.message}
-          help="Minimum 2 caractères, maximum 30"
-          required
-        />
-        <FormFieldDropdown<RaceFormSchema>
-          label="type *"
-          name="type"
-          control={form.control}
-          error={form.formState.errors.type?.message}
-          required
-          filter
-          options={animalTypes}
-          optionLabel="name"
-          optionValue="id"
-        />
-      </StyledInputsWrapper>
-      <Button
-        label="Enregistrer"
-        onClick={form.handleSubmit(props.onSubmit)}
-        loading={props.submitLoading}
-        type="submit"
-        size="small"
-      />
-    </Form>
+    <>
+      {racesQuery.data && typesQuery.data && (
+        <Form>
+          {props.submitError && <FormError>{props.submitError}</FormError>}
+          <StyledInputsWrapper organizationMenuOpen={organizationMenuOpen}>
+            <FormFieldText<RaceFormSchema>
+              label="nom *"
+              name="name"
+              control={form.control}
+              error={form.formState.errors.name?.message}
+              help="Minimum 2 caractères, maximum 30"
+              required
+            />
+            <FormFieldDropdown<RaceFormSchema>
+              label="type *"
+              name="type"
+              control={form.control}
+              error={form.formState.errors.type?.message}
+              required
+              filter
+              options={typesQuery.data.data['hydra:member']}
+              optionLabel="name"
+              optionValue="id"
+            />
+          </StyledInputsWrapper>
+          <Button
+            label="Enregistrer"
+            onClick={form.handleSubmit(props.onSubmit)}
+            loading={props.submitLoading}
+            type="submit"
+            size="small"
+          />
+        </Form>
+      )}
+    </>
   );
 };
 

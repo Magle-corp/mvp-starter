@@ -21,7 +21,9 @@ import LinkButton from '@/ui/atoms/LinkButton';
 
 const VocabularyTableCard = () => {
   const [vocabularyType, setVocabularyType] = useState<VocabularyTypes>();
-  const [vocabulary, setVocabulary] = useState<AnimalTemper[] | AnimalRace[]>();
+  const [vocabulary, setVocabulary] = useState<
+    AnimalTemper[] | AnimalRace[] | AnimalType[]
+  >();
 
   const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
@@ -30,47 +32,41 @@ const VocabularyTableCard = () => {
   useEffect(() => {
     switch (vocabularyType) {
       case VocabularyTypes.TEMPER:
-        tempersVocabularyQuery.refetch();
+        tempersQuery.refetch();
         break;
       case VocabularyTypes.RACE:
-        racesVocabularyQuery.refetch();
+        racesQuery.refetch();
         break;
       case VocabularyTypes.TYPE:
-        typesVocabularyQuery.refetch();
+        typesQuery.refetch();
         break;
     }
   }, [vocabularyType]);
 
-  const tempersVocabularyQuery = useGet<AnimalTemper[]>({
+  const tempersQuery = useGet<AnimalTemper[]>({
     url: ApiRoutes.ANIMAL_TEMPERS_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TEMPERS,
     enabled: false,
-    onSuccess: (data) =>
-      // @ts-ignore
-      setVocabulary(data['hydra:member']),
+    onSuccess: (data) => setVocabulary(data['hydra:member']),
     onError: () => errorToast(),
   });
 
-  const racesVocabularyQuery = useGet<AnimalRace[]>({
+  const racesQuery = useGet<AnimalRace[]>({
     url: ApiRoutes.ANIMAL_RACES_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_RACES,
     enabled: false,
-    onSuccess: (data) =>
-      // @ts-ignore
-      setVocabulary(data['hydra:member']),
+    onSuccess: (data) => setVocabulary(data['hydra:member']),
     onError: () => errorToast(),
   });
 
-  const typesVocabularyQuery = useGet<AnimalType>({
+  const typesQuery = useGet<AnimalType[]>({
     url: ApiRoutes.ANIMAL_TYPES_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TYPES,
     enabled: false,
-    onSuccess: (data) =>
-      // @ts-ignore
-      setVocabulary(data['hydra:member']),
+    onSuccess: (data) => setVocabulary(data['hydra:member']),
     onError: () => errorToast(),
   });
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { object, Schema, string } from 'yup';
@@ -23,20 +23,26 @@ export type TemperFormSchema = {
 };
 
 const TemperForm = (props: FormHandler<TemperFormSchema>) => {
-  const [animalTempers, setAnimalTempers] = useState<AnimalTemper[]>();
-
   const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
-  const { organizationMenuOpen } = useBackOfficeContext();
+  const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  // TODO: handle error
-  useGet<AnimalTemper[]>({
+  const tempersQuery = useGet<AnimalTemper[]>({
     url: ApiRoutes.ANIMAL_TEMPERS_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TEMPERS,
-    // @ts-ignore
-    onSuccess: (data) => setAnimalTempers(data['hydra:member']),
+    enabled: false,
+    onError: () =>
+      toast.current.show({
+        severity: 'error',
+        summary: 'Dictionnaire',
+        detail: 'Un problème technique est survenu',
+      }),
   });
+
+  useEffect(() => {
+    tempersQuery.refetch();
+  }, []);
 
   const schema: Schema<TemperFormSchema> = object({
     name: string()
@@ -53,26 +59,30 @@ const TemperForm = (props: FormHandler<TemperFormSchema>) => {
   });
 
   return (
-    <Form>
-      {props.submitError && <FormError>{props.submitError}</FormError>}
-      <StyledInputsWrapper organizationMenuOpen={organizationMenuOpen}>
-        <FormFieldText<TemperFormSchema>
-          label="nom *"
-          name="name"
-          control={form.control}
-          error={form.formState.errors.name?.message}
-          help="Minimum 2 caractères, maximum 30"
-          required
-        />
-      </StyledInputsWrapper>
-      <Button
-        label="Enregistrer"
-        onClick={form.handleSubmit(props.onSubmit)}
-        loading={props.submitLoading}
-        type="submit"
-        size="small"
-      />
-    </Form>
+    <>
+      {tempersQuery.data && (
+        <Form>
+          {props.submitError && <FormError>{props.submitError}</FormError>}
+          <StyledInputsWrapper organizationMenuOpen={organizationMenuOpen}>
+            <FormFieldText<TemperFormSchema>
+              label="nom *"
+              name="name"
+              control={form.control}
+              error={form.formState.errors.name?.message}
+              help="Minimum 2 caractères, maximum 30"
+              required
+            />
+          </StyledInputsWrapper>
+          <Button
+            label="Enregistrer"
+            onClick={form.handleSubmit(props.onSubmit)}
+            loading={props.submitLoading}
+            type="submit"
+            size="small"
+          />
+        </Form>
+      )}
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { ApiError } from '@/cdn/types/Api';
+import { ApiError, Hydra } from '@/cdn/types/Api';
 import { AuthToken } from '@/features/authentication/types/AuthToken';
 
 type UseMutation<T> = {
@@ -14,7 +14,7 @@ type UseQuery<T> = {
   url: string;
   key: string;
   token?: AuthToken['token'];
-  onSuccess?: (data: T) => void;
+  onSuccess?: (data: Hydra<T>) => void;
   onError?: (error: AxiosError<ApiError>) => void;
   enabled?: boolean;
   staleTime?: number;

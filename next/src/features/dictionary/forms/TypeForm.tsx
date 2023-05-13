@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { object, Schema, string } from 'yup';
@@ -23,20 +23,26 @@ export type TypeFormSchema = {
 };
 
 const TypeForm = (props: FormHandler<TypeFormSchema>) => {
-  const [animalTypes, setAnimalTypes] = useState<AnimalType[]>();
-
   const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
-  const { organizationMenuOpen } = useBackOfficeContext();
+  const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  // TODO: handle error
-  useGet<AnimalType[]>({
+  const typesQuery = useGet<AnimalType[]>({
     url: ApiRoutes.ANIMAL_TYPES_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TYPES,
-    // @ts-ignore
-    onSuccess: (data) => setAnimalTypes(data['hydra:member']),
+    enabled: false,
+    onError: () =>
+      toast.current.show({
+        severity: 'error',
+        summary: 'Dictionnaire',
+        detail: 'Un problème technique est survenu',
+      }),
   });
+
+  useEffect(() => {
+    typesQuery.refetch();
+  }, []);
 
   const schema: Schema<TypeFormSchema> = object({
     name: string()
@@ -53,26 +59,30 @@ const TypeForm = (props: FormHandler<TypeFormSchema>) => {
   });
 
   return (
-    <Form>
-      {props.submitError && <FormError>{props.submitError}</FormError>}
-      <StyledInputsWrapper organizationMenuOpen={organizationMenuOpen}>
-        <FormFieldText<TypeFormSchema>
-          label="nom *"
-          name="name"
-          control={form.control}
-          error={form.formState.errors.name?.message}
-          help="Minimum 2 caractères, maximum 30"
-          required
-        />
-      </StyledInputsWrapper>
-      <Button
-        label="Enregistrer"
-        onClick={form.handleSubmit(props.onSubmit)}
-        loading={props.submitLoading}
-        type="submit"
-        size="small"
-      />
-    </Form>
+    <>
+      {typesQuery.data && (
+        <Form>
+          {props.submitError && <FormError>{props.submitError}</FormError>}
+          <StyledInputsWrapper organizationMenuOpen={organizationMenuOpen}>
+            <FormFieldText<TypeFormSchema>
+              label="nom *"
+              name="name"
+              control={form.control}
+              error={form.formState.errors.name?.message}
+              help="Minimum 2 caractères, maximum 30"
+              required
+            />
+          </StyledInputsWrapper>
+          <Button
+            label="Enregistrer"
+            onClick={form.handleSubmit(props.onSubmit)}
+            loading={props.submitLoading}
+            type="submit"
+            size="small"
+          />
+        </Form>
+      )}
+    </>
   );
 };
 

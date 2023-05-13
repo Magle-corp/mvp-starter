@@ -29,24 +29,24 @@ const tableInitialFilters: DataTableFilterMeta = {
 };
 
 const AnimalsTableCard = () => {
-  const [animals, setAnimals] = useState<Animal[]>([]);
   const [tableFilters, setTableFilters] =
     useState<DataTableFilterMeta>(tableInitialFilters);
 
   const { breakpointSM, breakpointMD, breakpointLG } = useBreakpoints();
   const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
-  const { organizationMenuOpen } = useBackOfficeContext();
+  const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  const animalsQuery = useGet<Animal>({
+  const animalsQuery = useGet<Animal[]>({
     url: ApiRoutes.ANIMALS_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMALS,
-    onSuccess: (data) => {
-      // TODO: replace hydra:member
-      // @ts-ignore
-      setAnimals(data['hydra:member']);
-    },
+    onError: () =>
+      toast.current.show({
+        severity: 'error',
+        summary: 'Animal',
+        detail: 'Un problème technique est survenu',
+      }),
   });
 
   const getTableFilterDisplayMode = (): 'menu' | 'row' => {
@@ -106,7 +106,7 @@ const AnimalsTableCard = () => {
   return (
     <Card title="Mes animaux" toolbar={Toolbar}>
       <StyledTable
-        value={animals}
+        value={animalsQuery.data?.data['hydra:member']}
         filters={tableFilters}
         filterDisplay={getTableFilterDisplayMode()}
         onFilter={(event) => setTableFilters(event.filters)}
