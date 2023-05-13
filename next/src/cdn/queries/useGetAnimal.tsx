@@ -7,10 +7,8 @@ import { Animal } from '@/features/animals/types/Animal';
 const useGetAnimal = (props: UseGet<Animal>) => {
   return useGet<Animal>({
     url: ApiRoutes.ANIMALS + '/' + props.entityId,
-    token: props.token,
     key: QueryKeys.ANIMALS,
-    onSuccess: props.onSuccess,
-    onError: props.onError,
+    ...props,
   });
 };
 

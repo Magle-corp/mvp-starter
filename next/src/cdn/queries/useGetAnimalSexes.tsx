@@ -7,10 +7,8 @@ import { AnimalSex } from '@/features/animals/types/Animal';
 const UseGetAnimalSexes = (props: UseGetCollection<AnimalSex[]>) => {
   return useGetCollection<AnimalSex[]>({
     url: ApiRoutes.ANIMAL_SEXES,
-    token: props.token,
     key: QueryKeys.ANIMAL_SEXES,
-    onSuccess: props.onSuccess,
-    onError: props.onError,
+    ...props,
   });
 };
 
