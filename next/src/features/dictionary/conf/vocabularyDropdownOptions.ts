@@ -1,4 +1,4 @@
-import { VocabularyTypes } from '@/features/dictionary/types/Dictionary';
+import { VocabularyTypes } from '@/features/dictionary/enums/Vocabulary';
 
 export default [
   { label: 'Caractère', value: VocabularyTypes.TEMPER },

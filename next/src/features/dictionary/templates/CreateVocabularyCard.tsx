@@ -12,7 +12,7 @@ import vocabularyDropdownOptions from '@/features/dictionary/conf/vocabularyDrop
 import getVocabularyFormConfiguration, {
   VocabularyFormConfiguration,
 } from '@/features/dictionary/conf/vocabularyFormConfigurations';
-import { VocabularyTypes } from '@/features/dictionary/types/Dictionary';
+import { VocabularyTypes } from '@/features/dictionary/enums/Vocabulary';
 import TemperForm, {
   TemperFormSchema,
 } from '@/features/dictionary/forms/TemperForm';
