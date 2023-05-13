@@ -3,4 +3,9 @@ type ApiError = {
   message: string;
 };
 
-export type { ApiError };
+type Hydra<T> = {
+  'hydra:member': T;
+  'hydra:totalItems': number;
+};
+
+export type { ApiError, Hydra };

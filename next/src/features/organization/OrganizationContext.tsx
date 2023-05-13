@@ -37,7 +37,7 @@ export function OrganizationContextWrapper({ children }: Props) {
     key: QueryKeys.ORGANIZATIONS,
     enabled: false,
     onSuccess: (data) => {
-      setOrganization(data);
+      setOrganization(data['hydra:member']);
       setLoading(false);
     },
     onError: () => {

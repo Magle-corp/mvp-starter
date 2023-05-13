@@ -35,19 +35,14 @@ const UpdateAnimalCard = () => {
     enabled: false,
     onSuccess: (data) =>
       setAnimalDefaultValues({
-        name: data.name,
-        organization: data.organization.id.toString(),
-        tempers: data.tempers.map((temper) => temper.id),
-        race: data.race.id,
-        sex: data.sex.id,
-        registered: new Date(data.registered),
+        name: data['hydra:member'].name,
+        organization: data['hydra:member'].organization.id.toString(),
+        tempers: data['hydra:member'].tempers.map((temper) => temper.id),
+        race: data['hydra:member'].race.id,
+        sex: data['hydra:member'].sex.id,
+        registered: new Date(data['hydra:member'].registered),
       }),
-    onError: () =>
-      toast.current.show({
-        severity: 'error',
-        summary: 'Animal',
-        detail: 'Un problème technique est survenu',
-      }),
+    onError: () => errorToast(),
   });
 
   // TODO: need use effect of animalQueryId always available ?
@@ -68,13 +63,7 @@ const UpdateAnimalCard = () => {
         detail: 'Mis à jour avec succès',
       });
     },
-    onError: () => {
-      toast.current.show({
-        severity: 'error',
-        summary: 'Animal',
-        detail: 'Un problème technique est survenu',
-      });
-    },
+    onError: () => errorToast(),
   });
 
   const onSubmit: SubmitHandler<AnimalFormSchema> = (
@@ -104,13 +93,13 @@ const UpdateAnimalCard = () => {
       });
       router.push(AppPages.BO_ANIMALS);
     },
-    onError: () => {
-      toast.current.show({
-        severity: 'error',
-        summary: 'Animal',
-        detail: 'Un problème technique est survenu',
-      });
-    },
+    onError: () => errorToast(),
+  });
+
+  const errorToast = toast.current.show({
+    severity: 'error',
+    summary: 'Animal',
+    detail: 'Un problème technique est survenu',
   });
 
   const deleteAnimal = () => {

@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/cdn/utils/api';
-import { ApiError } from '@/cdn/types/Api';
+import { ApiError, Hydra } from '@/cdn/types/Api';
 import { UseQuery } from '@/cdn/types/Query';
 
 const useGet = <T,>(props: UseQuery<T>) => {
@@ -11,7 +11,7 @@ const useGet = <T,>(props: UseQuery<T>) => {
 
   return useQuery([props.key], {
     queryFn: () => {
-      return api.get<T>(props.url);
+      return api.get<Hydra<T>>(props.url);
     },
     onSuccess: ({ data }) => {
       props.onSuccess && props.onSuccess(data);

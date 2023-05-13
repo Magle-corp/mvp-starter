@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { array, date, object, Schema, string } from 'yup';
@@ -42,42 +41,37 @@ export type AnimalFormSchema = {
 };
 
 const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
-  // TODO: remove useState and init const instead ? ( yes ! )
-  // TODO: check if other useGet, usePost ... do the same
-  const [animalTempers, setAnimalTempers] = useState<AnimalTemper[]>([]);
-  const [animalRaces, setAnimalRaces] = useState<AnimalRace[]>([]);
-  const [animalSexes, setAnimalSexes] = useState<AnimalSex[]>([]);
-
   const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
-  const { organizationMenuOpen } = useBackOfficeContext();
+  const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  // TODO : toast on fetch error
-  useGet<AnimalTemper[]>({
+  const tempersQuery = useGet<AnimalTemper[]>({
     url: ApiRoutes.ANIMAL_TEMPERS_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TEMPERS,
-    // @ts-ignore
-    onSuccess: (data) => setAnimalTempers(data['hydra:member']),
+    onError: () => errorToast(),
   });
 
-  // TODO : toast on fetch error
-  useGet<AnimalRace[]>({
+  const racesQuery = useGet<AnimalRace[]>({
     url: ApiRoutes.ANIMAL_RACES_ORG + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_RACES,
-    // @ts-ignore
-    onSuccess: (data) => setAnimalRaces(data['hydra:member']),
+    onError: () => errorToast(),
   });
 
-  // TODO : toast on fetch error
-  useGet<AnimalSex[]>({
+  const sexesQuery = useGet<AnimalSex[]>({
     url: ApiRoutes.ANIMAL_SEXES,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_SEXES,
-    // @ts-ignore
-    onSuccess: (data) => setAnimalSexes(data['hydra:member']),
+    onError: () => errorToast(),
   });
+
+  const errorToast = () =>
+    toast.current.show({
+      severity: 'error',
+      summary: 'Dictionnaire',
+      detail: 'Un problème technique est survenu',
+    });
 
   const schema: Schema<AnimalFormSchema> = object({
     name: string()
@@ -119,80 +113,87 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
   };
 
   const TemperMultiselectValueTemplate = (value: number) => {
-    const relatedLabel = animalTempers.find((temper) => temper.id === value);
+    const relatedLabel = tempersQuery.data?.data['hydra:member'].find(
+      (temper) => temper.id === value
+    );
 
     return <Chip label={relatedLabel?.name.toLowerCase()} />;
   };
 
-  // TODO: hide form if one the fetch is on error
   return (
-    <Form>
-      {props.submitError && <FormError>{props.submitError}</FormError>}
-      <AdministrativeInputsWrapper organizationMenuOpen={organizationMenuOpen}>
-        <FormFieldCalendar<AnimalFormSchema>
-          label="arrivé le *"
-          name="registered"
-          control={form.control}
-          error={form.formState.errors.registered?.message}
-          required
-          showIcon
-          iconPos="left"
-        />
-      </AdministrativeInputsWrapper>
-      <IdentityInputsWrapper organizationMenuOpen={organizationMenuOpen}>
-        <FormFieldText<AnimalFormSchema>
-          label="nom *"
-          name="name"
-          control={form.control}
-          error={form.formState.errors.name?.message}
-          help="Minimum 2 caractères, maximum 30"
-          required
-        />
-        <FormFieldDropdown<AnimalFormSchema>
-          label="race *"
-          name="race"
-          control={form.control}
-          error={form.formState.errors.race?.message}
-          required
-          filter
-          options={animalRaces}
-          optionLabel="name"
-          optionValue="id"
-          itemTemplate={RaceDropdownItemTemplate}
-        />
-        <FormFieldDropdown<AnimalFormSchema>
-          label="sexe *"
-          name="sex"
-          control={form.control}
-          error={form.formState.errors.sex?.message}
-          required
-          options={animalSexes}
-          optionLabel="name"
-          optionValue="id"
-          itemTemplate={SexDropdownItemTemplate}
-        />
-      </IdentityInputsWrapper>
-      <DetailInputsWrapper organizationMenuOpen={organizationMenuOpen}>
-        <StyledFormFieldMultiSelect
-          label="caractère(s)"
-          name="tempers"
-          control={form.control}
-          error={form.formState.errors.tempers?.message}
-          filter
-          options={animalTempers}
-          optionLabel="name"
-          optionValue="id"
-          selectedItemTemplate={TemperMultiselectValueTemplate}
-        />
-      </DetailInputsWrapper>
-      <Button
-        label="Enregistrer"
-        onClick={form.handleSubmit(props.onSubmit)}
-        loading={props.submitLoading}
-        type="submit"
-        size="small"
-      />
-    </Form>
+    <>
+      {tempersQuery.data && racesQuery.data && sexesQuery.data && (
+        <Form>
+          {props.submitError && <FormError>{props.submitError}</FormError>}
+          <AdministrativeInputsWrapper
+            organizationMenuOpen={organizationMenuOpen}
+          >
+            <FormFieldCalendar<AnimalFormSchema>
+              label="arrivé le *"
+              name="registered"
+              control={form.control}
+              error={form.formState.errors.registered?.message}
+              required
+              showIcon
+              iconPos="left"
+            />
+          </AdministrativeInputsWrapper>
+          <IdentityInputsWrapper organizationMenuOpen={organizationMenuOpen}>
+            <FormFieldText<AnimalFormSchema>
+              label="nom *"
+              name="name"
+              control={form.control}
+              error={form.formState.errors.name?.message}
+              help="Minimum 2 caractères, maximum 30"
+              required
+            />
+            <FormFieldDropdown<AnimalFormSchema>
+              label="race *"
+              name="race"
+              control={form.control}
+              error={form.formState.errors.race?.message}
+              required
+              filter
+              options={racesQuery.data.data['hydra:member']}
+              optionLabel="name"
+              optionValue="id"
+              itemTemplate={RaceDropdownItemTemplate}
+            />
+            <FormFieldDropdown<AnimalFormSchema>
+              label="sexe *"
+              name="sex"
+              control={form.control}
+              error={form.formState.errors.sex?.message}
+              required
+              options={sexesQuery.data.data['hydra:member']}
+              optionLabel="name"
+              optionValue="id"
+              itemTemplate={SexDropdownItemTemplate}
+            />
+          </IdentityInputsWrapper>
+          <DetailInputsWrapper organizationMenuOpen={organizationMenuOpen}>
+            <StyledFormFieldMultiSelect
+              label="caractère(s)"
+              name="tempers"
+              control={form.control}
+              error={form.formState.errors.tempers?.message}
+              filter
+              options={tempersQuery.data.data['hydra:member']}
+              optionLabel="name"
+              optionValue="id"
+              selectedItemTemplate={TemperMultiselectValueTemplate}
+            />
+          </DetailInputsWrapper>
+          <Button
+            label="Enregistrer"
+            onClick={form.handleSubmit(props.onSubmit)}
+            loading={props.submitLoading}
+            type="submit"
+            size="small"
+          />
+        </Form>
+      )}
+    </>
   );
 };
 
