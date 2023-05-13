@@ -29,9 +29,7 @@ const SignInCard = () => {
 
   const onSubmit: SubmitHandler<SignInFormSchema> = (
     fieldValues: SignInFormSchema
-  ) => {
-    signInMutation.mutate(fieldValues);
-  };
+  ) => signInMutation.mutate(fieldValues);
 
   return (
     <>
