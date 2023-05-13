@@ -6,6 +6,7 @@ type Card = {
   title?: string;
   titleSize?: 'large';
   titlePosition?: 'center';
+  description?: ReactNode;
   toolbar?: ReactNode;
   children: ReactNode;
 } & CardProps;
@@ -15,16 +16,23 @@ const Card = (props: Card) => {
     <StyledCard className={props.className}>
       <Section>
         <Header>
-          {props.title && (
-            <Title
-              as="h2"
-              titleSize={props.titleSize}
-              titlePosition={props.titlePosition}
-            >
-              {props.title}
-            </Title>
+          <TitleWrapper>
+            {props.title && (
+              <Title
+                as="h2"
+                titleSize={props.titleSize}
+                titlePosition={props.titlePosition}
+              >
+                {props.title}
+              </Title>
+            )}
+            {props.description && <>{props.description}</>}
+          </TitleWrapper>
+          {props.toolbar && (
+            <ToolBar>
+              <div>{props.toolbar}</div>
+            </ToolBar>
           )}
-          {props.toolbar && <ToolBar>{props.toolbar}</ToolBar>}
         </Header>
         {props.children}
       </Section>
@@ -54,10 +62,10 @@ const Header = styled.div`
   gap: 1.5rem;
 `;
 
-const ToolBar = styled.div`
+const TitleWrapper = styled.div`
   display: flex;
-  gap: 1rem;
-  margin-left: auto;
+  flex-direction: column;
+  gap: 0.35rem;
 `;
 
 const Title = styled.h1<{
@@ -102,5 +110,11 @@ const getTitleVariant = (
     text-align: ${variantPosition};
   `;
 };
+
+const ToolBar = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+`;
 
 export default Card;
