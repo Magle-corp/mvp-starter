@@ -105,6 +105,9 @@ const VocabularyTableCard = () => {
           vocabularyType={vocabularyType}
         />
       )}
+      {!vocabularyType && (
+        <Info>Veuillez sélectionner un type de vocabulaire</Info>
+      )}
     </Card>
   );
 };
@@ -114,6 +117,11 @@ const ToolbarWrapper = styled.div`
   justify-content: flex-end;
   flex-wrap: wrap;
   gap: 1rem;
+`;
+
+const Info = styled.p`
+  font-weight: bold;
+  text-align: center;
 `;
 
 export default VocabularyTableCard;
