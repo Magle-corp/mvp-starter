@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
@@ -25,9 +26,21 @@ const VocabularyTableCard = () => {
     AnimalTemper[] | AnimalRace[] | AnimalType[]
   >();
 
+  const router = useRouter();
+  const { query: vocabularyQuery } = router;
   const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
   const { toast } = useBackOfficeContext();
+
+  useEffect(() => {
+    if (
+      vocabularyQuery.vocabulary === VocabularyTypes.TYPE ||
+      vocabularyQuery.vocabulary === VocabularyTypes.RACE ||
+      vocabularyQuery.vocabulary === VocabularyTypes.TEMPER
+    ) {
+      setVocabularyType(vocabularyQuery.vocabulary);
+    }
+  }, [vocabularyQuery]);
 
   useEffect(() => {
     switch (vocabularyType) {

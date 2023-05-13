@@ -48,7 +48,7 @@ const DeleteOrganizationCard = () => {
         action irréversible, toutes les données liées à cette organisation
         seront définitivement effacées.
       </p>
-      <div>
+      <WarningWrapper>
         <p>
           Assurez-vous de sauvegarder toutes les informations importantes avant
           de procéder à la suppression.
@@ -61,7 +61,7 @@ const DeleteOrganizationCard = () => {
           {' : '}
           <OrganisationName>{organization?.name}</OrganisationName>
         </p>
-      </div>
+      </WarningWrapper>
     </DescriptionWrapper>
   );
 
@@ -90,9 +90,16 @@ const DescriptionWrapper = styled.div`
   gap: 1.5rem;
 `;
 
+const WarningWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
 const BoldInfo = styled.span`
   font-weight: 700;
-  text-decoration: underline;
+  padding-bottom: 2px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.black};
 `;
 
 const OrganisationName = styled.span`
