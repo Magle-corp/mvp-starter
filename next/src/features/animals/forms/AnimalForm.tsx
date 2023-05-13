@@ -10,17 +10,13 @@ import {
   TbGenderMale,
 } from 'react-icons/tb';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
-import ApiRoutes from '@/cdn/enums/ApiRoutes';
-import QueryKeys from '@/cdn/enums/QueryKeys';
 import { FormHandler } from '@/cdn/types/Form';
-import useGet from '@/cdn/hooks/useGet';
+import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
+import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
+import useGetAnimalSexes from '@/cdn/queries/useGetAnimalSexes';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
-import {
-  AnimalRace,
-  AnimalSex,
-  AnimalTemper,
-} from '@/features/animals/types/Animal';
+import { AnimalRace, AnimalSex } from '@/features/animals/types/Animal';
 import FormFieldCalendar from '@/ui/molecules/formFields/FormFieldCalendar';
 import FormFieldDropdown from '@/ui/molecules/formFields/FormFieldDropdown';
 import FormFieldMultiSelect from '@/ui/molecules/formFields/FormFieldMultiSelect';
@@ -45,31 +41,27 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
   const { organization } = useOrganizationContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  const tempersQuery = useGet<AnimalTemper[]>({
-    url: ApiRoutes.ANIMAL_TEMPERS_ORG + '/' + organization?.id,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ANIMAL_TEMPERS,
+  const tempersQuery = useGetAnimalTempers({
+    organizationId: organization?.id,
+    token: token?.token,
     onError: () => errorToast(),
   });
 
-  const racesQuery = useGet<AnimalRace[]>({
-    url: ApiRoutes.ANIMAL_RACES_ORG + '/' + organization?.id,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ANIMAL_RACES,
+  const racesQuery = useGetAnimalRaces({
+    organizationId: organization?.id,
+    token: token?.token,
     onError: () => errorToast(),
   });
 
-  const sexesQuery = useGet<AnimalSex[]>({
-    url: ApiRoutes.ANIMAL_SEXES,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ANIMAL_SEXES,
+  const sexesQuery = useGetAnimalSexes({
+    token: token?.token,
     onError: () => errorToast(),
   });
 
   const errorToast = () =>
     toast.current.show({
       severity: 'error',
-      summary: 'Dictionnaire',
+      summary: 'Animal',
       detail: 'Un problème technique est survenu',
     });
 

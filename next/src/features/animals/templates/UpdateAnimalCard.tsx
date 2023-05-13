@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 import { confirmDialog } from 'primereact/confirmdialog';
@@ -8,8 +8,8 @@ import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import useDelete from '@/cdn/hooks/useDelete';
-import useGet from '@/cdn/hooks/useGet';
 import usePut from '@/cdn/hooks/usePut';
+import useGetAnimal from '@/cdn/queries/useGetAnimal';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { Animal } from '@/features/animals/types/Animal';
 import AnimalForm from '@/features/animals/forms/AnimalForm';
@@ -28,29 +28,20 @@ const UpdateAnimalCard = () => {
 
   const { id: animalQueryId } = router.query;
 
-  const animalQuery = useGet<Animal>({
-    url: ApiRoutes.ANIMALS + '/' + animalQueryId,
-    token: token?.token ?? undefined,
-    key: QueryKeys.ANIMALS,
-    enabled: false,
+  const animalQuery = useGetAnimal({
+    entityId: parseInt(animalQueryId as string),
+    token: token?.token,
     onSuccess: (data) =>
       setAnimalDefaultValues({
-        name: data['hydra:member'].name,
-        organization: data['hydra:member'].organization.id.toString(),
-        tempers: data['hydra:member'].tempers.map((temper) => temper.id),
-        race: data['hydra:member'].race.id,
-        sex: data['hydra:member'].sex.id,
-        registered: new Date(data['hydra:member'].registered),
+        name: data.name,
+        organization: data.organization.id.toString(),
+        tempers: data.tempers.map((temper) => temper.id),
+        race: data.race.id,
+        sex: data.sex.id,
+        registered: new Date(data.registered),
       }),
     onError: () => errorToast(),
   });
-
-  // TODO: need use effect of animalQueryId always available ?
-  useEffect(() => {
-    if (animalQueryId) {
-      animalQuery.refetch();
-    }
-  }, [animalQueryId]);
 
   const animalUpdateMutation = usePut<AnimalFormSchema>({
     url: ApiRoutes.ANIMALS + '/' + animalQueryId,
@@ -96,11 +87,12 @@ const UpdateAnimalCard = () => {
     onError: () => errorToast(),
   });
 
-  const errorToast = toast.current.show({
-    severity: 'error',
-    summary: 'Animal',
-    detail: 'Un problème technique est survenu',
-  });
+  const errorToast = () =>
+    toast.current.show({
+      severity: 'error',
+      summary: 'Dictionnaire',
+      detail: 'Un problème technique est survenu',
+    });
 
   const deleteAnimal = () => {
     confirmDialog({

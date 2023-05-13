@@ -6,9 +6,7 @@ import {
   useState,
 } from 'react';
 import { useRouter } from 'next/router';
-import ApiRoutes from '@/cdn/enums/ApiRoutes';
-import QueryKeys from '@/cdn/enums/QueryKeys';
-import useGet from '@/cdn/hooks/useGet';
+import useGetOrganization from '@/cdn/queries/useGetOrganization';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import OrganizationContext from '@/features/organization/types/OrganizationContext';
 import Organization from '@/features/organization/types/Organization';
@@ -31,13 +29,12 @@ export function OrganizationContextWrapper({ children }: Props) {
   const unguardedPages: string[] = [AppPages.BO_SETTINGS_PROFILE];
   const unguardedPage = unguardedPages.includes(router.pathname);
 
-  const organizationQuery = useGet<Organization>({
-    url: ApiRoutes.ORGANIZATIONS + '/' + tokenPayload?.organizations[0],
-    token: token?.token ?? undefined,
-    key: QueryKeys.ORGANIZATIONS,
+  const organizationQuery = useGetOrganization({
+    entityId: tokenPayload?.organizations[0],
+    token: token?.token,
     enabled: false,
     onSuccess: (data) => {
-      setOrganization(data['hydra:member']);
+      setOrganization(data);
       setLoading(false);
     },
     onError: () => {
