@@ -9,10 +9,11 @@ import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import vocabularyDropdownOptions from '@/features/dictionary/conf/vocabularyDropdownOptions';
-import getVocabularyFormConfiguration, {
+import getVocabularyFormConfiguration from '@/features/dictionary/conf/vocabularyFormConfigurations';
+import {
   VocabularyFormConfiguration,
-} from '@/features/dictionary/conf/vocabularyFormConfigurations';
-import { VocabularyTypes } from '@/features/dictionary/enums/Vocabulary';
+  VocabularyTypes,
+} from '@/features/dictionary/types/Vocabulary';
 import TemperForm, {
   TemperFormSchema,
 } from '@/features/dictionary/forms/TemperForm';
@@ -72,12 +73,11 @@ const CreateVocabularyCard = () => {
 
   const onSubmitTemperForm: SubmitHandler<TemperFormSchema> = (
     fieldValues: TemperFormSchema
-  ) => {
+  ) =>
     temperMutation.mutate({
       name: fieldValues.name,
       organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
     });
-  };
 
   const typeMutation = usePost<TypeFormSchema>({
     url: ApiRoutes.ORGANIZATION_TYPES,
@@ -89,12 +89,11 @@ const CreateVocabularyCard = () => {
 
   const onSubmitTypeForm: SubmitHandler<TypeFormSchema> = (
     fieldValues: TypeFormSchema
-  ) => {
+  ) =>
     typeMutation.mutate({
       name: fieldValues.name,
       organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
     });
-  };
 
   const raceMutation = usePost<RaceFormSchema>({
     url: ApiRoutes.ORGANIZATION_RACES,
@@ -106,13 +105,12 @@ const CreateVocabularyCard = () => {
 
   const onSubmitRaceForm: SubmitHandler<RaceFormSchema> = (
     fieldValues: RaceFormSchema
-  ) => {
+  ) =>
     raceMutation.mutate({
       name: fieldValues.name,
       organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
       type: ApiIris.ANIMAL_TYPES + fieldValues.type,
     });
-  };
 
   const Toolbar = (
     <VocabularyDropdown

@@ -1,23 +1,7 @@
-import { VocabularyTypes } from '@/features/dictionary/enums/Vocabulary';
-import { RaceFormSchema } from '@/features/dictionary/forms/RaceForm';
-import { TemperFormSchema } from '@/features/dictionary/forms/TemperForm';
-import { TypeFormSchema } from '@/features/dictionary/forms/TypeForm';
-
-export type VocabularyFormSchemas =
-  | RaceFormSchema
-  | TemperFormSchema
-  | TypeFormSchema;
-
-export type VocabularyFormConfiguration = {
-  type: VocabularyTypes;
-  cardTitle: string;
-  formDefaultValues: VocabularyFormSchemas;
-};
-
-export type VocabularyFormConfigurations = Record<
+import {
   VocabularyTypes,
-  VocabularyFormConfiguration
->;
+  VocabularyFormConfigurations,
+} from '@/features/dictionary/types/Vocabulary';
 
 const formConfigurations: VocabularyFormConfigurations = {
   race: {
