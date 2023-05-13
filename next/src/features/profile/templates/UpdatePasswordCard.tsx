@@ -20,27 +20,23 @@ const UpdatePasswordCard = () => {
   const resetPasswordMutation = usePost<PasswordFormSchema>({
     url: ApiRoutes.PROFILE_UPDATE_PASSWORD,
     token: token?.token ?? undefined,
-    onSuccess: () => {
+    onSuccess: () =>
       toast.current.show({
         severity: 'success',
         summary: 'Profil',
         detail: 'Mis à jour avec succès',
-      });
-    },
-    onError: () => {
+      }),
+    onError: () =>
       toast.current.show({
         severity: 'error',
         summary: 'Profil',
         detail: 'Un problème technique est survenu',
-      });
-    },
+      }),
   });
 
   const onSubmit: SubmitHandler<PasswordFormSchema> = (
     fieldValues: PasswordFormSchema
-  ) => {
-    resetPasswordMutation.mutate(fieldValues);
-  };
+  ) => resetPasswordMutation.mutate(fieldValues);
 
   return (
     <Card title="Changer mon mot de passe">
