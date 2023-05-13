@@ -75,6 +75,7 @@ const TypeForm = (props: FormHandler<TypeFormSchema>) => {
             loading={props.submitLoading}
             type="submit"
             size="small"
+            disabled={!form.formState.isDirty}
           />
         </Form>
       )}
