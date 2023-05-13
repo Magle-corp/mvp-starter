@@ -1,4 +1,4 @@
-import { VocabularyTypes } from '@/features/dictionary/types/Dictionary';
+import { VocabularyTypes } from '@/features/dictionary/enums/Vocabulary';
 import { RaceFormSchema } from '@/features/dictionary/forms/RaceForm';
 import { TemperFormSchema } from '@/features/dictionary/forms/TemperForm';
 import { TypeFormSchema } from '@/features/dictionary/forms/TypeForm';

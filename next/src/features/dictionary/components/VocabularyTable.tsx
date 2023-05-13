@@ -6,8 +6,12 @@ import { Column, ColumnHeaderOptions } from 'primereact/column';
 import { DataTableFilterMeta } from 'primereact/datatable';
 import AppPages from '@/cdn/enums/AppPages';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
-import { AnimalRace, AnimalTemper } from '@/features/animals/types/Animal';
-import { VocabularyTypes } from '@/features/dictionary/types/Dictionary';
+import {
+  AnimalRace,
+  AnimalTemper,
+  AnimalType,
+} from '@/features/animals/types/Animal';
+import { VocabularyTypes } from '@/features/dictionary/enums/Vocabulary';
 import Chip from '@/ui/atoms/Chip';
 import LinkButton from '@/ui/atoms/LinkButton';
 import Table from '@/ui/atoms/Table';
@@ -17,7 +21,7 @@ const tableInitialFilters: DataTableFilterMeta = {
 };
 
 type VocabularyTable = {
-  vocabulary: AnimalTemper[] | AnimalRace[];
+  vocabulary: AnimalTemper[] | AnimalRace[] | AnimalType[];
   vocabularyType: VocabularyTypes;
 };
 

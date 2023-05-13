@@ -13,7 +13,7 @@ import {
   AnimalType,
 } from '@/features/animals/types/Animal';
 import vocabularyDropdownOptions from '@/features/dictionary/conf/vocabularyDropdownOptions';
-import { VocabularyTypes } from '@/features/dictionary/types/Dictionary';
+import { VocabularyTypes } from '@/features/dictionary/enums/Vocabulary';
 import VocabularyDropdown from '@/features/dictionary/components/VocabularyDropdown';
 import VocabularyTable from '@/features/dictionary/components/VocabularyTable';
 import Card from '@/ui/atoms/Card';
