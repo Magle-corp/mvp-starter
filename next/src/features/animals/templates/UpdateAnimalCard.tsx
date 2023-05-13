@@ -23,10 +23,9 @@ const UpdateAnimalCard = () => {
     useState<AnimalFormSchema>();
 
   const router = useRouter();
+  const { id: animalQueryId } = router.query;
   const { token } = useAuthContext();
   const { toast } = useBackOfficeContext();
-
-  const { id: animalQueryId } = router.query;
 
   const animalQuery = useGetAnimal({
     entityId: parseInt(animalQueryId as string),
@@ -47,19 +46,18 @@ const UpdateAnimalCard = () => {
     url: ApiRoutes.ANIMALS + '/' + animalQueryId,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMALS,
-    onSuccess: () => {
+    onSuccess: () =>
       toast.current.show({
         severity: 'success',
         summary: 'Animal',
         detail: 'Mis à jour avec succès',
-      });
-    },
+      }),
     onError: () => errorToast(),
   });
 
   const onSubmit: SubmitHandler<AnimalFormSchema> = (
     fieldValues: AnimalFormSchema
-  ) => {
+  ) =>
     animalUpdateMutation.mutate({
       name: fieldValues.name,
       organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
@@ -70,7 +68,6 @@ const UpdateAnimalCard = () => {
       sex: ApiIris.ANIMAL_SEXES + fieldValues.sex,
       registered: fieldValues.registered,
     });
-  };
 
   const animalDeleteMutation = useDelete<Animal>({
     url: ApiRoutes.ANIMALS + '/' + animalQueryId,
@@ -94,7 +91,7 @@ const UpdateAnimalCard = () => {
       detail: 'Un problème technique est survenu',
     });
 
-  const deleteAnimal = () => {
+  const deleteAnimal = () =>
     confirmDialog({
       message:
         'Cette action est irréversible, êtes-vous sûr de vouloir continuer ?',
@@ -102,7 +99,6 @@ const UpdateAnimalCard = () => {
       icon: 'pi pi-exclamation-triangle',
       accept: () => animalDeleteMutation.mutate(),
     });
-  };
 
   const Toolbar = (
     <Button

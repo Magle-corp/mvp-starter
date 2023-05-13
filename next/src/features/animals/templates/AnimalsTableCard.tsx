@@ -3,21 +3,17 @@ import { useState } from 'react';
 import { FilterMatchMode } from 'primereact/api';
 import { Column } from 'primereact/column';
 import { DataTableFilterMeta } from 'primereact/datatable';
-import {
-  TbCat,
-  TbDog,
-  TbGenderAgender,
-  TbGenderFemale,
-  TbGenderMale,
-} from 'react-icons/tb';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import useGetAnimals from '@/cdn/queries/useGetAnimals';
-import { dateToString } from '@/cdn/utils/dateService';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import { Animal } from '@/features/animals/types/Animal';
+import ActionColumn from '@/features/animals/components/ActionColumn';
+import NameColumn from '@/features/animals/components/NameColumn';
+import RaceColumn from '@/features/animals/components/RaceColumn';
+import RegisteredColumn from '@/features/animals/components/RegisteredColumn';
 import Card from '@/ui/atoms/Card';
 import LinkButton from '@/ui/atoms/LinkButton';
 import Table from '@/ui/atoms/Table';
@@ -62,44 +58,6 @@ const AnimalsTableCard = () => {
     <LinkButton label="Ajouter" href={AppPages.BO_ANIMAL_CREATE} />
   );
 
-  const NameColumnItemTemplate = (props: Animal) => {
-    return (
-      <ColumnItemWrapper>
-        {props.race.type.name === 'Chien' && <TbDog />}
-        {props.race.type.name === 'Chat' && <TbCat />}
-        <p>{props.name}</p>
-      </ColumnItemWrapper>
-    );
-  };
-
-  const RaceColumnItemTemplate = (props: Animal) => {
-    return (
-      <ColumnItemWrapper>
-        {props.sex.name === 'Male' && <TbGenderMale />}
-        {props.sex.name === 'Femelle' && <TbGenderFemale />}
-        {props.sex.name === 'Inconnu' && <TbGenderAgender />}
-        <p>{props.race.name}</p>
-      </ColumnItemWrapper>
-    );
-  };
-
-  const RegisteredColumnItemTemplate = (props: Animal) => {
-    return (
-      <ColumnItemWrapper>
-        <p>{dateToString(new Date(props.registered))}</p>
-      </ColumnItemWrapper>
-    );
-  };
-
-  const rowActions = (props: Animal) => {
-    return (
-      <LinkButton
-        href={AppPages.BO_ANIMAL_UPDATE + '/' + props.id}
-        icon="pi pi-pencil"
-      />
-    );
-  };
-
   return (
     <Card title="Mes animaux" toolbar={Toolbar}>
       <StyledTable
@@ -116,41 +74,24 @@ const AnimalsTableCard = () => {
           sortable
           filter={breakpointSM}
           filterPlaceholder="Rechercher"
-          body={NameColumnItemTemplate}
+          body={NameColumn}
         />
         {breakpointSM && (
-          <Column
-            field="race.name"
-            header="Race"
-            sortable
-            body={RaceColumnItemTemplate}
-          />
+          <Column field="race.name" header="Race" sortable body={RaceColumn} />
         )}
         {breakpointMD && (
           <Column
             field="registered"
             header="Arrivé"
             sortable
-            body={RegisteredColumnItemTemplate}
+            body={RegisteredColumn}
           />
         )}
-        <Column className="custom-row-actions" body={rowActions} />
+        <Column className="custom-row-actions" body={ActionColumn} />
       </StyledTable>
     </Card>
   );
 };
-
-const ColumnItemWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-`;
 
 const StyledTable = styled(Table)`
   .p-datatable-tbody {

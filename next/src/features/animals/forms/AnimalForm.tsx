@@ -2,13 +2,6 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { array, date, object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  TbCat,
-  TbDog,
-  TbGenderAgender,
-  TbGenderFemale,
-  TbGenderMale,
-} from 'react-icons/tb';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
 import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
@@ -16,13 +9,14 @@ import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
 import useGetAnimalSexes from '@/cdn/queries/useGetAnimalSexes';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
-import { AnimalRace, AnimalSex } from '@/features/animals/types/Animal';
+import RaceDropdownItem from '@/features/animals/components/RaceDropdownItem';
+import SexDropdownItem from '@/features/animals/components/SexDropdownItem';
+import TemperMultiselectValue from '@/features/animals/components/TemperMultiselectValue';
 import FormFieldCalendar from '@/ui/molecules/formFields/FormFieldCalendar';
 import FormFieldDropdown from '@/ui/molecules/formFields/FormFieldDropdown';
 import FormFieldMultiSelect from '@/ui/molecules/formFields/FormFieldMultiSelect';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
-import Chip from '@/ui/atoms/Chip';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
@@ -83,35 +77,6 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
     defaultValues: props.defaultValues,
   });
 
-  const RaceDropdownItemTemplate = (props: AnimalRace) => {
-    return (
-      <DropdownItemWrapper>
-        {props.type.name === 'Chien' && <TbDog />}
-        {props.type.name === 'Chat' && <TbCat />}
-        <p>{props.name}</p>
-      </DropdownItemWrapper>
-    );
-  };
-
-  const SexDropdownItemTemplate = (props: AnimalSex) => {
-    return (
-      <DropdownItemWrapper>
-        {props.name === 'Male' && <TbGenderMale />}
-        {props.name === 'Femelle' && <TbGenderFemale />}
-        {props.name === 'Inconnu' && <TbGenderAgender />}
-        <p>{props.name}</p>
-      </DropdownItemWrapper>
-    );
-  };
-
-  const TemperMultiselectValueTemplate = (value: number) => {
-    const relatedLabel = tempersQuery.data?.data['hydra:member'].find(
-      (temper) => temper.id === value
-    );
-
-    return <Chip label={relatedLabel?.name.toLowerCase()} />;
-  };
-
   return (
     <>
       {tempersQuery.data && racesQuery.data && sexesQuery.data && (
@@ -149,7 +114,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
               options={racesQuery.data.data['hydra:member']}
               optionLabel="name"
               optionValue="id"
-              itemTemplate={RaceDropdownItemTemplate}
+              itemTemplate={RaceDropdownItem}
             />
             <FormFieldDropdown<AnimalFormSchema>
               label="sexe *"
@@ -160,7 +125,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
               options={sexesQuery.data.data['hydra:member']}
               optionLabel="name"
               optionValue="id"
-              itemTemplate={SexDropdownItemTemplate}
+              itemTemplate={SexDropdownItem}
             />
           </IdentityInputsWrapper>
           <DetailInputsWrapper organizationMenuOpen={organizationMenuOpen}>
@@ -173,7 +138,12 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
               options={tempersQuery.data.data['hydra:member']}
               optionLabel="name"
               optionValue="id"
-              selectedItemTemplate={TemperMultiselectValueTemplate}
+              selectedItemTemplate={(value) =>
+                TemperMultiselectValue(
+                  value,
+                  tempersQuery.data?.data['hydra:member']
+                )
+              }
             />
           </DetailInputsWrapper>
           <Button
@@ -188,12 +158,6 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
     </>
   );
 };
-
-const DropdownItemWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-`;
 
 const AdministrativeInputsWrapper = styled(InputsWrapper)`
   @media screen and (${({ theme }) => theme.breakpoints.md}) {

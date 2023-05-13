@@ -28,7 +28,6 @@ const CreateAnimalCard = () => {
     registered: new Date(),
   };
 
-  // TODO: short all onSuccess and onError, see createVocabulary example.
   const animalMutation = usePost<AnimalFormSchema>({
     url: ApiRoutes.ANIMALS,
     token: token?.token ?? undefined,
@@ -41,18 +40,17 @@ const CreateAnimalCard = () => {
       });
       router.push(AppPages.BO_ANIMALS);
     },
-    onError: () => {
+    onError: () =>
       toast.current.show({
         severity: 'error',
         summary: 'Animal',
         detail: 'Un problème technique est survenu',
-      });
-    },
+      }),
   });
 
   const onSubmit: SubmitHandler<AnimalFormSchema> = (
     fieldValues: AnimalFormSchema
-  ) => {
+  ) =>
     animalMutation.mutate({
       name: fieldValues.name,
       organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
@@ -63,7 +61,6 @@ const CreateAnimalCard = () => {
       sex: ApiIris.ANIMAL_SEXES + fieldValues.sex,
       registered: fieldValues.registered,
     });
-  };
 
   return (
     <Card title="Enregister un animal">
