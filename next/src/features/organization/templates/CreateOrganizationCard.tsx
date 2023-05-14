@@ -22,7 +22,7 @@ const CreateOrganizationCard = () => {
   const organizationMutation = usePost<OrganizationFormSchema>({
     url: ApiRoutes.ORGANIZATIONS,
     token: token?.token ?? undefined,
-    key: QueryKeys.ORGANIZATIONS,
+    key: QueryKeys.ORGANIZATION,
     onSuccess: () => getFreshToken(token),
     onError: () =>
       toast.current.show({

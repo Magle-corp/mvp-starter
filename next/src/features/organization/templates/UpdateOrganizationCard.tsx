@@ -24,7 +24,7 @@ const UpdateOrganizationCard = () => {
   const organizationMutation = usePut<OrganizationFormSchema>({
     url: ApiRoutes.ORGANIZATIONS + '/' + organization?.id,
     token: token?.token ?? undefined,
-    key: QueryKeys.ORGANIZATIONS,
+    key: QueryKeys.ORGANIZATION + organization?.id,
     onSuccess: () => organizationQuery.refetch(),
     onError: () =>
       toast.current.show({
