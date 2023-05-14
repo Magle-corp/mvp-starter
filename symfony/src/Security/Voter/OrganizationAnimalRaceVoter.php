@@ -11,6 +11,8 @@ class OrganizationAnimalRaceVoter extends Voter
 {
     const ANIMAL_RACES_READ = 'ANIMAL_RACES_READ';
     const ORG_ANIMAL_RACE_CREATE = 'ORG_ANIMAL_RACE_CREATE';
+    const ORG_ANIMAL_RACE_READ = 'ORG_ANIMAL_RACE_READ';
+    const ORG_ANIMAL_RACE_UPDATE = 'ORG_ANIMAL_RACE_UPDATE';
 
     private VoterService $voterService;
     private RequestStack $requestStack;
@@ -29,12 +31,18 @@ class OrganizationAnimalRaceVoter extends Voter
         return in_array($attribute, [
             self::ANIMAL_RACES_READ,
             self::ORG_ANIMAL_RACE_CREATE,
+            self::ORG_ANIMAL_RACE_READ,
+            self::ORG_ANIMAL_RACE_UPDATE,
         ]);
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        if ($attribute === self::ORG_ANIMAL_RACE_CREATE) {
+        if (
+            $attribute === self::ORG_ANIMAL_RACE_CREATE ||
+            $attribute === self::ORG_ANIMAL_RACE_READ ||
+            $attribute === self::ORG_ANIMAL_RACE_UPDATE
+        ) {
             $userHasRaceOrganization = $this->voterService->userHasOrganization($token->getUser(), $subject->getOrganization()->getId());
 
             if (property_exists($subject->getType(), 'organization')) {

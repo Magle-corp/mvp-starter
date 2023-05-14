@@ -46,12 +46,19 @@ class Organization
         'animal_read',
         'animal_tempers_read',
         'animal_types_read',
-        'animal_races_read'
+        'animal_races_read',
+        'org_animal_type_read',
+        'org_animal_temper_read',
+        'org_animal_race_read',
     ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['organization_read', 'organization_create', 'organization_update'])]
+    #[Groups([
+        'organization_read',
+        'organization_create',
+        'organization_update'
+    ])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'organizations')]

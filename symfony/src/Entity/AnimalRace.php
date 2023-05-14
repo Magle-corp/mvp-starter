@@ -35,16 +35,35 @@ class AnimalRace
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['animals_read', 'animal_read', 'animal_races_read'])]
+    #[Groups([
+        'animals_read',
+        'animal_read',
+        'animal_races_read',
+        'org_animal_race_read'
+    ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 80)]
-    #[Groups(['animals_read', 'animal_read', 'animal_races_read', 'org_animal_race_write'])]
+    #[Groups([
+        'animals_read',
+        'animal_read',
+        'animal_races_read',
+        'org_animal_race_read',
+        'org_animal_race_write',
+        'org_animal_race_update',
+    ])]
     private ?string $name = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['animals_read', 'animal_read', 'animal_races_read', 'org_animal_race_write'])]
+    #[Groups([
+        'animals_read',
+        'animal_read',
+        'animal_races_read',
+        'org_animal_race_read',
+        'org_animal_race_write',
+        'org_animal_race_update',
+    ])]
     private ?AnimalType $type = null;
 
     public function getId(): ?int
