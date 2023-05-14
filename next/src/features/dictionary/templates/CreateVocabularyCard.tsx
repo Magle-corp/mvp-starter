@@ -10,7 +10,6 @@ import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import vocabularyDropdownOptions from '@/features/dictionary/conf/vocabularyDropdownOptions';
-import getVocabularyFormConfiguration from '@/features/dictionary/conf/vocabularyFormConfigurations';
 import {
   VocabularyFormConfiguration,
   VocabularyTypes,
@@ -28,30 +27,51 @@ const CreateVocabularyCard = () => {
     useState<VocabularyFormConfiguration>();
 
   const router = useRouter();
-  const { vocabulary: vocabularyQueryId } = router.query;
+  const { vocabulary: queryVocabularyType } = router.query;
   const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
   const { toast } = useBackOfficeContext();
 
   useEffect(() => {
-    if (organization && vocabularyQueryId) {
-      if (
-        vocabularyQueryId === VocabularyTypes.TEMPER ||
-        vocabularyQueryId === VocabularyTypes.RACE ||
-        vocabularyQueryId === VocabularyTypes.TYPE
-      ) {
-        setFormConfiguration(
-          getVocabularyFormConfiguration(
-            vocabularyQueryId,
-            organization?.id.toString()
-          )
-        );
+    if (organization) {
+      switch (queryVocabularyType) {
+        case VocabularyTypes.TEMPER:
+          setFormConfiguration({
+            type: VocabularyTypes.TEMPER,
+            cardTitle: 'Ajouter un caractère',
+            defaultValues: {
+              name: '',
+              organization: organization.id.toString(),
+            },
+          });
+          break;
+        case VocabularyTypes.TYPE:
+          setFormConfiguration({
+            type: VocabularyTypes.TYPE,
+            cardTitle: 'Ajouter un type',
+            defaultValues: {
+              name: '',
+              type: '',
+              organization: organization.id.toString(),
+            },
+          });
+          break;
+        case VocabularyTypes.RACE:
+          setFormConfiguration({
+            type: VocabularyTypes.RACE,
+            cardTitle: 'Ajouter une race',
+            defaultValues: {
+              name: '',
+              organization: organization.id.toString(),
+            },
+          });
+          break;
       }
     }
-  }, [organization, vocabularyQueryId]);
+  }, [organization, queryVocabularyType]);
 
   const temperMutation = usePost<TemperFormSchema>({
-    url: ApiRoutes.ORGANIZATION_TEMPER,
+    url: ApiRoutes.ORGANIZATION_TEMPERS,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TEMPERS,
     onSuccess: () => {
@@ -140,7 +160,7 @@ const CreateVocabularyCard = () => {
     >
       {formConfiguration?.type === VocabularyTypes.TEMPER && (
         <TemperForm
-          defaultValues={formConfiguration.formDefaultValues}
+          defaultValues={formConfiguration.defaultValues}
           onSubmit={onSubmitTemperForm}
           submitLoading={temperMutation.isLoading}
           submitError={temperMutation.error?.response?.data.message}
@@ -148,7 +168,7 @@ const CreateVocabularyCard = () => {
       )}
       {formConfiguration?.type === VocabularyTypes.TYPE && (
         <TypeForm
-          defaultValues={formConfiguration.formDefaultValues}
+          defaultValues={formConfiguration.defaultValues}
           onSubmit={onSubmitTypeForm}
           submitLoading={typeMutation.isLoading}
           submitError={typeMutation.error?.response?.data.message}
@@ -156,7 +176,7 @@ const CreateVocabularyCard = () => {
       )}
       {formConfiguration?.type === VocabularyTypes.RACE && (
         <RaceForm
-          defaultValues={formConfiguration.formDefaultValues as RaceFormSchema}
+          defaultValues={formConfiguration.defaultValues as RaceFormSchema}
           onSubmit={onSubmitRaceForm}
           submitLoading={raceMutation.isLoading}
           submitError={raceMutation.error?.response?.data.message}
