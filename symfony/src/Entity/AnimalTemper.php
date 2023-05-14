@@ -35,11 +35,21 @@ class AnimalTemper
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['animal_read', 'animal_tempers_read'])]
+    #[Groups([
+        'animal_read',
+        'animal_tempers_read',
+        'org_animal_temper_read',
+    ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['animal_read', 'animal_tempers_read', 'org_animal_temper_write'])]
+    #[Groups([
+        'animal_read',
+        'animal_tempers_read',
+        'org_animal_temper_read',
+        'org_animal_temper_write',
+        'org_animal_temper_update',
+    ])]
     private ?string $name = null;
 
     public function getId(): ?int
