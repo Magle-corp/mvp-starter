@@ -20,18 +20,8 @@ type VocabularyFormSchemas = RaceFormSchema | TemperFormSchema | TypeFormSchema;
 type VocabularyFormConfiguration = {
   type: VocabularyTypes;
   cardTitle: string;
-  formDefaultValues: VocabularyFormSchemas;
+  defaultValues: VocabularyFormSchemas;
 };
 
-type VocabularyFormConfigurations = Record<
-  VocabularyTypes,
-  VocabularyFormConfiguration
->;
-
-export type {
-  Vocabulary,
-  VocabularyFormSchemas,
-  VocabularyFormConfiguration,
-  VocabularyFormConfigurations,
-};
+export type { Vocabulary, VocabularyFormSchemas, VocabularyFormConfiguration };
 export { VocabularyTypes };
