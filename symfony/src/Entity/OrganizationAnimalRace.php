@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
@@ -24,6 +25,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Put(
             denormalizationContext: ['groups' => ['org_animal_race_update']],
             security: "is_granted('ORG_ANIMAL_RACE_UPDATE', object)"
+        ),
+        new Delete(
+            security: "is_granted('ORG_ANIMAL_RACE_DELETE', object)"
         )
     ]
 )]

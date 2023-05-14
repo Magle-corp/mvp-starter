@@ -13,6 +13,7 @@ class OrganizationAnimalRaceVoter extends Voter
     const ORG_ANIMAL_RACE_CREATE = 'ORG_ANIMAL_RACE_CREATE';
     const ORG_ANIMAL_RACE_READ = 'ORG_ANIMAL_RACE_READ';
     const ORG_ANIMAL_RACE_UPDATE = 'ORG_ANIMAL_RACE_UPDATE';
+    const ORG_ANIMAL_RACE_DELETE = 'ORG_ANIMAL_RACE_DELETE';
 
     private VoterService $voterService;
     private RequestStack $requestStack;
@@ -33,6 +34,7 @@ class OrganizationAnimalRaceVoter extends Voter
             self::ORG_ANIMAL_RACE_CREATE,
             self::ORG_ANIMAL_RACE_READ,
             self::ORG_ANIMAL_RACE_UPDATE,
+            self::ORG_ANIMAL_RACE_DELETE,
         ]);
     }
 
@@ -41,7 +43,8 @@ class OrganizationAnimalRaceVoter extends Voter
         if (
             $attribute === self::ORG_ANIMAL_RACE_CREATE ||
             $attribute === self::ORG_ANIMAL_RACE_READ ||
-            $attribute === self::ORG_ANIMAL_RACE_UPDATE
+            $attribute === self::ORG_ANIMAL_RACE_UPDATE ||
+            $attribute === self::ORG_ANIMAL_RACE_DELETE
         ) {
             $userHasRaceOrganization = $this->voterService->userHasOrganization($token->getUser(), $subject->getOrganization()->getId());
 

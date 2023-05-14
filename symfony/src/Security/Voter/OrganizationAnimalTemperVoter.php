@@ -13,6 +13,7 @@ class OrganizationAnimalTemperVoter extends Voter
     const ORG_ANIMAL_TEMPER_CREATE = 'ORG_ANIMAL_TEMPER_CREATE';
     const ORG_ANIMAL_TEMPER_READ = 'ORG_ANIMAL_TEMPER_READ';
     const ORG_ANIMAL_TEMPER_UPDATE = 'ORG_ANIMAL_TEMPER_UPDATE';
+    const ORG_ANIMAL_TEMPER_DELETE = 'ORG_ANIMAL_TEMPER_DELETE';
 
     private VoterService $voterService;
     private RequestStack $requestStack;
@@ -33,6 +34,7 @@ class OrganizationAnimalTemperVoter extends Voter
             self::ORG_ANIMAL_TEMPER_CREATE,
             self::ORG_ANIMAL_TEMPER_READ,
             self::ORG_ANIMAL_TEMPER_UPDATE,
+            self::ORG_ANIMAL_TEMPER_DELETE,
         ]);
     }
 
@@ -41,7 +43,8 @@ class OrganizationAnimalTemperVoter extends Voter
         if (
             $attribute === self::ORG_ANIMAL_TEMPER_CREATE ||
             $attribute === self::ORG_ANIMAL_TEMPER_READ ||
-            $attribute === self::ORG_ANIMAL_TEMPER_UPDATE
+            $attribute === self::ORG_ANIMAL_TEMPER_UPDATE ||
+            $attribute === self::ORG_ANIMAL_TEMPER_DELETE
         ) {
             return $this->voterService->userHasOrganization($token->getUser(), $subject->getOrganization()->getId());
         }

@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
+import { confirmDialog } from 'primereact/confirmdialog';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiIris from '@/cdn/enums/ApiIris';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import AppPages from '@/cdn/enums/AppPages';
+import useDelete from '@/cdn/hooks/useDelete';
 import usePut from '@/cdn/hooks/usePut';
 import useGetAnimalRace from '@/cdn/queries/useGetAnimalRace';
 import useGetAnimalTemper from '@/cdn/queries/useGetAnimalTemper';
@@ -21,6 +23,7 @@ import TemperForm, {
 import TypeForm, { TypeFormSchema } from '@/features/dictionary/forms/TypeForm';
 import RaceForm, { RaceFormSchema } from '@/features/dictionary/forms/RaceForm';
 import Card from '@/ui/atoms/Card';
+import Button from '@/ui/atoms/Button';
 
 const UpdateVocabularyCard = () => {
   const [formConfiguration, setFormConfiguration] =
@@ -46,6 +49,7 @@ const UpdateVocabularyCard = () => {
           organization: data.organization?.id.toString() as string,
         },
       }),
+    onError: () => errorToast(),
   });
 
   const temperQuery = useGetAnimalTemper({
@@ -61,6 +65,7 @@ const UpdateVocabularyCard = () => {
           organization: data.organization?.id.toString() as string,
         },
       }),
+    onError: () => errorToast(),
   });
 
   const typeQuery = useGetAnimalType({
@@ -76,6 +81,7 @@ const UpdateVocabularyCard = () => {
           organization: data.organization?.id.toString() as string,
         },
       }),
+    onError: () => errorToast(),
   });
 
   useEffect(() => {
@@ -92,7 +98,7 @@ const UpdateVocabularyCard = () => {
     }
   }, [queryVocabularyType]);
 
-  const temperMutation = usePut<TemperFormSchema>({
+  const temperUpdateMutation = usePut<TemperFormSchema>({
     url: ApiRoutes.ORGANIZATION_TEMPERS + '/' + queryVocabularyId,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TEMPERS,
@@ -106,12 +112,23 @@ const UpdateVocabularyCard = () => {
   const onSubmitTemperForm: SubmitHandler<TemperFormSchema> = (
     fieldValues: TemperFormSchema
   ) =>
-    temperMutation.mutate({
+    temperUpdateMutation.mutate({
       name: fieldValues.name,
       organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
     });
 
-  const typeMutation = usePut<TypeFormSchema>({
+  const temperDeleteMutation = useDelete<TemperFormSchema>({
+    url: ApiRoutes.ORGANIZATION_TEMPERS + '/' + queryVocabularyId,
+    token: token?.token ?? undefined,
+    key: QueryKeys.ANIMAL_TEMPERS,
+    onSuccess: () => {
+      successDeleteToast();
+      router.push(AppPages.BO_DICTIONARY + '?vocabulary=temper');
+    },
+    onError: () => errorToast(),
+  });
+
+  const typeUpdateMutation = usePut<TypeFormSchema>({
     url: ApiRoutes.ORGANIZATION_TYPES + '/' + queryVocabularyId,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TYPES,
@@ -125,12 +142,23 @@ const UpdateVocabularyCard = () => {
   const onSubmitTypeForm: SubmitHandler<TypeFormSchema> = (
     fieldValues: TypeFormSchema
   ) =>
-    typeMutation.mutate({
+    typeUpdateMutation.mutate({
       name: fieldValues.name,
       organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
     });
 
-  const raceMutation = usePut<RaceFormSchema>({
+  const typeDeleteMutation = useDelete<TypeFormSchema>({
+    url: ApiRoutes.ORGANIZATION_TYPES + '/' + queryVocabularyId,
+    token: token?.token ?? undefined,
+    key: QueryKeys.ANIMAL_TYPES,
+    onSuccess: () => {
+      successDeleteToast();
+      router.push(AppPages.BO_DICTIONARY + '?vocabulary=type');
+    },
+    onError: () => errorToast(),
+  });
+
+  const raceUpdateMutation = usePut<RaceFormSchema>({
     url: ApiRoutes.ORGANIZATION_RACES + '/' + queryVocabularyId,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_RACES,
@@ -144,11 +172,22 @@ const UpdateVocabularyCard = () => {
   const onSubmitRaceForm: SubmitHandler<RaceFormSchema> = (
     fieldValues: RaceFormSchema
   ) =>
-    raceMutation.mutate({
+    raceUpdateMutation.mutate({
       name: fieldValues.name,
       organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
       type: ApiIris.ANIMAL_TYPES + fieldValues.type,
     });
+
+  const raceDeleteMutation = useDelete<RaceFormSchema>({
+    url: ApiRoutes.ORGANIZATION_RACES + '/' + queryVocabularyId,
+    token: token?.token ?? undefined,
+    key: QueryKeys.ANIMAL_RACES,
+    onSuccess: () => {
+      successDeleteToast();
+      router.push(AppPages.BO_DICTIONARY + '?vocabulary=race');
+    },
+    onError: () => errorToast(),
+  });
 
   const successToast = () =>
     toast.current.show({
@@ -157,6 +196,12 @@ const UpdateVocabularyCard = () => {
       detail: 'Enregistré avec succès',
     });
 
+  const successDeleteToast = () =>
+    toast.current.show({
+      severity: 'success',
+      summary: 'Dictionnaire',
+      detail: 'Supprimé avec succès',
+    });
   const errorToast = () =>
     toast.current.show({
       severity: 'error',
@@ -164,32 +209,68 @@ const UpdateVocabularyCard = () => {
       detail: 'Un problème technique est survenu',
     });
 
+  const deleteVocabulary = () =>
+    confirmDialog({
+      message:
+        'Cette action est irréversible, êtes-vous sûr de vouloir continuer ?',
+      header: 'Supprimer un vocabulaire',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        switch (queryVocabularyType) {
+          case VocabularyTypes.RACE:
+            raceDeleteMutation.mutate();
+            break;
+          case VocabularyTypes.TYPE:
+            typeDeleteMutation.mutate();
+            break;
+          case VocabularyTypes.TEMPER:
+            temperDeleteMutation.mutate();
+            break;
+        }
+      },
+    });
+
+  const Toolbar = (
+    <Button
+      icon="pi pi-trash"
+      onClick={deleteVocabulary}
+      variant="danger"
+      loading={
+        typeDeleteMutation.isLoading ||
+        raceDeleteMutation.isLoading ||
+        temperDeleteMutation.isLoading
+      }
+      size="small"
+    />
+  );
+
   return (
     <Card
       title={formConfiguration?.cardTitle ?? 'Mettre à jour un vocabulaire'}
+      toolbar={Toolbar}
     >
       {formConfiguration?.type === VocabularyTypes.TEMPER && (
         <TemperForm
           defaultValues={formConfiguration.defaultValues}
           onSubmit={onSubmitTemperForm}
-          submitLoading={temperMutation.isLoading}
-          submitError={temperMutation.error?.response?.data.message}
+          submitLoading={temperUpdateMutation.isLoading}
+          submitError={temperUpdateMutation.error?.response?.data.message}
         />
       )}
       {formConfiguration?.type === VocabularyTypes.TYPE && (
         <TypeForm
           defaultValues={formConfiguration.defaultValues}
           onSubmit={onSubmitTypeForm}
-          submitLoading={typeMutation.isLoading}
-          submitError={typeMutation.error?.response?.data.message}
+          submitLoading={typeUpdateMutation.isLoading}
+          submitError={typeUpdateMutation.error?.response?.data.message}
         />
       )}
       {formConfiguration?.type === VocabularyTypes.RACE && (
         <RaceForm
           defaultValues={formConfiguration.defaultValues as RaceFormSchema}
           onSubmit={onSubmitRaceForm}
-          submitLoading={raceMutation.isLoading}
-          submitError={raceMutation.error?.response?.data.message}
+          submitLoading={raceUpdateMutation.isLoading}
+          submitError={raceUpdateMutation.error?.response?.data.message}
         />
       )}
     </Card>
