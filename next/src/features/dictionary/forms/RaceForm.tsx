@@ -18,7 +18,7 @@ import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 
 export type RaceFormSchema = {
   name: string;
-  type: string;
+  type: string | number;
   organization: string;
 };
 
