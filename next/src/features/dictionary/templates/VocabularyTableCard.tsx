@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import { DataTableFilterMeta } from 'primereact/datatable';
+import { FilterMatchMode } from 'primereact/api';
+import { Column } from 'primereact/column';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
 import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
@@ -15,12 +18,20 @@ import {
 } from '@/features/animals/types/Animal';
 import vocabularyDropdownOptions from '@/features/dictionary/conf/vocabularyDropdownOptions';
 import { VocabularyTypes } from '@/features/dictionary/types/Vocabulary';
+import ActionColumn from '@/features/dictionary/components/ActionColumn';
+import ActionColumnHeader from '@/features/dictionary/components/ActionColumnHeader';
 import VocabularyDropdown from '@/features/dictionary/components/VocabularyDropdown';
-import VocabularyTable from '@/features/dictionary/components/VocabularyTable';
 import Card from '@/ui/atoms/Card';
 import LinkButton from '@/ui/atoms/LinkButton';
+import Table from '@/ui/atoms/Table';
+
+const tableInitialFilters: DataTableFilterMeta = {
+  'organization.id': { value: null, matchMode: FilterMatchMode.CONTAINS },
+};
 
 const VocabularyTableCard = () => {
+  const [tableFilters, setTableFilters] =
+    useState<DataTableFilterMeta>(tableInitialFilters);
   const [vocabularyType, setVocabularyType] = useState<VocabularyTypes>();
   const [vocabulary, setVocabulary] = useState<
     AnimalTemper[] | AnimalRace[] | AnimalType[]
@@ -33,28 +44,28 @@ const VocabularyTableCard = () => {
   const { toast } = useBackOfficeContext();
 
   useEffect(() => {
-    if (
-      vocabularyQuery.vocabulary === VocabularyTypes.TYPE ||
-      vocabularyQuery.vocabulary === VocabularyTypes.RACE ||
-      vocabularyQuery.vocabulary === VocabularyTypes.TEMPER
-    ) {
-      setVocabularyType(vocabularyQuery.vocabulary);
-    }
-  }, [vocabularyQuery]);
-
-  useEffect(() => {
-    switch (vocabularyType) {
-      case VocabularyTypes.TEMPER:
-        tempersQuery.refetch();
-        break;
-      case VocabularyTypes.RACE:
-        racesQuery.refetch();
-        break;
-      case VocabularyTypes.TYPE:
+    if (!vocabularyType) {
+      if (vocabularyQuery.vocabulary === VocabularyTypes.TYPE) {
+        setVocabularyType(vocabularyQuery.vocabulary);
         typesQuery.refetch();
-        break;
+      } else if (vocabularyQuery.vocabulary === VocabularyTypes.RACE) {
+        setVocabularyType(vocabularyQuery.vocabulary);
+        racesQuery.refetch();
+      } else if (vocabularyQuery.vocabulary === VocabularyTypes.TEMPER) {
+        setVocabularyType(vocabularyQuery.vocabulary);
+        tempersQuery.refetch();
+      }
+    } else {
+      if (vocabularyType === VocabularyTypes.TYPE) {
+        typesQuery.refetch();
+      } else if (vocabularyType === VocabularyTypes.RACE) {
+        racesQuery.refetch();
+      } else if (vocabularyType === VocabularyTypes.TEMPER) {
+        tempersQuery.refetch();
+      }
+      setVocabularyType(vocabularyType);
     }
-  }, [vocabularyType]);
+  }, [vocabularyQuery, vocabularyType]);
 
   const tempersQuery = useGetAnimalTempers({
     organizationId: organization?.id,
@@ -87,6 +98,19 @@ const VocabularyTableCard = () => {
       detail: 'Un problème technique est survenu',
     });
 
+  const organizationFilter = (organizationFilterValue: any) => {
+    if (organizationFilterValue) {
+      setTableFilters(tableInitialFilters);
+    } else {
+      setTableFilters({
+        'organization.id': {
+          value: organization?.id,
+          matchMode: FilterMatchMode.CONTAINS,
+        },
+      });
+    }
+  };
+
   const Toolbar = (
     <ToolbarWrapper>
       <LinkButton
@@ -113,10 +137,24 @@ const VocabularyTableCard = () => {
   return (
     <Card title="Dictionnaire" description={cardDescription} toolbar={Toolbar}>
       {vocabularyType && vocabulary && (
-        <VocabularyTable
-          vocabulary={vocabulary}
-          vocabularyType={vocabularyType}
-        />
+        <Table
+          value={vocabulary}
+          filters={tableFilters}
+          onFilter={(event) => setTableFilters(event.filters)}
+          stateKey="vocabulary_table"
+        >
+          <Column field="name" header="Nom" sortable />
+          <Column
+            field="organization.id"
+            header={(options) =>
+              ActionColumnHeader(options, organizationFilter)
+            }
+            filter
+            showFilterMenu={false}
+            body={(data) => ActionColumn(data, vocabularyType)}
+            className="custom-row-actions"
+          />
+        </Table>
       )}
       {!vocabularyType && (
         <Info>Veuillez sélectionner un type de vocabulaire</Info>
