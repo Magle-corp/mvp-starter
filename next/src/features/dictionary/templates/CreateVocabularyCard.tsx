@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiIris from '@/cdn/enums/ApiIris';
@@ -158,32 +159,44 @@ const CreateVocabularyCard = () => {
       title={formConfiguration?.cardTitle ?? 'Ajouter du vocabulaire'}
       toolbar={Toolbar}
     >
-      {formConfiguration?.type === VocabularyTypes.TEMPER && (
-        <TemperForm
-          defaultValues={formConfiguration.defaultValues}
-          onSubmit={onSubmitTemperForm}
-          submitLoading={temperMutation.isLoading}
-          submitError={temperMutation.error?.response?.data.message}
-        />
+      {formConfiguration && (
+        <>
+          {formConfiguration?.type === VocabularyTypes.TEMPER && (
+            <TemperForm
+              defaultValues={formConfiguration.defaultValues}
+              onSubmit={onSubmitTemperForm}
+              submitLoading={temperMutation.isLoading}
+              submitError={temperMutation.error?.response?.data.message}
+            />
+          )}
+          {formConfiguration?.type === VocabularyTypes.TYPE && (
+            <TypeForm
+              defaultValues={formConfiguration.defaultValues}
+              onSubmit={onSubmitTypeForm}
+              submitLoading={typeMutation.isLoading}
+              submitError={typeMutation.error?.response?.data.message}
+            />
+          )}
+          {formConfiguration?.type === VocabularyTypes.RACE && (
+            <RaceForm
+              defaultValues={formConfiguration.defaultValues as RaceFormSchema}
+              onSubmit={onSubmitRaceForm}
+              submitLoading={raceMutation.isLoading}
+              submitError={raceMutation.error?.response?.data.message}
+            />
+          )}
+        </>
       )}
-      {formConfiguration?.type === VocabularyTypes.TYPE && (
-        <TypeForm
-          defaultValues={formConfiguration.defaultValues}
-          onSubmit={onSubmitTypeForm}
-          submitLoading={typeMutation.isLoading}
-          submitError={typeMutation.error?.response?.data.message}
-        />
-      )}
-      {formConfiguration?.type === VocabularyTypes.RACE && (
-        <RaceForm
-          defaultValues={formConfiguration.defaultValues as RaceFormSchema}
-          onSubmit={onSubmitRaceForm}
-          submitLoading={raceMutation.isLoading}
-          submitError={raceMutation.error?.response?.data.message}
-        />
+      {!formConfiguration && (
+        <Info>Veuillez sélectionner un type de vocabulaire</Info>
       )}
     </Card>
   );
 };
+
+const Info = styled.p`
+  font-weight: bold;
+  text-align: center;
+`;
 
 export default CreateVocabularyCard;
