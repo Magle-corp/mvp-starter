@@ -1,5 +1,11 @@
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import SignUpValidationCard from '@/features/authentication/templates/SignUpValidationCard';
+
+const DynSignUpValidationCard = dynamic(() =>
+  import('@/features/authentication/templates/SignUpValidationCard').then(
+    (SignUpValidationCard) => SignUpValidationCard
+  )
+);
 
 export default function SignUpValidation() {
   return (
@@ -14,7 +20,7 @@ export default function SignUpValidation() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <SignUpValidationCard />
+        <DynSignUpValidationCard />
       </main>
     </>
   );

@@ -1,5 +1,11 @@
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import ForgotPasswordCard from '@/features/authentication/templates/ForgotPasswordCard';
+
+const DynForgotPasswordCard = dynamic(() =>
+  import('@/features/authentication/templates/ForgotPasswordCard').then(
+    (ForgotPasswordCard) => ForgotPasswordCard
+  )
+);
 
 export default function ForgotPassword() {
   return (
@@ -11,7 +17,7 @@ export default function ForgotPassword() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <ForgotPasswordCard />
+        <DynForgotPasswordCard />
       </main>
     </>
   );

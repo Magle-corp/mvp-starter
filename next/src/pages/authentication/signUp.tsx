@@ -1,5 +1,11 @@
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import SignUpCard from '@/features/authentication/templates/SignUpCard';
+
+const DynSignUpCard = dynamic(() =>
+  import('@/features/authentication/templates/SignUpCard').then(
+    (SignUpCard) => SignUpCard
+  )
+);
 
 export default function SignUp() {
   return (
@@ -11,7 +17,7 @@ export default function SignUp() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <SignUpCard />
+        <DynSignUpCard />
       </main>
     </>
   );

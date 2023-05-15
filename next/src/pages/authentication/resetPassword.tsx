@@ -1,5 +1,11 @@
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import ResetPasswordCard from '@/features/authentication/templates/ResetPasswordCard';
+
+const DynResetPasswordCard = dynamic(() =>
+  import('@/features/authentication/templates/ResetPasswordCard').then(
+    (ResetPasswordCard) => ResetPasswordCard
+  )
+);
 
 export default function ResetPassword() {
   return (
@@ -11,7 +17,7 @@ export default function ResetPassword() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <ResetPasswordCard />
+        <DynResetPasswordCard />
       </main>
     </>
   );
