@@ -10,7 +10,6 @@ import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
 import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
 import useGetAnimalTypes from '@/cdn/queries/useGetAnimalTypes';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import {
   AnimalRace,
   AnimalTemper,
@@ -39,8 +38,7 @@ const VocabularyTableCard = () => {
 
   const router = useRouter();
   const { vocabulary: queryVocabularyType } = router.query;
-  const { token } = useAuthContext();
-  const { organization } = useOrganizationContext();
+  const { token, organization } = useAuthContext();
   const { toast } = useBackOfficeContext();
 
   useEffect(() => {

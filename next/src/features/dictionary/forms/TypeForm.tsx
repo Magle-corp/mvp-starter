@@ -7,7 +7,6 @@ import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
 import useGetAnimalTypes from '@/cdn/queries/useGetAnimalTypes';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
 import Form from '@/ui/atoms/form/Form';
@@ -20,8 +19,7 @@ export type TypeFormSchema = {
 };
 
 const TypeForm = (props: FormHandler<TypeFormSchema>) => {
-  const { token } = useAuthContext();
-  const { organization } = useOrganizationContext();
+  const { token, organization } = useAuthContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
   const typesQuery = useGetAnimalTypes({

@@ -6,14 +6,12 @@ import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import useDelete from '@/cdn/hooks/useDelete';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import { OrganizationFormSchema } from '@/features/organization/forms/DeleteOrganizationForm';
 import DeleteOrganizationForm from '@/features/organization/forms/DeleteOrganizationForm';
 import Card from '@/ui/atoms/Card';
 
 const DeleteOrganizationCard = () => {
-  const { token, getFreshToken } = useAuthContext();
-  const { organization } = useOrganizationContext();
+  const { token, getFreshToken, organization } = useAuthContext();
   const { toast } = useBackOfficeContext();
 
   const formDefaultValues: OrganizationFormSchema = {

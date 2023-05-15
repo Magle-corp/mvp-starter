@@ -1,13 +1,14 @@
-import {
-  AuthToken,
-  AuthTokenPayload,
-} from '@/features/authentication/types/AuthToken';
+import { AuthToken } from '@/features/authentication/types/AuthToken';
+import Organization from '@/features/organization/types/Organization';
+import User from '@/features/profile/types/User';
 
 type AuthContext = {
   publicPage: boolean;
-  token: AuthToken | null;
-  tokenPayload: AuthTokenPayload | null;
+  organizationPage: boolean;
   loading: boolean;
+  token: AuthToken | null;
+  organization?: Organization;
+  userId?: User['id'];
   getFreshToken: Function;
   login: Function;
   logout: Function;

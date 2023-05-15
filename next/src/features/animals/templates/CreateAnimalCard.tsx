@@ -7,7 +7,6 @@ import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import { Animal } from '@/features/animals/types/Animal';
 import AnimalForm from '@/features/animals/forms/AnimalForm';
 import { AnimalFormSchema } from '@/features/animals/forms/AnimalForm';
@@ -15,8 +14,7 @@ import Card from '@/ui/atoms/Card';
 
 const CreateAnimalCard = () => {
   const router = useRouter();
-  const { token } = useAuthContext();
-  const { organization } = useOrganizationContext();
+  const { token, organization } = useAuthContext();
   const { toast } = useBackOfficeContext();
 
   const animalDefaultValues: AnimalFormSchema = {

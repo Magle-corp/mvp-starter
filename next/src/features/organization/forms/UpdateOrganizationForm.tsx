@@ -12,7 +12,6 @@ import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 
 export type OrganizationFormSchema = {
   name: string;
-  owner: string;
 };
 
 const UpdateOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
@@ -23,7 +22,6 @@ const UpdateOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
       .min(3, 'Minimum 3 caractères')
       .max(40, 'Maximum 40 caractères')
       .required('Champ requis'),
-    owner: string().required(),
   });
 
   const form = useForm<OrganizationFormSchema>({

@@ -4,7 +4,7 @@ import { object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
-import { useOrganizationContext } from '@/features/organization/OrganizationContext';
+import { useAuthContext } from '@/features/authentication/AuthContext';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
 import Form from '@/ui/atoms/form/Form';
@@ -16,7 +16,7 @@ export type OrganizationFormSchema = {
 };
 
 const DeleteOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
-  const { organization } = useOrganizationContext();
+  const { organization } = useAuthContext();
   const { organizationMenuOpen } = useBackOfficeContext();
 
   const schema: Schema<OrganizationFormSchema> = object({
