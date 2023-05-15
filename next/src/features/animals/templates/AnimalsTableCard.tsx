@@ -8,7 +8,6 @@ import AppPages from '@/cdn/enums/AppPages';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import useGetAnimals from '@/cdn/queries/useGetAnimals';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import { Animal } from '@/features/animals/types/Animal';
 import ActionColumn from '@/features/animals/components/ActionColumn';
 import NameColumn from '@/features/animals/components/NameColumn';
@@ -27,8 +26,7 @@ const AnimalsTableCard = () => {
     useState<DataTableFilterMeta>(tableInitialFilters);
 
   const { breakpointSM, breakpointMD, breakpointLG } = useBreakpoints();
-  const { token } = useAuthContext();
-  const { organization } = useOrganizationContext();
+  const { token, organization } = useAuthContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
   const animalsQuery = useGetAnimals({

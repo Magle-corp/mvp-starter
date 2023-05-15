@@ -11,12 +11,12 @@ import CreateOrganizationForm from '@/features/organization/forms/CreateOrganiza
 import Card from '@/ui/atoms/Card';
 
 const CreateOrganizationCard = () => {
-  const { token, tokenPayload, getFreshToken } = useAuthContext();
+  const { token, userId, getFreshToken } = useAuthContext();
   const { toast } = useBackOfficeContext();
 
   const organizationDefaultValues: OrganizationFormSchema = {
     name: '',
-    owner: tokenPayload?.user_id.toString() ?? '',
+    owner: userId?.toString() ?? '',
   };
 
   const organizationMutation = usePost<OrganizationFormSchema>({

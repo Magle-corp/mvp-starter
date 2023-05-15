@@ -9,7 +9,6 @@ import AppPages from '@/cdn/enums/AppPages';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import {
   VocabularyFormConfiguration,
   VocabularyTypes,
@@ -33,8 +32,7 @@ const CreateVocabularyCard = () => {
 
   const router = useRouter();
   const { vocabulary: queryVocabularyType } = router.query;
-  const { token } = useAuthContext();
-  const { organization } = useOrganizationContext();
+  const { token, organization } = useAuthContext();
   const { toast } = useBackOfficeContext();
 
   useEffect(() => {

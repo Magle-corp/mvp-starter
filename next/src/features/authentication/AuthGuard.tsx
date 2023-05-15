@@ -3,14 +3,17 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import AppPages from '@/cdn/enums/AppPages';
 import { useAuthContext } from '@/features/authentication/AuthContext';
+import CreateOrganizationCard from '@/features/organization/templates/CreateOrganizationCard';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
+import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
 
 type AuthGuard = {
   children: ReactNode;
 };
 
 const AuthGuard = (props: AuthGuard) => {
-  const { publicPage, token, loading } = useAuthContext();
+  const { publicPage, token, loading, organizationPage, organization } =
+    useAuthContext();
   const router = useRouter();
 
   useEffect(() => {
@@ -22,8 +25,24 @@ const AuthGuard = (props: AuthGuard) => {
   return (
     <>
       {publicPage && <>{props.children}</>}
-      {!publicPage && !loading && token && <>{props.children}</>}
-      {!publicPage && loading && (
+      {!loading && !publicPage && token && !organizationPage && (
+        <>{props.children}</>
+      )}
+      {!loading &&
+        !publicPage &&
+        token &&
+        organizationPage &&
+        !organization && (
+          <BackOfficeLayout>
+            <main>
+              <CreateOrganizationCard />
+            </main>
+          </BackOfficeLayout>
+        )}
+      {!loading && !publicPage && token && organizationPage && organization && (
+        <>{props.children}</>
+      )}
+      {loading && !publicPage && organizationPage && (
         <LoadingWrapper>
           <ProgressSpinner />
         </LoadingWrapper>

@@ -8,7 +8,6 @@ import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
 import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
 import useGetAnimalSexes from '@/cdn/queries/useGetAnimalSexes';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import RaceDropdownItem from '@/features/animals/components/RaceDropdownItem';
 import SexDropdownItem from '@/features/animals/components/SexDropdownItem';
 import TemperMultiselectValue from '@/features/animals/components/TemperMultiselectValue';
@@ -31,8 +30,7 @@ export type AnimalFormSchema = {
 };
 
 const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
-  const { token } = useAuthContext();
-  const { organization } = useOrganizationContext();
+  const { token, organization } = useAuthContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
   const tempersQuery = useGetAnimalTempers({

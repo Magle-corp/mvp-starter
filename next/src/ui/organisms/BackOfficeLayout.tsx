@@ -6,7 +6,6 @@ import menuAdmin from '@/cdn/conf/menuAdmin';
 import menuOrganization from '@/cdn/conf/menuOrganization';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import BackOffice from '@/ui/atoms/layout/BackOffice';
 import BackOfficeBody from '@/ui/atoms/layout/BackOfficeBody';
 import BackOfficeHeader from '@/ui/atoms/layout/BackOfficeHeader';
@@ -20,8 +19,7 @@ type BackOfficeLayout = {
 };
 
 const BackOfficeLayout = (props: BackOfficeLayout) => {
-  const { token, logout } = useAuthContext();
-  const { organization } = useOrganizationContext();
+  const { token, logout, organization } = useAuthContext();
   const {
     adminMenuOpen,
     setAdminMenuOpen,

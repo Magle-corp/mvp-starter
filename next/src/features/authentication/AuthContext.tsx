@@ -23,14 +23,15 @@ const Context = createContext<AuthContext>();
 
 export function AuthContextWrapper({ children }: Props) {
   const [token, setToken] = useState<AuthToken | null>(null);
-  const [tokenPayload, setTokenPayload] = useState<AuthTokenPayload | null>(
-    null
-  );
   const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
+
   const publicPages: string[] = [AppPages.AUTH_SIGN_IN];
   const publicPage = publicPages.includes(router.pathname);
+
+  const organizationPages: string[] = [AppPages.BO_SETTINGS_PROFILE];
+  const organizationPage = !organizationPages.includes(router.pathname);
 
   useEffect(() => {
     if (!publicPage) {
@@ -41,7 +42,6 @@ export function AuthContextWrapper({ children }: Props) {
 
         if (validToken) {
           setToken(token);
-          setTokenPayload(authService.getAuthTokenPayload(token));
         } else {
           getFreshToken(token);
         }
@@ -49,7 +49,7 @@ export function AuthContextWrapper({ children }: Props) {
     }
 
     setLoading(false);
-  }, [publicPage, setTokenPayload, setToken]);
+  }, [publicPage, setToken]);
 
   const getFreshToken = async (authToken: AuthToken) => {
     const freshToken = await authService.fetchRefreshToken(authToken);
@@ -59,7 +59,6 @@ export function AuthContextWrapper({ children }: Props) {
 
       if (validFreshToken) {
         setToken(freshToken);
-        setTokenPayload(authService.getAuthTokenPayload(freshToken));
         authService.setLocalAuthToken(freshToken);
       }
     }
@@ -70,7 +69,6 @@ export function AuthContextWrapper({ children }: Props) {
 
     if (validToken) {
       setToken(token);
-      setTokenPayload(authService.getAuthTokenPayload(token));
       authService.setLocalAuthToken(token);
     }
   };
@@ -78,18 +76,23 @@ export function AuthContextWrapper({ children }: Props) {
   const logout = () => {
     authService.removeLocalAuthToken();
     setToken(null);
-    setTokenPayload(null);
   };
 
   const sharedStates: AuthContext = {
     publicPage,
-    token,
-    tokenPayload,
+    organizationPage,
     loading,
+    token,
     getFreshToken,
     login,
     logout,
   };
+
+  if (token) {
+    const payload = authService.getAuthTokenPayload(token);
+    sharedStates.organization = payload?.organizations[0];
+    sharedStates.userId = payload?.user_id;
+  }
 
   return <Context.Provider value={sharedStates}>{children}</Context.Provider>;
 }

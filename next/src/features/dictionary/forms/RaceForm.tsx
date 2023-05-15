@@ -8,7 +8,6 @@ import { FormHandler } from '@/cdn/types/Form';
 import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
 import useGetAnimalTypes from '@/cdn/queries/useGetAnimalTypes';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import { useOrganizationContext } from '@/features/organization/OrganizationContext';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import FormFieldDropdown from '@/ui/molecules/formFields/FormFieldDropdown';
 import Button from '@/ui/atoms/Button';
@@ -23,8 +22,7 @@ export type RaceFormSchema = {
 };
 
 const RaceForm = (props: FormHandler<RaceFormSchema>) => {
-  const { token } = useAuthContext();
-  const { organization } = useOrganizationContext();
+  const { token, organization } = useAuthContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
   const racesQuery = useGetAnimalRaces({
