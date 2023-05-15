@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import { confirmDialog } from 'primereact/confirmdialog';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useAppContext } from '@/cdn/AppContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import useDelete from '@/cdn/hooks/useDelete';
@@ -12,7 +12,7 @@ import Card from '@/ui/atoms/Card';
 
 const DeleteOrganizationCard = () => {
   const { token, getFreshToken, organization } = useAuthContext();
-  const { toast } = useBackOfficeContext();
+  const { toast } = useAppContext();
 
   const formDefaultValues: OrganizationFormSchema = {
     name: '',

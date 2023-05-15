@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useAppContext } from '@/cdn/AppContext';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiIris from '@/cdn/enums/ApiIris';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
@@ -15,7 +15,7 @@ import Card from '@/ui/atoms/Card';
 const CreateAnimalCard = () => {
   const router = useRouter();
   const { token, organization } = useAuthContext();
-  const { toast } = useBackOfficeContext();
+  const { toast } = useAppContext();
 
   const animalDefaultValues: AnimalFormSchema = {
     name: '',

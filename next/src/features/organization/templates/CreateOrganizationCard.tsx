@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useAppContext } from '@/cdn/AppContext';
 import ApiIris from '@/cdn/enums/ApiIris';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
@@ -12,7 +12,7 @@ import Card from '@/ui/atoms/Card';
 
 const CreateOrganizationCard = () => {
   const { token, userId, getFreshToken } = useAuthContext();
-  const { toast } = useBackOfficeContext();
+  const { toast } = useAppContext();
 
   const organizationDefaultValues: OrganizationFormSchema = {
     name: '',

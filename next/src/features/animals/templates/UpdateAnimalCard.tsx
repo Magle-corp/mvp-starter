@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 import { confirmDialog } from 'primereact/confirmdialog';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useAppContext } from '@/cdn/AppContext';
 import ApiIris from '@/cdn/enums/ApiIris';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
@@ -25,7 +25,7 @@ const UpdateAnimalCard = () => {
   const router = useRouter();
   const { id: animalQueryId } = router.query;
   const { token } = useAuthContext();
-  const { toast } = useBackOfficeContext();
+  const { toast } = useAppContext();
 
   const animalQuery = useGetAnimal({
     entityId: parseInt(animalQueryId as string),

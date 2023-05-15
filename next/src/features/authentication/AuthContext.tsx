@@ -6,10 +6,7 @@ import {
   useState,
 } from 'react';
 import { useRouter } from 'next/router';
-import {
-  AuthToken,
-  AuthTokenPayload,
-} from '@/features/authentication/types/AuthToken';
+import { AuthToken } from '@/features/authentication/types/AuthToken';
 import AuthContext from '@/features/authentication/types/AuthContext';
 import authService from '@/features/authentication/utils/AuthService';
 import AppPages from '@/cdn/enums/AppPages';

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { FilterMatchMode } from 'primereact/api';
 import { Column } from 'primereact/column';
 import { DataTableFilterMeta } from 'primereact/datatable';
+import { useAppContext } from '@/cdn/AppContext';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
@@ -27,7 +28,8 @@ const AnimalsTableCard = () => {
 
   const { breakpointSM, breakpointMD, breakpointLG } = useBreakpoints();
   const { token, organization } = useAuthContext();
-  const { organizationMenuOpen, toast } = useBackOfficeContext();
+  const { toast } = useAppContext();
+  const { organizationMenuOpen } = useBackOfficeContext();
 
   const animalsQuery = useGetAnimals({
     organizationId: organization?.id,

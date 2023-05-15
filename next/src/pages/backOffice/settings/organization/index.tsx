@@ -34,10 +34,6 @@ const DynConfirmDialog = dynamic(() =>
   import('@/ui/atoms/ConfirmDialog').then((ConfirmDialog) => ConfirmDialog)
 );
 
-const DynToast = dynamic(() =>
-  import('@/ui/atoms/Toast').then((Toast) => Toast)
-);
-
 const Organization = (): JSX.Element => {
   return (
     <>
@@ -61,7 +57,6 @@ Organization.getLayout = function getLayout(page: ReactElement) {
           <DynBackOfficeLayout>
             <DynSettingsLayout>{page}</DynSettingsLayout>
           </DynBackOfficeLayout>
-          <DynToast />
           <DynConfirmDialog />
         </DynAuthGuard>
       </AuthContextWrapper>

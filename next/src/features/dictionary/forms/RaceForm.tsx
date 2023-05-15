@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAppContext } from '@/cdn/AppContext';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
 import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
@@ -24,7 +25,8 @@ export type RaceFormSchema = {
 
 const RaceForm = (props: FormHandler<RaceFormSchema>) => {
   const { token, organization } = useAuthContext();
-  const { organizationMenuOpen, toast } = useBackOfficeContext();
+  const { toast } = useAppContext();
+  const { organizationMenuOpen } = useBackOfficeContext();
 
   const racesQuery = useGetAnimalRaces({
     organizationId: organization?.id,

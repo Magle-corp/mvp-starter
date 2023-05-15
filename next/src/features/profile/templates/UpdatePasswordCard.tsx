@@ -1,5 +1,5 @@
 import { SubmitHandler } from 'react-hook-form';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useAppContext } from '@/cdn/AppContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
@@ -9,7 +9,7 @@ import Card from '@/ui/atoms/Card';
 
 const UpdatePasswordCard = () => {
   const { token } = useAuthContext();
-  const { toast } = useBackOfficeContext();
+  const { toast } = useAppContext();
 
   const resetPasswordDefaultValues: PasswordFormSchema = {
     oldPassword: '',
