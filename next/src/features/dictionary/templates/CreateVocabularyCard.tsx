@@ -10,11 +10,15 @@ import QueryKeys from '@/cdn/enums/QueryKeys';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { useOrganizationContext } from '@/features/organization/OrganizationContext';
-import vocabularyDropdownOptions from '@/features/dictionary/conf/vocabularyDropdownOptions';
 import {
   VocabularyFormConfiguration,
   VocabularyTypes,
 } from '@/features/dictionary/types/Vocabulary';
+import {
+  errorToast,
+  getCreateFormConfiguration,
+  successToast,
+} from '@/features/dictionary/utils/vocabularyService';
 import TemperForm, {
   TemperFormSchema,
 } from '@/features/dictionary/forms/TemperForm';
@@ -34,52 +38,28 @@ const CreateVocabularyCard = () => {
   const { toast } = useBackOfficeContext();
 
   useEffect(() => {
-    if (organization) {
-      switch (queryVocabularyType) {
-        case VocabularyTypes.TEMPER:
-          setFormConfiguration({
-            type: VocabularyTypes.TEMPER,
-            cardTitle: 'Ajouter un caractère',
-            defaultValues: {
-              name: '',
-              organization: organization.id.toString(),
-            },
-          });
-          break;
-        case VocabularyTypes.TYPE:
-          setFormConfiguration({
-            type: VocabularyTypes.TYPE,
-            cardTitle: 'Ajouter un type',
-            defaultValues: {
-              name: '',
-              type: '',
-              organization: organization.id.toString(),
-            },
-          });
-          break;
-        case VocabularyTypes.RACE:
-          setFormConfiguration({
-            type: VocabularyTypes.RACE,
-            cardTitle: 'Ajouter une race',
-            defaultValues: {
-              name: '',
-              organization: organization.id.toString(),
-            },
-          });
-          break;
-      }
+    if (
+      !formConfiguration &&
+      organization &&
+      (queryVocabularyType === VocabularyTypes.RACE ||
+        queryVocabularyType === VocabularyTypes.TYPE ||
+        queryVocabularyType === VocabularyTypes.TEMPER)
+    ) {
+      setFormConfiguration(
+        getCreateFormConfiguration(organization.id, queryVocabularyType)
+      );
     }
-  }, [organization, queryVocabularyType]);
+  }, [queryVocabularyType]);
 
   const temperMutation = usePost<TemperFormSchema>({
     url: ApiRoutes.ORGANIZATION_TEMPERS,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TEMPERS,
     onSuccess: () => {
-      successToast();
+      successToast(toast);
       router.push(AppPages.BO_DICTIONARY + '?vocabulary=temper');
     },
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
   });
 
   const onSubmitTemperForm: SubmitHandler<TemperFormSchema> = (
@@ -95,10 +75,10 @@ const CreateVocabularyCard = () => {
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TYPES,
     onSuccess: () => {
-      successToast();
+      successToast(toast);
       router.push(AppPages.BO_DICTIONARY + '?vocabulary=type');
     },
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
   });
 
   const onSubmitTypeForm: SubmitHandler<TypeFormSchema> = (
@@ -114,10 +94,10 @@ const CreateVocabularyCard = () => {
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_RACES,
     onSuccess: () => {
-      successToast();
+      successToast(toast);
       router.push(AppPages.BO_DICTIONARY + '?vocabulary=race');
     },
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
   });
 
   const onSubmitRaceForm: SubmitHandler<RaceFormSchema> = (
@@ -129,28 +109,16 @@ const CreateVocabularyCard = () => {
       type: ApiIris.ANIMAL_TYPES + fieldValues.type,
     });
 
-  const successToast = () =>
-    toast.current.show({
-      severity: 'success',
-      summary: 'Dictionnaire',
-      detail: 'Enregistré avec succès',
-    });
-
-  const errorToast = () =>
-    toast.current.show({
-      severity: 'error',
-      summary: 'Dictionnaire',
-      detail: 'Un problème technique est survenu',
-    });
-
   const Toolbar = (
     <VocabularyDropdown
-      placeholder="type de vocabulaire"
       value={formConfiguration?.type}
-      options={vocabularyDropdownOptions}
-      onChange={(event) =>
-        router.push(AppPages.BO_DICTIONARY_CREATE + '/' + event.value)
-      }
+      onChange={(event) => {
+        if (organization) {
+          setFormConfiguration(
+            getCreateFormConfiguration(organization.id, event.value)
+          );
+        }
+      }}
     />
   );
 

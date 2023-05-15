@@ -16,8 +16,8 @@ import {
   AnimalTemper,
   AnimalType,
 } from '@/features/animals/types/Animal';
-import vocabularyDropdownOptions from '@/features/dictionary/conf/vocabularyDropdownOptions';
 import { VocabularyTypes } from '@/features/dictionary/types/Vocabulary';
+import { errorToast } from '@/features/dictionary/utils/vocabularyService';
 import ActionColumn from '@/features/dictionary/components/ActionColumn';
 import ActionColumnHeader from '@/features/dictionary/components/ActionColumnHeader';
 import VocabularyDropdown from '@/features/dictionary/components/VocabularyDropdown';
@@ -38,41 +38,48 @@ const VocabularyTableCard = () => {
   >();
 
   const router = useRouter();
-  const { query: vocabularyQuery } = router;
+  const { vocabulary: queryVocabularyType } = router.query;
   const { token } = useAuthContext();
   const { organization } = useOrganizationContext();
   const { toast } = useBackOfficeContext();
 
   useEffect(() => {
-    if (!vocabularyType) {
-      if (vocabularyQuery.vocabulary === VocabularyTypes.TYPE) {
-        setVocabularyType(vocabularyQuery.vocabulary);
-        typesQuery.refetch();
-      } else if (vocabularyQuery.vocabulary === VocabularyTypes.RACE) {
-        setVocabularyType(vocabularyQuery.vocabulary);
-        racesQuery.refetch();
-      } else if (vocabularyQuery.vocabulary === VocabularyTypes.TEMPER) {
-        setVocabularyType(vocabularyQuery.vocabulary);
-        tempersQuery.refetch();
-      }
-    } else {
-      if (vocabularyType === VocabularyTypes.TYPE) {
-        typesQuery.refetch();
-      } else if (vocabularyType === VocabularyTypes.RACE) {
-        racesQuery.refetch();
-      } else if (vocabularyType === VocabularyTypes.TEMPER) {
-        tempersQuery.refetch();
-      }
-      setVocabularyType(vocabularyType);
+    if (
+      !vocabularyType &&
+      (queryVocabularyType === VocabularyTypes.TYPE ||
+        queryVocabularyType === VocabularyTypes.TEMPER ||
+        queryVocabularyType === VocabularyTypes.RACE)
+    ) {
+      fetchTableData(queryVocabularyType);
     }
-  }, [vocabularyQuery, vocabularyType]);
+
+    if (vocabularyType) {
+      fetchTableData(vocabularyType);
+    }
+  }, [queryVocabularyType, vocabularyType]);
+
+  const fetchTableData = (vocabularyType: VocabularyTypes) => {
+    setVocabularyType(vocabularyType);
+
+    switch (vocabularyType) {
+      case VocabularyTypes.TYPE:
+        typesQuery.refetch();
+        break;
+      case VocabularyTypes.RACE:
+        racesQuery.refetch();
+        break;
+      case VocabularyTypes.TEMPER:
+        tempersQuery.refetch();
+        break;
+    }
+  };
 
   const tempersQuery = useGetAnimalTempers({
     organizationId: organization?.id,
     token: token?.token,
     enabled: false,
     onSuccess: (data) => setVocabulary(data['hydra:member']),
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
   });
 
   const racesQuery = useGetAnimalRaces({
@@ -80,7 +87,7 @@ const VocabularyTableCard = () => {
     token: token?.token,
     enabled: false,
     onSuccess: (data) => setVocabulary(data['hydra:member']),
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
   });
 
   const typesQuery = useGetAnimalTypes({
@@ -88,15 +95,8 @@ const VocabularyTableCard = () => {
     token: token?.token,
     enabled: false,
     onSuccess: (data) => setVocabulary(data['hydra:member']),
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
   });
-
-  const errorToast = () =>
-    toast.current.show({
-      severity: 'error',
-      summary: 'Dictionnaire',
-      detail: 'Un problème technique est survenu',
-    });
 
   const organizationFilter = (organizationFilterValue: any) => {
     if (organizationFilterValue) {
@@ -118,14 +118,12 @@ const VocabularyTableCard = () => {
         href={
           AppPages.BO_DICTIONARY_CREATE +
           '/' +
-          (vocabularyType != undefined ? vocabularyType : 'any')
+          (vocabularyType != undefined ? '?vocabulary=' + vocabularyType : '')
         }
       />
       <VocabularyDropdown
-        placeholder="type de vocabulaire"
         value={vocabularyType}
-        options={vocabularyDropdownOptions}
-        onChange={(event) => setVocabularyType(event.value)}
+        onChange={(event) => fetchTableData(event.value)}
       />
     </ToolbarWrapper>
   );

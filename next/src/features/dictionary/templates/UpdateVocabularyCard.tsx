@@ -17,6 +17,12 @@ import {
   VocabularyFormConfiguration,
   VocabularyTypes,
 } from '@/features/dictionary/types/Vocabulary';
+import {
+  deleteToast,
+  errorToast,
+  getUpdateFormConfiguration,
+  successToast,
+} from '@/features/dictionary/utils/vocabularyService';
 import TemperForm, {
   TemperFormSchema,
 } from '@/features/dictionary/forms/TemperForm';
@@ -35,55 +41,6 @@ const UpdateVocabularyCard = () => {
   const { token } = useAuthContext();
   const { toast } = useBackOfficeContext();
 
-  const raceQuery = useGetAnimalRace({
-    entityId: parseInt(queryVocabularyId as string),
-    token: token?.token,
-    enabled: false,
-    onSuccess: (data) =>
-      setFormConfiguration({
-        type: VocabularyTypes.RACE,
-        cardTitle: 'Mettre un jour une race',
-        defaultValues: {
-          name: data.name,
-          type: data.type.id,
-          organization: data.organization?.id.toString() as string,
-        },
-      }),
-    onError: () => errorToast(),
-  });
-
-  const temperQuery = useGetAnimalTemper({
-    entityId: parseInt(queryVocabularyId as string),
-    token: token?.token,
-    enabled: false,
-    onSuccess: (data) =>
-      setFormConfiguration({
-        type: VocabularyTypes.TEMPER,
-        cardTitle: 'Mettre un jour un caractère',
-        defaultValues: {
-          name: data.name,
-          organization: data.organization?.id.toString() as string,
-        },
-      }),
-    onError: () => errorToast(),
-  });
-
-  const typeQuery = useGetAnimalType({
-    entityId: parseInt(queryVocabularyId as string),
-    token: token?.token,
-    enabled: false,
-    onSuccess: (data) =>
-      setFormConfiguration({
-        type: VocabularyTypes.TYPE,
-        cardTitle: 'Mettre un jour un type',
-        defaultValues: {
-          name: data.name,
-          organization: data.organization?.id.toString() as string,
-        },
-      }),
-    onError: () => errorToast(),
-  });
-
   useEffect(() => {
     switch (queryVocabularyType) {
       case VocabularyTypes.TEMPER:
@@ -98,15 +55,26 @@ const UpdateVocabularyCard = () => {
     }
   }, [queryVocabularyType]);
 
+  const temperQuery = useGetAnimalTemper({
+    entityId: parseInt(queryVocabularyId as string),
+    token: token?.token,
+    enabled: false,
+    onSuccess: (data) =>
+      setFormConfiguration(
+        getUpdateFormConfiguration(queryVocabularyType as VocabularyTypes, data)
+      ),
+    onError: () => errorToast(toast),
+  });
+
   const temperUpdateMutation = usePut<TemperFormSchema>({
     url: ApiRoutes.ORGANIZATION_TEMPERS + '/' + queryVocabularyId,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TEMPERS,
     onSuccess: () => {
-      successToast();
+      successToast(toast);
       router.push(AppPages.BO_DICTIONARY + '?vocabulary=temper');
     },
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
   });
 
   const onSubmitTemperForm: SubmitHandler<TemperFormSchema> = (
@@ -122,10 +90,21 @@ const UpdateVocabularyCard = () => {
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TEMPERS,
     onSuccess: () => {
-      successDeleteToast();
+      deleteToast(toast);
       router.push(AppPages.BO_DICTIONARY + '?vocabulary=temper');
     },
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
+  });
+
+  const typeQuery = useGetAnimalType({
+    entityId: parseInt(queryVocabularyId as string),
+    token: token?.token,
+    enabled: false,
+    onSuccess: (data) =>
+      setFormConfiguration(
+        getUpdateFormConfiguration(queryVocabularyType as VocabularyTypes, data)
+      ),
+    onError: () => errorToast(toast),
   });
 
   const typeUpdateMutation = usePut<TypeFormSchema>({
@@ -133,10 +112,10 @@ const UpdateVocabularyCard = () => {
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TYPES,
     onSuccess: () => {
-      successToast();
+      successToast(toast);
       router.push(AppPages.BO_DICTIONARY + '?vocabulary=type');
     },
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
   });
 
   const onSubmitTypeForm: SubmitHandler<TypeFormSchema> = (
@@ -152,10 +131,21 @@ const UpdateVocabularyCard = () => {
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TYPES,
     onSuccess: () => {
-      successDeleteToast();
+      deleteToast(toast);
       router.push(AppPages.BO_DICTIONARY + '?vocabulary=type');
     },
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
+  });
+
+  const raceQuery = useGetAnimalRace({
+    entityId: parseInt(queryVocabularyId as string),
+    token: token?.token,
+    enabled: false,
+    onSuccess: (data) =>
+      setFormConfiguration(
+        getUpdateFormConfiguration(queryVocabularyType as VocabularyTypes, data)
+      ),
+    onError: () => errorToast(toast),
   });
 
   const raceUpdateMutation = usePut<RaceFormSchema>({
@@ -163,10 +153,10 @@ const UpdateVocabularyCard = () => {
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_RACES,
     onSuccess: () => {
-      successToast();
+      successToast(toast);
       router.push(AppPages.BO_DICTIONARY + '?vocabulary=race');
     },
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
   });
 
   const onSubmitRaceForm: SubmitHandler<RaceFormSchema> = (
@@ -183,31 +173,11 @@ const UpdateVocabularyCard = () => {
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_RACES,
     onSuccess: () => {
-      successDeleteToast();
+      deleteToast(toast);
       router.push(AppPages.BO_DICTIONARY + '?vocabulary=race');
     },
-    onError: () => errorToast(),
+    onError: () => errorToast(toast),
   });
-
-  const successToast = () =>
-    toast.current.show({
-      severity: 'success',
-      summary: 'Dictionnaire',
-      detail: 'Enregistré avec succès',
-    });
-
-  const successDeleteToast = () =>
-    toast.current.show({
-      severity: 'success',
-      summary: 'Dictionnaire',
-      detail: 'Supprimé avec succès',
-    });
-  const errorToast = () =>
-    toast.current.show({
-      severity: 'error',
-      summary: 'Dictionnaire',
-      detail: 'Un problème technique est survenu',
-    });
 
   const deleteVocabulary = () =>
     confirmDialog({
