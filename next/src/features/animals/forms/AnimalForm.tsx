@@ -60,7 +60,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
   const schema: Schema<AnimalFormSchema> = object({
     name: string()
       .min(2, 'Minimum 2 caractères')
-      .max(30, 'Maximum 30 caractères')
+      .max(50, 'Maximum 50 caractères')
       .required('Champ requis'),
     organization: string().required(),
     tempers: array().required(),
@@ -99,7 +99,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
               name="name"
               control={form.control}
               error={form.formState.errors.name?.message}
-              help="Minimum 2 caractères, maximum 30"
+              help="Minimum 2 caractères, maximum 50"
               required
             />
             <FormFieldDropdown<AnimalFormSchema>

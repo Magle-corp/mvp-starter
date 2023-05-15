@@ -20,7 +20,7 @@ const UpdateOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
   const schema: Schema<OrganizationFormSchema> = object({
     name: string()
       .min(3, 'Minimum 3 caractères')
-      .max(40, 'Maximum 40 caractères')
+      .max(100, 'Maximum 100 caractères')
       .required('Champ requis'),
   });
 
@@ -39,7 +39,7 @@ const UpdateOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
           name="name"
           control={form.control}
           error={form.formState.errors.name?.message}
-          help="Minimum 3 caractères, maximum 40"
+          help="Minimum 3 caractères, maximum 100"
           required
         />
       </StyledInputsWrapper>

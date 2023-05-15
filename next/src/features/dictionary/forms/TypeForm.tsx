@@ -42,7 +42,7 @@ const TypeForm = (props: FormHandler<TypeFormSchema>) => {
   const schema: Schema<TypeFormSchema> = object({
     name: string()
       .min(2, 'Minimum 2 caractères')
-      .max(30, 'Maximum 30 caractères')
+      .max(50, 'Maximum 50 caractères')
       .required('Champ requis')
       .test({
         test: (value) => nameCustomValidator(value),
@@ -74,7 +74,7 @@ const TypeForm = (props: FormHandler<TypeFormSchema>) => {
               name="name"
               control={form.control}
               error={form.formState.errors.name?.message}
-              help="Minimum 2 caractères, maximum 30"
+              help="Minimum 2 caractères, maximum 50"
               required
             />
           </StyledInputsWrapper>

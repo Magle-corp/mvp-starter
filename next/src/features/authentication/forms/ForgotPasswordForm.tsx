@@ -37,6 +37,7 @@ const ForgotPasswordForm = (props: FormHandler<ForgotPasswordFormSchema>) => {
           name="email"
           control={form.control}
           error={form.formState.errors.email?.message}
+          help="Minimum 5 caractères, maximum 80"
           required
         />
       </StyledInputsWrapper>
