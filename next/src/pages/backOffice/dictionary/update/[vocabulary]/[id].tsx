@@ -20,10 +20,6 @@ const DynBackOfficeLayout = dynamic(() =>
   )
 );
 
-const DynConfirmDialog = dynamic(() =>
-  import('@/ui/atoms/ConfirmDialog').then((ConfirmDialog) => ConfirmDialog)
-);
-
 const UpdateVocabulary = (): JSX.Element => {
   return (
     <>
@@ -47,7 +43,6 @@ UpdateVocabulary.getLayout = function getLayout(page: ReactElement) {
       <AuthContextWrapper>
         <DynAuthGuard>
           <DynBackOfficeLayout>{page}</DynBackOfficeLayout>
-          <DynConfirmDialog />
         </DynAuthGuard>
       </AuthContextWrapper>
     </BackOfficeContextWrapper>

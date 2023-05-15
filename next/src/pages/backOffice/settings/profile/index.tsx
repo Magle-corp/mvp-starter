@@ -24,10 +24,6 @@ const DynSettingsLayout = dynamic(() =>
   import('@/ui/layouts/SettingsLayout').then((SettingsLayout) => SettingsLayout)
 );
 
-const DynConfirmDialog = dynamic(() =>
-  import('@/ui/atoms/ConfirmDialog').then((ConfirmDialog) => ConfirmDialog)
-);
-
 const Profile = (): JSX.Element => {
   return (
     <>
@@ -50,7 +46,6 @@ Profile.getLayout = function getLayout(page: ReactElement) {
           <DynBackOfficeLayout>
             <DynSettingsLayout>{page}</DynSettingsLayout>
           </DynBackOfficeLayout>
-          <DynConfirmDialog />
         </DynAuthGuard>
       </AuthContextWrapper>
     </BackOfficeContextWrapper>

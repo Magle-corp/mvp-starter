@@ -20,10 +20,6 @@ const DynBackOfficeLayout = dynamic(() =>
   )
 );
 
-const DynConfirmDialog = dynamic(() =>
-  import('@/ui/atoms/ConfirmDialog').then((ConfirmDialog) => ConfirmDialog)
-);
-
 const Animals = (): JSX.Element => {
   return (
     <>
@@ -44,7 +40,6 @@ Animals.getLayout = function getLayout(page: ReactElement) {
       <AuthContextWrapper>
         <DynAuthGuard>
           <DynBackOfficeLayout>{page}</DynBackOfficeLayout>
-          <DynConfirmDialog />
         </DynAuthGuard>
       </AuthContextWrapper>
     </BackOfficeContextWrapper>

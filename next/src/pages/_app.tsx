@@ -15,6 +15,10 @@ const DynToast = dynamic(() =>
   import('@/ui/atoms/Toast').then((Toast) => Toast)
 );
 
+const DynConfirmDialog = dynamic(() =>
+  import('@/ui/atoms/ConfirmDialog').then((ConfirmDialog) => ConfirmDialog)
+);
+
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -47,6 +51,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <AppContextWrapper>
           <Layout Component={Component} pageProps={pageProps} />
           <DynToast />
+          <DynConfirmDialog />
         </AppContextWrapper>
       </ThemeWrapper>
     </QueryClientProvider>
