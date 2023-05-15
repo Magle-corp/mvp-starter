@@ -6,9 +6,6 @@ import menuAdmin from '@/cdn/conf/menuAdmin';
 import menuOrganization from '@/cdn/conf/menuOrganization';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import BackOffice from '@/ui/atoms/layout/BackOffice';
-import BackOfficeBody from '@/ui/atoms/layout/BackOfficeBody';
-import BackOfficeHeader from '@/ui/atoms/layout/BackOfficeHeader';
 import Menu from '@/ui/atoms/Menu';
 import Icon from '@/ui/atoms/Icon';
 import Button from '@/ui/atoms/Button';
@@ -28,10 +25,10 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
   } = useBackOfficeContext();
   const { breakpointSM, breakpointMD } = useBreakpoints();
 
-  const HeaderLeft = (
+  const HeaderLeft = () => (
     <>
       {organization && (
-        <>
+        <HeaderLeftWrapper>
           {(!organizationMenuOpen || !breakpointMD) && (
             <Icon
               size={20}
@@ -51,13 +48,13 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
           {breakpointSM && (
             <OrganizationName>{organization.name}</OrganizationName>
           )}
-        </>
+        </HeaderLeftWrapper>
       )}
     </>
   );
 
-  const HeaderRight = (
-    <>
+  const HeaderRight = () => (
+    <HeaderRightWrapper>
       {token && (
         <>
           <AdminAvatar
@@ -80,12 +77,15 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
           </SideBar>
         </>
       )}
-    </>
+    </HeaderRightWrapper>
   );
 
   return (
     <BackOffice>
-      <BackOfficeHeader headerLeft={HeaderLeft} headerRight={HeaderRight} />
+      <Header>
+        <HeaderLeft />
+        <HeaderRight />
+      </Header>
       <BackOfficeBody>
         {organization && (
           <>
@@ -107,6 +107,33 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
     </BackOffice>
   );
 };
+
+const BackOffice = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+`;
+
+const BackOfficeBody = styled.div`
+  display: flex;
+  gap: 1.5rem;
+  height: 100%;
+`;
+
+const Header = styled.div`
+  display: flex;
+`;
+
+const HeaderLeftWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const HeaderRightWrapper = styled(HeaderLeftWrapper)`
+  margin-left: auto;
+`;
 
 const OrganizationName = styled.p`
   font-weight: 700;

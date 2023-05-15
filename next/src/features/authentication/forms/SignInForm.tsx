@@ -6,8 +6,8 @@ import { FormHandler } from '@/cdn/types/Form';
 import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
 import Form from '@/ui/atoms/form/Form';
-import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
-import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';
+import FormFieldText from '@/ui/atoms/formFields/FormFieldText';
+import FormFieldPassword from '@/ui/atoms/formFields/FormFieldPassword';
 import Button from '@/ui/atoms/Button';
 
 export type SignInFormSchema = {

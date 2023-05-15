@@ -15,7 +15,7 @@ const DynUpdateAnimalCard = dynamic(() =>
 );
 
 const DynBackOfficeLayout = dynamic(() =>
-  import('@/ui/organisms/BackOfficeLayout').then(
+  import('@/ui/layouts/BackOfficeLayout').then(
     (BackOfficeLayout) => BackOfficeLayout
   )
 );

@@ -8,7 +8,7 @@ import { FormHandler } from '@/cdn/types/Form';
 import useGetAnimalTypes from '@/cdn/queries/useGetAnimalTypes';
 import { stringStrictComparison } from '@/cdn/utils/autoComplete';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
+import FormFieldText from '@/ui/atoms/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';

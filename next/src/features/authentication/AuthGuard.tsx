@@ -5,7 +5,7 @@ import AppPages from '@/cdn/enums/AppPages';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import CreateOrganizationCard from '@/features/organization/templates/CreateOrganizationCard';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
-import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
+import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
 type AuthGuard = {
   children: ReactNode;

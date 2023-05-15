@@ -6,7 +6,7 @@ import { FormHandler } from '@/cdn/types/Form';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
-import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';
+import FormFieldPassword from '@/ui/atoms/formFields/FormFieldPassword';
 import Button from '@/ui/atoms/Button';
 
 export type ResetPasswordFormSchema = {

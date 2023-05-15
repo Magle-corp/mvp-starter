@@ -21,15 +21,13 @@ const DynDeleteOrganizationCard = dynamic(() =>
 );
 
 const DynBackOfficeLayout = dynamic(() =>
-  import('@/ui/organisms/BackOfficeLayout').then(
+  import('@/ui/layouts/BackOfficeLayout').then(
     (BackOfficeLayout) => BackOfficeLayout
   )
 );
 
 const DynSettingsLayout = dynamic(() =>
-  import('@/ui/organisms/SettingsLayout').then(
-    (SettingsLayout) => SettingsLayout
-  )
+  import('@/ui/layouts/SettingsLayout').then((SettingsLayout) => SettingsLayout)
 );
 
 const DynConfirmDialog = dynamic(() =>

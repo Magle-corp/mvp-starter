@@ -6,9 +6,9 @@ import { FormHandler } from '@/cdn/types/Form';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
-import FormFieldCheckbox from '@/ui/molecules/formFields/FormFieldCheckbox';
-import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
-import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';
+import FormFieldCheckbox from '@/ui/atoms/formFields/FormFieldCheckbox';
+import FormFieldText from '@/ui/atoms/formFields/FormFieldText';
+import FormFieldPassword from '@/ui/atoms/formFields/FormFieldPassword';
 import Button from '@/ui/atoms/Button';
 
 export type SignUpFormSchema = {

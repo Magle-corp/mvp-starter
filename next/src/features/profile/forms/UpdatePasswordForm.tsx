@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
 import { FormHandler } from '@/cdn/types/Form';
-import FormFieldPassword from '@/ui/molecules/formFields/FormFieldPassword';
+import FormFieldPassword from '@/ui/atoms/formFields/FormFieldPassword';
 import Button from '@/ui/atoms/Button';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';

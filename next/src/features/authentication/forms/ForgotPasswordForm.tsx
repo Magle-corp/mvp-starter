@@ -6,7 +6,7 @@ import { FormHandler } from '@/cdn/types/Form';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
 import InputsWrapper from '@/ui/atoms/form/InputsWrapper';
-import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
+import FormFieldText from '@/ui/atoms/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
 
 export type ForgotPasswordFormSchema = {
