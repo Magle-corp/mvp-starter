@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
 import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
+import { stringStrictComparison } from '@/cdn/utils/autoComplete';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
@@ -22,6 +23,10 @@ const TemperForm = (props: FormHandler<TemperFormSchema>) => {
   const { token, organization } = useAuthContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
+  useEffect(() => {
+    tempersQuery.refetch();
+  }, []);
+
   const tempersQuery = useGetAnimalTempers({
     organizationId: organization?.id,
     token: token?.token,
@@ -34,17 +39,23 @@ const TemperForm = (props: FormHandler<TemperFormSchema>) => {
       }),
   });
 
-  useEffect(() => {
-    tempersQuery.refetch();
-  }, []);
-
   const schema: Schema<TemperFormSchema> = object({
     name: string()
       .min(2, 'Minimum 2 caractères')
       .max(30, 'Maximum 30 caractères')
-      .required('Champ requis'),
+      .required('Champ requis')
+      .test({
+        test: (value) => nameCustomValidator(value),
+        message: 'Caractère déjà enregistré',
+      }),
     organization: string().required(),
   });
+
+  const nameCustomValidator = (value: string) => {
+    return !tempersQuery.data?.data['hydra:member'].some((temper) =>
+      stringStrictComparison(temper.name, value)
+    );
+  };
 
   const form = useForm<TemperFormSchema>({
     mode: 'onChange',

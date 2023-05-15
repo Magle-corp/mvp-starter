@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
 import useGetAnimalTypes from '@/cdn/queries/useGetAnimalTypes';
+import { stringStrictComparison } from '@/cdn/utils/autoComplete';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';
@@ -22,6 +23,10 @@ const TypeForm = (props: FormHandler<TypeFormSchema>) => {
   const { token, organization } = useAuthContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
+  useEffect(() => {
+    typesQuery.refetch();
+  }, []);
+
   const typesQuery = useGetAnimalTypes({
     organizationId: organization?.id,
     token: token?.token,
@@ -34,17 +39,23 @@ const TypeForm = (props: FormHandler<TypeFormSchema>) => {
       }),
   });
 
-  useEffect(() => {
-    typesQuery.refetch();
-  }, []);
-
   const schema: Schema<TypeFormSchema> = object({
     name: string()
       .min(2, 'Minimum 2 caractères')
       .max(30, 'Maximum 30 caractères')
-      .required('Champ requis'),
+      .required('Champ requis')
+      .test({
+        test: (value) => nameCustomValidator(value),
+        message: 'Type déjà enregistré',
+      }),
     organization: string().required(),
   });
+
+  const nameCustomValidator = (value: string) => {
+    return !typesQuery.data?.data['hydra:member'].some((type) =>
+      stringStrictComparison(type.name, value)
+    );
+  };
 
   const form = useForm<TypeFormSchema>({
     mode: 'onChange',

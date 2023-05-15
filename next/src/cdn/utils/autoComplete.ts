@@ -68,4 +68,4 @@ const autoCompleteMethod = <T>(
   );
 };
 
-export default autoCompleteMethod;
+export { stringStrictComparison, stringIncludesComparison, autoCompleteMethod };

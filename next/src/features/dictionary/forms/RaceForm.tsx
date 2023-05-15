@@ -7,6 +7,7 @@ import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
 import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
 import useGetAnimalTypes from '@/cdn/queries/useGetAnimalTypes';
+import { stringStrictComparison } from '@/cdn/utils/autoComplete';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import FormFieldText from '@/ui/molecules/formFields/FormFieldText';
 import FormFieldDropdown from '@/ui/molecules/formFields/FormFieldDropdown';
@@ -24,6 +25,11 @@ export type RaceFormSchema = {
 const RaceForm = (props: FormHandler<RaceFormSchema>) => {
   const { token, organization } = useAuthContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
+
+  useEffect(() => {
+    racesQuery.refetch();
+    typesQuery.refetch();
+  }, []);
 
   const racesQuery = useGetAnimalRaces({
     organizationId: organization?.id,
@@ -46,19 +52,24 @@ const RaceForm = (props: FormHandler<RaceFormSchema>) => {
       detail: 'Un problème technique est survenu',
     });
 
-  useEffect(() => {
-    racesQuery.refetch();
-    typesQuery.refetch();
-  }, []);
-
   const schema: Schema<RaceFormSchema> = object({
     name: string()
       .min(2, 'Minimum 2 caractères')
       .max(30, 'Maximum 30 caractères')
-      .required('Champ requis'),
+      .required('Champ requis')
+      .test({
+        test: (value) => nameCustomValidator(value),
+        message: 'Race déjà enregistrée',
+      }),
     type: string().required(),
     organization: string().required(),
   });
+
+  const nameCustomValidator = (value: string) => {
+    return !racesQuery.data?.data['hydra:member'].some((race) =>
+      stringStrictComparison(race.name, value)
+    );
+  };
 
   const form = useForm<RaceFormSchema>({
     mode: 'onChange',
