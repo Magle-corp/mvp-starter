@@ -1,14 +1,44 @@
 import { ReactElement } from 'react';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
-import AuthGuard from '@/features/authentication/AuthGuard';
 import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
-import UpdateOrganizationCard from '@/features/organization/templates/UpdateOrganizationCard';
-import DeleteOrganizationCard from '@/features/organization/templates/DeleteOrganizationCard';
-import BackOfficeLayout from '@/ui/organisms/BackOfficeLayout';
-import SettingsLayout from '@/ui/organisms/SettingsLayout';
-import ConfirmDialog from '@/ui/atoms/ConfirmDialog';
-import Toast from '@/ui/atoms/Toast';
+
+const DynAuthGuard = dynamic(() =>
+  import('@/features/authentication/AuthGuard').then((AuthGuard) => AuthGuard)
+);
+
+const DynUpdateOrganizationCard = dynamic(() =>
+  import('@/features/organization/templates/UpdateOrganizationCard').then(
+    (UpdateOrganizationCard) => UpdateOrganizationCard
+  )
+);
+
+const DynDeleteOrganizationCard = dynamic(() =>
+  import('@/features/organization/templates/DeleteOrganizationCard').then(
+    (DeleteOrganizationCard) => DeleteOrganizationCard
+  )
+);
+
+const DynBackOfficeLayout = dynamic(() =>
+  import('@/ui/organisms/BackOfficeLayout').then(
+    (BackOfficeLayout) => BackOfficeLayout
+  )
+);
+
+const DynSettingsLayout = dynamic(() =>
+  import('@/ui/organisms/SettingsLayout').then(
+    (SettingsLayout) => SettingsLayout
+  )
+);
+
+const DynConfirmDialog = dynamic(() =>
+  import('@/ui/atoms/ConfirmDialog').then((ConfirmDialog) => ConfirmDialog)
+);
+
+const DynToast = dynamic(() =>
+  import('@/ui/atoms/Toast').then((Toast) => Toast)
+);
 
 const Organization = (): JSX.Element => {
   return (
@@ -19,8 +49,8 @@ const Organization = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <UpdateOrganizationCard />
-      <DeleteOrganizationCard />
+      <DynUpdateOrganizationCard />
+      <DynDeleteOrganizationCard />
     </>
   );
 };
@@ -29,13 +59,13 @@ Organization.getLayout = function getLayout(page: ReactElement) {
   return (
     <BackOfficeContextWrapper>
       <AuthContextWrapper>
-        <AuthGuard>
-          <BackOfficeLayout>
-            <SettingsLayout>{page}</SettingsLayout>
-          </BackOfficeLayout>
-          <Toast />
-          <ConfirmDialog />
-        </AuthGuard>
+        <DynAuthGuard>
+          <DynBackOfficeLayout>
+            <DynSettingsLayout>{page}</DynSettingsLayout>
+          </DynBackOfficeLayout>
+          <DynToast />
+          <DynConfirmDialog />
+        </DynAuthGuard>
       </AuthContextWrapper>
     </BackOfficeContextWrapper>
   );
