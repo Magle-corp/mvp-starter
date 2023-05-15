@@ -25,27 +25,27 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(operations: [
     new Post(
-        uriTemplate: '/auth/signUp',
+        uriTemplate: '/auth/sign_up',
         controller: SignUpController::class,
     ),
     new Post(
-        uriTemplate: '/auth/signUpValidation',
+        uriTemplate: '/auth/sign_up_validation',
         controller: SignUpValidationController::class,
     ),
     new Post(
-        uriTemplate: '/auth/reSendSignUpValidationEmail',
+        uriTemplate: '/auth/re_send_sign_up_validation_email',
         controller: ReSendSignUpValidationEmailController::class,
     ),
     new Post(
-        uriTemplate: '/auth/forgotPassword',
+        uriTemplate: '/auth/forgot_password',
         controller: ForgotPasswordController::class,
     ),
     new Post(
-        uriTemplate: '/auth/resetPassword',
+        uriTemplate: '/auth/reset_password',
         controller: ResetPasswordController::class,
     ),
     new Post(
-        uriTemplate: '/profile/updatePassword',
+        uriTemplate: '/profile/update_password',
         controller: UpdatePasswordController::class,
     )
 ])]

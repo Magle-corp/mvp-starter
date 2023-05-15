@@ -9,10 +9,10 @@ security:
                 property: email
     firewalls:
         login:
-            pattern: ^/api/auth/signIn
+            pattern: ^/api/auth/sign_in
             stateless: true
             json_login:
-                check_path: /api/auth/signIn
+                check_path: /api/auth/sign_in
                 username_path: email
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
@@ -22,7 +22,7 @@ security:
             entry_point: jwt
             jwt: ~
             refresh_jwt:
-                check_path: /api/auth/refreshToken
+                check_path: /api/auth/refresh_token
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false

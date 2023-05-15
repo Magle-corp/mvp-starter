@@ -4,6 +4,6 @@ controllers:
         namespace: App\Controller
     type: attribute
 api_login_check:
-    path: /api/auth/signIn
+    path: /api/auth/sign_in
 api_refresh_token:
-    path: /api/auth/refreshToken
+    path: /api/auth/refresh_token

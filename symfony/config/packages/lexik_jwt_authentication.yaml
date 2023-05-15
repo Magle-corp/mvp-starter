@@ -6,6 +6,6 @@ lexik_jwt_authentication:
     user_identity_field: email
 
     api_platform:
-        check_path: /api/login_check
+        check_path: /api/sign_in
         username_path: email
         password_path: security.credentials.password
