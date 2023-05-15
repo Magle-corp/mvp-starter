@@ -33,7 +33,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             security: "is_granted('ANIMALS_READ', object)"
         ),
         new Post(
-            denormalizationContext: ['groups' => ['animal_write']],
+            denormalizationContext: ['groups' => ['animal_create']],
             securityPostDenormalize: "is_granted('ANIMAL_CREATE', object)"
         ),
         new Put(
@@ -52,34 +52,64 @@ class Animal
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['animals_read', 'animal_read'])]
+    #[Groups([
+        'animals_read',
+        'animal_read'
+    ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['animals_read', 'animal_read', 'animal_write', 'animal_update'])]
+    #[Groups([
+        'animals_read',
+        'animal_read',
+        'animal_create',
+        'animal_update'
+    ])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['animal_read', 'animal_write'])]
+    #[Groups([
+        'animal_read',
+        'animal_create',
+    ])]
     private ?Organization $organization = null;
 
     #[ORM\ManyToMany(targetEntity: AnimalTemper::class)]
-    #[Groups(['animal_read', 'animal_write', 'animal_update'])]
+    #[Groups([
+        'animal_read',
+        'animal_create',
+        'animal_update'
+    ])]
     private Collection $tempers;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['animals_read', 'animal_read', 'animal_write', 'animal_update'])]
+    #[Groups([
+        'animals_read',
+        'animal_read',
+        'animal_create',
+        'animal_update'
+    ])]
     private ?AnimalRace $race = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['animals_read', 'animal_read', 'animal_write', 'animal_update'])]
+    #[Groups([
+        'animals_read',
+        'animal_read',
+        'animal_create',
+        'animal_update'
+    ])]
     private ?AnimalSex $sex = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['animals_read', 'animal_read', 'animal_write', 'animal_update'])]
+    #[Groups([
+        'animals_read',
+        'animal_read',
+        'animal_create',
+        'animal_update'
+    ])]
     private ?DateTimeInterface $registered = null;
 
     public function __construct()

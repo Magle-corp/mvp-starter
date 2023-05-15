@@ -63,7 +63,10 @@ class Organization
 
     #[ORM\ManyToOne(inversedBy: 'organizations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['organization_read', 'organization_create'])]
+    #[Groups([
+        'organization_read',
+        'organization_create'
+    ])]
     private ?User $owner = null;
 
     #[ORM\OneToMany(mappedBy: 'organization', targetEntity: Animal::class, orphanRemoval: true)]

@@ -49,7 +49,7 @@ class AnimalRace
         'animal_read',
         'animal_races_read',
         'org_animal_race_read',
-        'org_animal_race_write',
+        'org_animal_race_create',
         'org_animal_race_update',
     ])]
     private ?string $name = null;
@@ -61,7 +61,7 @@ class AnimalRace
         'animal_read',
         'animal_races_read',
         'org_animal_race_read',
-        'org_animal_race_write',
+        'org_animal_race_create',
         'org_animal_race_update',
     ])]
     private ?AnimalType $type = null;

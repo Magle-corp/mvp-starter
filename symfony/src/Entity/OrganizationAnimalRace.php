@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             security: "is_granted('ORG_ANIMAL_RACE_READ', object)"
         ),
         new Post(
-            denormalizationContext: ['groups' => ['org_animal_race_write']],
+            denormalizationContext: ['groups' => ['org_animal_race_create']],
             securityPostDenormalize: "is_granted('ORG_ANIMAL_RACE_CREATE', object)"
         ),
         new Put(
@@ -35,7 +35,11 @@ class OrganizationAnimalRace extends AnimalRace
 {
     #[ORM\ManyToOne(inversedBy: 'animalRaces')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['org_animal_race_write', 'animal_races_read', 'org_animal_race_read'])]
+    #[Groups([
+        'animal_races_read',
+        'org_animal_race_create',
+        'org_animal_race_read'
+    ])]
     private ?Organization $organization = null;
 
     public function getOrganization(): ?Organization

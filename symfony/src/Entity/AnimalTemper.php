@@ -47,7 +47,7 @@ class AnimalTemper
         'animal_read',
         'animal_tempers_read',
         'org_animal_temper_read',
-        'org_animal_temper_write',
+        'org_animal_temper_create',
         'org_animal_temper_update',
     ])]
     private ?string $name = null;

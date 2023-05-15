@@ -50,10 +50,10 @@ class AnimalType
         'animals_read',
         'animal_read',
         'animal_types_read',
-        'org_animal_type_read',
-        'org_animal_type_write',
-        'org_animal_type_update',
         'animal_races_read',
+        'org_animal_type_read',
+        'org_animal_type_create',
+        'org_animal_type_update',
         'org_animal_race_read',
     ])]
     private ?string $name = null;

@@ -9,9 +9,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class AnimalVoter extends Voter
 {
+    const ANIMALS_READ = 'ANIMALS_READ';
     const ANIMAL_CREATE = 'ANIMAL_CREATE';
     const ANIMAL_READ = 'ANIMAL_READ';
-    const ANIMALS_READ = 'ANIMALS_READ';
     const ANIMAL_UPDATE = 'ANIMAL_UPDATE';
     const ANIMAL_DELETE = 'ANIMAL_DELETE';
 
@@ -30,9 +30,9 @@ class AnimalVoter extends Voter
     protected function supports(string $attribute, mixed $subject): bool
     {
         return in_array($attribute, [
+            self::ANIMALS_READ,
             self::ANIMAL_CREATE,
             self::ANIMAL_READ,
-            self::ANIMALS_READ,
             self::ANIMAL_UPDATE,
             self::ANIMAL_DELETE
         ]);
