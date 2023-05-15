@@ -26,11 +26,6 @@ const RaceForm = (props: FormHandler<RaceFormSchema>) => {
   const { token, organization } = useAuthContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  useEffect(() => {
-    racesQuery.refetch();
-    typesQuery.refetch();
-  }, []);
-
   const racesQuery = useGetAnimalRaces({
     organizationId: organization?.id,
     token: token?.token,
@@ -44,6 +39,11 @@ const RaceForm = (props: FormHandler<RaceFormSchema>) => {
     enabled: false,
     onError: () => errorToast(),
   });
+
+  useEffect(() => {
+    racesQuery.refetch();
+    typesQuery.refetch();
+  }, []);
 
   const errorToast = () =>
     toast.current.show({

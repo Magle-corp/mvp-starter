@@ -41,22 +41,8 @@ const VocabularyTableCard = () => {
   const { token, organization } = useAuthContext();
   const { toast } = useBackOfficeContext();
 
-  useEffect(() => {
-    if (
-      !vocabularyType &&
-      (queryVocabularyType === VocabularyTypes.TYPE ||
-        queryVocabularyType === VocabularyTypes.TEMPER ||
-        queryVocabularyType === VocabularyTypes.RACE)
-    ) {
-      fetchTableData(queryVocabularyType);
-    }
-
-    if (vocabularyType) {
-      fetchTableData(vocabularyType);
-    }
-  }, [queryVocabularyType, vocabularyType]);
-
   const fetchTableData = (vocabularyType: VocabularyTypes) => {
+    console.log('fetchTableData voc table card');
     setVocabularyType(vocabularyType);
 
     switch (vocabularyType) {
@@ -71,6 +57,17 @@ const VocabularyTableCard = () => {
         break;
     }
   };
+
+  useEffect(() => {
+    if (
+      !vocabularyType &&
+      (queryVocabularyType === VocabularyTypes.TYPE ||
+        queryVocabularyType === VocabularyTypes.TEMPER ||
+        queryVocabularyType === VocabularyTypes.RACE)
+    ) {
+      fetchTableData(queryVocabularyType);
+    }
+  }, [queryVocabularyType, fetchTableData]);
 
   const tempersQuery = useGetAnimalTempers({
     organizationId: organization?.id,

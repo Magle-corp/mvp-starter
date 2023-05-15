@@ -1,6 +1,6 @@
 import AppPages from '@/cdn/enums/AppPages';
 
-export default [
+const menuAdmin = [
   {
     label: 'Profil',
     icon: 'pi pi-user',
@@ -12,3 +12,5 @@ export default [
     url: AppPages.BO_SETTINGS_ORGANIZATION,
   },
 ];
+
+export default menuAdmin;

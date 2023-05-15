@@ -1,6 +1,6 @@
 import AppPages from '@/cdn/enums/AppPages';
 
-export default [
+const menuOrganization = [
   { label: 'Accueil', icon: 'pi pi-home', url: AppPages.BO_DASHBOARD },
   {
     label: 'Animaux',
@@ -13,3 +13,5 @@ export default [
     url: AppPages.BO_DICTIONARY,
   },
 ];
+
+export default menuOrganization;

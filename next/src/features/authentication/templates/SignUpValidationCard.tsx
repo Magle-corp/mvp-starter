@@ -15,7 +15,6 @@ import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 type SignUpValidationFormSchema = {
   token: string;
 };
-
 const SignUpValidationCard = () => {
   const router = useRouter();
   const { token } = router.query;

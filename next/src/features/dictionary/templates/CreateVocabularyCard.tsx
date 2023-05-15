@@ -47,7 +47,7 @@ const CreateVocabularyCard = () => {
         getCreateFormConfiguration(organization.id, queryVocabularyType)
       );
     }
-  }, [queryVocabularyType]);
+  }, [formConfiguration, queryVocabularyType, organization]);
 
   const temperMutation = usePost<TemperFormSchema>({
     url: ApiRoutes.ORGANIZATION_TEMPERS,
