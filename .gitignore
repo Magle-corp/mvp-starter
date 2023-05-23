@@ -1,6 +1,9 @@
 ###> root ###
 .idea
 
+###> symfony - symfony ###
+symfony/public/media
+
 ###> symfony - framework-bundle ###
 symfony/config/secrets/prod/prod.decrypt.private.php
 symfony/public/bundles/
