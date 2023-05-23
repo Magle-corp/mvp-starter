@@ -31,6 +31,7 @@ final class ExceptionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $event->setResponse($this->responseService->error());
+//        $event->setResponse($this->responseService->error());
+        $event->setResponse($this->responseService->debug($event->getThrowable()->getMessage()));
     }
 }

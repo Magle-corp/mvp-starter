@@ -28,4 +28,9 @@ class ResponseService
     {
         return $this->create('Un problème technique est survenu, veuillez réessayer ultérieurement', 500);
     }
+
+    public function debug(string $message): Response
+    {
+        return $this->create($message, 500);
+    }
 }

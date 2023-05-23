@@ -1,22 +1,17 @@
 import Card from '@/ui/atoms/Card';
 import { FileUpload, FileUploadBeforeSendEvent } from 'primereact/fileupload';
-import api from '@/cdn/utils/api';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
-import FormData from 'form-data';
+import { useRouter } from 'next/router';
 
 const AnimalFileUploaderCard = () => {
+  const router = useRouter();
+  const { id: animalQueryId } = router.query;
   const { token } = useAuthContext();
 
-  const log = (string: string, event: any) => {
-    console.group(string);
-    console.log(event);
-    console.groupEnd();
-  };
-
   const animalFileMutation = usePost({
-    url: ApiRoutes.MEDIA_OBJECTS,
+    url: ApiRoutes.ANIMAL_PICTURES,
     token: token?.token,
     key: 'osef',
     mediaObject: true,
@@ -25,28 +20,18 @@ const AnimalFileUploaderCard = () => {
   });
 
   const handleSubmit = (event: FileUploadBeforeSendEvent) => {
-    // console.log(event.formData);
-
-    // const formData = new FormData();
-    // formData.append('file', event.formData);
+    const animalJsonData = JSON.stringify({ id: animalQueryId });
+    const blob = new Blob([animalJsonData], {
+      type: 'application/json',
+    });
+    event.formData.append('animal', blob);
 
     animalFileMutation.mutate(event.formData);
   };
 
   return (
     <Card title="Ajouter un document">
-      <FileUpload
-        name="file"
-        // uploadHandler={(event) => log('upload handler', event)} // Never triggered
-        // onBeforeDrop={(event) => log('before drop', event)} // Trigger beforeSelect + onSelect
-        // onBeforeSelect={(event) => log('before select', event)}
-        // onSelect={(event) => log('select', event)}
-        // onBeforeUpload={(event) => log('before upload', event)}
-        // onBeforeSend={(event) => log('before send', event)}
-        // onProgress={(event) => log('progress', event)}
-        // onUpload={(event) => log('upload', event)}
-        onBeforeUpload={handleSubmit}
-      />
+      <FileUpload name="file" onBeforeUpload={handleSubmit} />
     </Card>
   );
 };
