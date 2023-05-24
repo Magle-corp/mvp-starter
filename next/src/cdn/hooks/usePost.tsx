@@ -9,6 +9,10 @@ const usePost = <T,>(props: UseMutation<T>) => {
     api.defaults.headers.common.Authorization = `Bearer ${props.token}`;
   }
 
+  if (props.mediaObject) {
+    api.defaults.headers.common['Content-Type'] = 'multipart/form-data';
+  }
+
   return useMutation([props.key], {
     mutationFn: async (payload: T) => {
       return api.post(props.url, payload);

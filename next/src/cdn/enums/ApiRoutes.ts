@@ -13,6 +13,7 @@ enum ApiRoutes {
   ORGANIZATION_RACES = '/organization_animal_races',
   ANIMALS = '/animals',
   ANIMALS_ORG = '/animals/organization',
+  ANIMAL_AVATARS = '/animal_avatars',
   ANIMAL_TEMPERS_ORG = '/animal_tempers/organization',
   ANIMAL_RACES_ORG = '/animal_races/organization',
   ANIMAL_TYPES_ORG = '/animal_types/organization',

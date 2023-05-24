@@ -8,6 +8,7 @@ type UseMutation<T> = {
   token?: AuthToken['token'];
   onSuccess?: (data: AxiosResponse<T>) => void;
   onError?: (error: AxiosError<ApiError> | unknown) => void;
+  mediaObject?: boolean;
 };
 
 type UseQuery<T> = {

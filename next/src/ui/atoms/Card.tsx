@@ -66,7 +66,7 @@ const TitleWrapper = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.5rem;
 `;
 
 const Title = styled.h1<{
@@ -101,7 +101,7 @@ const getTitleVariant = (
       variantPosition = 'center';
       break;
     default:
-      variantWidth = 'max-content';
+      variantWidth = 'initial';
       variantPosition = 'left';
   }
 
