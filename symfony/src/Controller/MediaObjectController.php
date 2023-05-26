@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Animal;
 use App\Entity\AnimalAvatar;
+use App\Enum\Medias;
 use App\Service\VoterService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,7 +44,7 @@ class MediaObjectController extends AbstractController
     public function getRelatedEntity(array $entity, EntityManagerInterface $entityManager): ?Animal
     {
         switch ($entity['type']) {
-            case "animal":
+            case Medias::ANIMAL_AVATAR:
                 $animalRepository = $entityManager->getRepository(Animal::class);
                 return $animalRepository->find($entity['id']);
             default:

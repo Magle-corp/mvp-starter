@@ -1,19 +1,25 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useRouter } from 'next/router';
+import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import { confirmDialog } from 'primereact/confirmdialog';
+import { TbCat, TbDog } from 'react-icons/tb';
 import { useAppContext } from '@/cdn/AppContext';
 import ApiIris from '@/cdn/enums/ApiIris';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
+import Medias from '@/cdn/enums/Medias';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import useDelete from '@/cdn/hooks/useDelete';
+import usePost from '@/cdn/hooks/usePost';
 import usePut from '@/cdn/hooks/usePut';
 import useGetAnimal from '@/cdn/queries/useGetAnimal';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { Animal } from '@/features/animals/types/Animal';
-import AnimalForm from '@/features/animals/forms/AnimalForm';
-import { AnimalFormSchema } from '@/features/animals/forms/AnimalForm';
+import AnimalForm, {
+  AnimalFormSchema,
+} from '@/features/animals/forms/AnimalForm';
+import AnimalAvatar from '@/features/animals/components/AnimalAvatar';
 import Button from '@/ui/atoms/Button';
 import Card from '@/ui/atoms/Card';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
@@ -55,7 +61,7 @@ const UpdateAnimalCard = () => {
     onError: () => errorToast(),
   });
 
-  const onSubmit: SubmitHandler<AnimalFormSchema> = (
+  const onUpdateSubmit: SubmitHandler<AnimalFormSchema> = (
     fieldValues: AnimalFormSchema
   ) =>
     animalUpdateMutation.mutate({
@@ -84,14 +90,7 @@ const UpdateAnimalCard = () => {
     onError: () => errorToast(),
   });
 
-  const errorToast = () =>
-    toast.current.show({
-      severity: 'error',
-      summary: 'Dictionnaire',
-      detail: 'Un problème technique est survenu',
-    });
-
-  const deleteAnimal = () =>
+  const handleDelete = () =>
     confirmDialog({
       message:
         'Cette action est irréversible, êtes-vous sûr de vouloir continuer ?',
@@ -100,10 +99,50 @@ const UpdateAnimalCard = () => {
       accept: () => animalDeleteMutation.mutate(),
     });
 
+  const animalAvatarMutation = usePost({
+    url: ApiRoutes.ANIMAL_AVATARS,
+    token: token?.token,
+    key: QueryKeys.ANIMAL + animalQueryId,
+    mediaObject: true,
+    onSuccess: () =>
+      toast.current.show({
+        severity: 'success',
+        summary: 'Animal',
+        detail: 'Avatar enregistré avec succès',
+      }),
+    onError: () => errorToast(),
+  });
+
+  const onAvatarSubmit = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const animalData = JSON.stringify({
+        id: animalQueryId,
+        type: Medias.ANIMAL_AVATAR,
+      });
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('entity', animalData);
+
+      animalAvatarMutation.mutate(formData);
+    }
+  };
+
+  const errorToast = () =>
+    toast.current.show({
+      severity: 'error',
+      summary: 'Animal',
+      detail: 'Un problème technique est survenu',
+    });
+
+  const defaultAvatar =
+    animalQuery.data?.data.race.type.name === 'Chien' ? <TbDog /> : <TbCat />;
+
   const Toolbar = (
     <Button
       icon="pi pi-trash"
-      onClick={deleteAnimal}
+      onClick={handleDelete}
       variant="danger"
       loading={animalDeleteMutation.isLoading}
       size="small"
@@ -113,19 +152,32 @@ const UpdateAnimalCard = () => {
   return (
     <Card title="Mettre à jour un animal" toolbar={Toolbar}>
       {animalQuery.isSuccess && animalDefaultValues && (
-        <AnimalForm
-          defaultValues={animalDefaultValues}
-          onSubmit={onSubmit}
-          submitLoading={animalUpdateMutation.isLoading}
-          submitError={
-            animalUpdateMutation.error?.response?.data.message ||
-            animalDeleteMutation.error?.response?.data.message
-          }
-        />
+        <ContentWrapper>
+          <AnimalAvatar onSubmit={onAvatarSubmit} template={defaultAvatar} />
+          <AnimalForm
+            defaultValues={animalDefaultValues}
+            onSubmit={onUpdateSubmit}
+            submitLoading={animalUpdateMutation.isLoading}
+            submitError={
+              animalUpdateMutation.error?.response?.data.message ||
+              animalDeleteMutation.error?.response?.data.message
+            }
+          />
+        </ContentWrapper>
       )}
       {animalQuery.isLoading && <ProgressSpinner />}
     </Card>
   );
 };
+
+const ContentWrapper = styled.div`
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-gap: 40px;
+
+  > :nth-child(2) {
+    margin-top: 0.75rem;
+  }
+`;
 
 export default UpdateAnimalCard;
