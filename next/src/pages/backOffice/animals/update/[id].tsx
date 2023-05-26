@@ -14,12 +14,6 @@ const DynUpdateAnimalCard = dynamic(() =>
   )
 );
 
-const DynAnimalFileUploaderCard = dynamic(() =>
-  import('@/features/animals/templates/AnimalFileUploaderCard').then(
-    (UpdateAnimalCard) => UpdateAnimalCard
-  )
-);
-
 const DynBackOfficeLayout = dynamic(() =>
   import('@/ui/layouts/BackOfficeLayout').then(
     (BackOfficeLayout) => BackOfficeLayout
@@ -39,7 +33,6 @@ const UpdateAnimal = (): JSX.Element => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <DynUpdateAnimalCard />
-      <DynAnimalFileUploaderCard />
     </>
   );
 };
