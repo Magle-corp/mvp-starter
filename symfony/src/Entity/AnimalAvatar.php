@@ -35,12 +35,30 @@ class AnimalAvatar
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups([
-        'animal_avatar_read'
+        'animal_avatar_read',
+        'animals_read',
+        'animal_read'
     ])]
     private ?int $id = null;
+
+    #[ORM\OneToOne(inversedBy: 'avatar', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Animal $animal = null;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getAnimal(): ?Animal
+    {
+        return $this->animal;
+    }
+
+    public function setAnimal(Animal $animal): self
+    {
+        $this->animal = $animal;
+
+        return $this;
     }
 }

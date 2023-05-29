@@ -1,3 +1,4 @@
+import { MediaObject } from '@/cdn/types/Api';
 import Organization from '@/features/organization/types/Organization';
 
 type Animal = {
@@ -8,6 +9,7 @@ type Animal = {
   race: AnimalRace;
   sex: AnimalSex;
   registered: string;
+  avatar?: MediaObject;
 };
 
 type AnimalTemper = {

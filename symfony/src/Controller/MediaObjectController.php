@@ -23,7 +23,6 @@ class MediaObjectController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-
         $relatedEntityData = json_decode($relatedEntityJsonData, true);
 
         if (!array_key_exists('id', $relatedEntityData) || !array_key_exists('type', $relatedEntityData)) {
@@ -36,6 +35,13 @@ class MediaObjectController extends AbstractController
         if (!$relatedEntity || !$voterService->userHasOrganization($this->getUser(), $relatedEntity->getOrganization()->getId())) {
             // TODO: add message or handle error
             throw new BadRequestHttpException();
+        }
+
+        if ($relatedEntity->getAvatar()) {
+            $currentAvatar = $relatedEntity->getAvatar();
+            $entityManager->remove($currentAvatar);
+            $entityManager->flush();
+            $entityManager->refresh($relatedEntity);
         }
 
         return $this->createFileEntity($relatedEntity, $uploadedFile);
@@ -57,6 +63,7 @@ class MediaObjectController extends AbstractController
         if ($relatedEntity instanceof Animal) {
             $animalAvatar = new AnimalAvatar();
             $animalAvatar->file = $file;
+            $animalAvatar->setAnimal($relatedEntity);
             return $animalAvatar;
         }
 

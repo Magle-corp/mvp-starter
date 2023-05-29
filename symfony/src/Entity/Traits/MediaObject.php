@@ -13,7 +13,9 @@ trait MediaObject
 {
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
-        'animal_avatar_read'
+        'animal_avatar_read',
+        'animals_read',
+        'animal_read'
     ])]
     public ?string $contentUrl = null;
 
@@ -29,7 +31,9 @@ trait MediaObject
     #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'create')]
     #[Groups([
-        'animal_avatar_read'
+        'animal_avatar_read',
+        'animals_read',
+        'animal_read'
     ])]
     private DateTime $created;
 

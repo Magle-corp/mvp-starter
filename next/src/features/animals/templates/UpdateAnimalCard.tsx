@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import { confirmDialog } from 'primereact/confirmdialog';
-import { TbCat, TbDog } from 'react-icons/tb';
 import { useAppContext } from '@/cdn/AppContext';
 import ApiIris from '@/cdn/enums/ApiIris';
 import AppPages from '@/cdn/enums/AppPages';
@@ -19,7 +18,7 @@ import { Animal } from '@/features/animals/types/Animal';
 import AnimalForm, {
   AnimalFormSchema,
 } from '@/features/animals/forms/AnimalForm';
-import AnimalAvatar from '@/features/animals/components/AnimalAvatar';
+import AnimalAvatarUploader from '@/features/animals/components/AnimalAvatarUploader';
 import Button from '@/ui/atoms/Button';
 import Card from '@/ui/atoms/Card';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
@@ -51,7 +50,7 @@ const UpdateAnimalCard = () => {
   const animalUpdateMutation = usePut<AnimalFormSchema>({
     url: ApiRoutes.ANIMALS + '/' + animalQueryId,
     token: token?.token ?? undefined,
-    key: QueryKeys.ANIMALS,
+    key: QueryKeys.ANIMAL + animalQueryId,
     onSuccess: () =>
       toast.current.show({
         severity: 'success',
@@ -102,14 +101,15 @@ const UpdateAnimalCard = () => {
   const animalAvatarMutation = usePost({
     url: ApiRoutes.ANIMAL_AVATARS,
     token: token?.token,
-    key: QueryKeys.ANIMAL + animalQueryId,
     mediaObject: true,
-    onSuccess: () =>
+    onSuccess: () => {
+      animalQuery.refetch();
       toast.current.show({
         severity: 'success',
         summary: 'Animal',
         detail: 'Avatar enregistré avec succès',
-      }),
+      });
+    },
     onError: () => errorToast(),
   });
 
@@ -136,9 +136,6 @@ const UpdateAnimalCard = () => {
       detail: 'Un problème technique est survenu',
     });
 
-  const defaultAvatar =
-    animalQuery.data?.data.race.type.name === 'Chien' ? <TbDog /> : <TbCat />;
-
   const Toolbar = (
     <Button
       icon="pi pi-trash"
@@ -153,7 +150,10 @@ const UpdateAnimalCard = () => {
     <Card title="Mettre à jour un animal" toolbar={Toolbar}>
       {animalQuery.isSuccess && animalDefaultValues && (
         <ContentWrapper>
-          <AnimalAvatar onSubmit={onAvatarSubmit} template={defaultAvatar} />
+          <AnimalAvatarUploader
+            animal={animalQuery.data.data}
+            onSubmit={onAvatarSubmit}
+          />
           <AnimalForm
             defaultValues={animalDefaultValues}
             onSubmit={onUpdateSubmit}
@@ -172,11 +172,16 @@ const UpdateAnimalCard = () => {
 
 const ContentWrapper = styled.div`
   display: grid;
-  grid-template-columns: max-content 1fr;
-  grid-gap: 40px;
+  grid-template-columns: 1fr;
+  grid-gap: 3rem;
 
-  > :nth-child(2) {
-    margin-top: 0.75rem;
+  @media screen and (${({ theme }) => theme.breakpoints.md}) {
+    grid-template-columns: max-content 1fr;
+    grid-gap: 2rem;
+
+    > :nth-child(2) {
+      margin-top: 0.75rem;
+    }
   }
 `;
 

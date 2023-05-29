@@ -8,4 +8,10 @@ type Hydra<T> = {
   'hydra:totalItems': number;
 };
 
-export type { ApiError, Hydra };
+type MediaObject = {
+  id: number;
+  contentUrl: string;
+  created: Date;
+};
+
+export type { ApiError, Hydra, MediaObject };

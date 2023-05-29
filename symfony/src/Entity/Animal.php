@@ -112,6 +112,13 @@ class Animal
     ])]
     private ?DateTimeInterface $registered = null;
 
+    #[ORM\OneToOne(mappedBy: 'animal', cascade: ['persist', 'remove'])]
+    #[Groups([
+        'animals_read',
+        'animal_read',
+    ])]
+    private ?AnimalAvatar $avatar = null;
+
     public function __construct()
     {
         $this->tempers = new ArrayCollection();
@@ -202,6 +209,23 @@ class Animal
     public function setRegistered(DateTimeInterface $registered): self
     {
         $this->registered = $registered;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?AnimalAvatar
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(AnimalAvatar $avatar): self
+    {
+        // set the owning side of the relation if necessary
+        if ($avatar->getAnimal() !== $this) {
+            $avatar->setAnimal($this);
+        }
+
+        $this->avatar = $avatar;
 
         return $this;
     }
