@@ -1,42 +1,33 @@
-import { ChangeEventHandler, useRef } from 'react';
-import styled from 'styled-components';
 import { Avatar, AvatarProps } from 'primereact/avatar';
-import { Tooltip } from 'primereact/tooltip';
+import { TbCat, TbDog } from 'react-icons/tb';
+import { AnimalDefaultTypes } from '@/cdn/enums/AppDefaultValues';
+import { Animal } from '@/features/animals/types/Animal';
 
 type AnimalAvatar = {
-  onSubmit: ChangeEventHandler<HTMLInputElement>;
+  animal: Animal;
 } & AvatarProps;
 
 const AnimalAvatar = (props: AnimalAvatar) => {
-  const fileInput = useRef<HTMLInputElement>(null);
-
-  const handleClick = () => {
-    fileInput.current?.click();
+  const defaultAvatar = () => {
+    switch (props.animal.race.type.name) {
+      case AnimalDefaultTypes.DOG:
+        return <TbDog />;
+      case AnimalDefaultTypes.CAT:
+        return <TbCat />;
+    }
   };
 
+  const avatarImage = props.animal.avatar
+    ? 'http://localhost:8080' + props.animal.avatar.contentUrl
+    : undefined;
+
   return (
-    <div>
-      <Tooltip target=".tooltip-target" mouseTrack mouseTrackLeft={20} />
-      <Avatar
-        shape="circle"
-        size="xlarge"
-        onClick={handleClick}
-        className="tooltip-target"
-        data-pr-tooltip="Changer la photo de profil"
-        {...props}
-      />
-      <FileInput
-        ref={fileInput}
-        type="file"
-        name="animal_file"
-        onChange={props.onSubmit}
-      />
-    </div>
+    <Avatar
+      image={avatarImage ? avatarImage : undefined}
+      template={avatarImage ? undefined : defaultAvatar}
+      {...props}
+    />
   );
 };
-
-const FileInput = styled.input`
-  display: none;
-`;
 
 export default AnimalAvatar;

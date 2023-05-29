@@ -85,17 +85,6 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
           <AdministrativeInputsWrapper
             organizationMenuOpen={organizationMenuOpen}
           >
-            <FormFieldCalendar<AnimalFormSchema>
-              label="arrivé le *"
-              name="registered"
-              control={form.control}
-              error={form.formState.errors.registered?.message}
-              required
-              showIcon
-              iconPos="left"
-            />
-          </AdministrativeInputsWrapper>
-          <IdentityInputsWrapper organizationMenuOpen={organizationMenuOpen}>
             <FormFieldText<AnimalFormSchema>
               label="nom *"
               name="name"
@@ -104,6 +93,8 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
               help="Minimum 2 caractères, maximum 50"
               required
             />
+          </AdministrativeInputsWrapper>
+          <IdentityInputsWrapper organizationMenuOpen={organizationMenuOpen}>
             <FormFieldDropdown<AnimalFormSchema>
               label="race *"
               name="race"
@@ -126,6 +117,15 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
               optionLabel="name"
               optionValue="id"
               itemTemplate={SexDropdownItem}
+            />
+            <FormFieldCalendar<AnimalFormSchema>
+              label="arrivé le *"
+              name="registered"
+              control={form.control}
+              error={form.formState.errors.registered?.message}
+              required
+              showIcon
+              iconPos="left"
             />
           </IdentityInputsWrapper>
           <DetailInputsWrapper organizationMenuOpen={organizationMenuOpen}>
