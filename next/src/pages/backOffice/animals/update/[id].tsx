@@ -1,8 +1,13 @@
 import { ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { AuthContextWrapper } from '@/features/authentication/AuthContext';
+import { useRouter } from 'next/router';
 import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
+import useGetAnimal from '@/cdn/queries/useGetAnimal';
+import {
+  AuthContextWrapper,
+  useAuthContext,
+} from '@/features/authentication/AuthContext';
 
 const DynAuthGuard = dynamic(() =>
   import('@/features/authentication/AuthGuard').then((AuthGuard) => AuthGuard)
@@ -14,6 +19,12 @@ const DynUpdateAnimalCard = dynamic(() =>
   )
 );
 
+const DynAnimalDocumentsCardCard = dynamic(() =>
+  import('@/features/animals/templates/AnimalDocumentsCard').then(
+    (AnimalDocumentsCard) => AnimalDocumentsCard
+  )
+);
+
 const DynBackOfficeLayout = dynamic(() =>
   import('@/ui/layouts/BackOfficeLayout').then(
     (BackOfficeLayout) => BackOfficeLayout
@@ -21,6 +32,15 @@ const DynBackOfficeLayout = dynamic(() =>
 );
 
 const UpdateAnimal = (): JSX.Element => {
+  const router = useRouter();
+  const { id: animalQueryId } = router.query;
+  const { token } = useAuthContext();
+
+  const animalQuery = useGetAnimal({
+    entityId: parseInt(animalQueryId as string),
+    token: token?.token,
+  });
+
   return (
     <>
       <Head>
@@ -32,7 +52,8 @@ const UpdateAnimal = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <DynUpdateAnimalCard />
+      <DynUpdateAnimalCard animalQuery={animalQuery} />
+      <DynAnimalDocumentsCardCard animalQuery={animalQuery} />
     </>
   );
 };

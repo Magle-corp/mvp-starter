@@ -1,4 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
+import { UseQueryResult } from '@tanstack/react-query';
 import { ApiError, Hydra } from '@/cdn/types/Api';
 import { AuthToken } from '@/features/authentication/types/AuthToken';
 
@@ -30,6 +31,11 @@ type UseGet<T> = {
   staleTime?: UseQuery<T>['staleTime'];
 };
 
+type UseGetResult<T> = UseQueryResult<
+  AxiosResponse<T, any>,
+  AxiosError<ApiError, any>
+>;
+
 type UseQueryCollection<T> = {
   url: string;
   key: string;
@@ -53,6 +59,7 @@ export type {
   UseMutation,
   UseQuery,
   UseGet,
+  UseGetResult,
   UseQueryCollection,
   UseGetCollection,
 };
