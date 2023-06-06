@@ -1,5 +1,8 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { UseQueryResult } from '@tanstack/react-query';
+import {
+  UseMutationResult as RQUseMutationResult,
+  UseQueryResult,
+} from '@tanstack/react-query';
 import { ApiError, Hydra } from '@/cdn/types/Api';
 import { AuthToken } from '@/features/authentication/types/AuthToken';
 
@@ -11,6 +14,13 @@ type UseMutation<T> = {
   onError?: (error: AxiosError<ApiError> | unknown) => void;
   mediaObject?: boolean;
 };
+
+type UseMutationResult<T> = RQUseMutationResult<
+  AxiosResponse<any, any>,
+  AxiosError<ApiError, any>,
+  T,
+  unknown
+>;
 
 type UseQuery<T> = {
   url: string;
@@ -57,6 +67,7 @@ type UseGetCollection<T> = {
 
 export type {
   UseMutation,
+  UseMutationResult,
   UseQuery,
   UseGet,
   UseGetResult,

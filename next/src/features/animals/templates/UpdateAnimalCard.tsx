@@ -178,14 +178,10 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
         <ContentWrapper>
           <AnimalAvatarUploader
             animal={props.animalQuery.data?.data}
+            updateQuery={animalUpdateMutation}
+            deleteQuery={animalUpdateMutation}
             onUpdate={onAvatarUpdateSubmit}
-            updateLoading={avatarUpdateMutation.isLoading}
             onDelete={onAvatarDeleteSubmit}
-            deleteLoading={avatarDeleteMutation.isLoading}
-            submitError={
-              avatarUpdateMutation.error?.response?.data.message ||
-              avatarDeleteMutation.error?.response?.data.message
-            }
           />
           <AnimalForm
             defaultValues={animalDefaultValues}
