@@ -28,10 +28,6 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
   const fileTypes = ['image/jpeg', 'image/png', 'image/jpeg'];
   const fileExtensions = '.jpg, .png, .jpeg';
 
-  const handleOpenDialog = () => {
-    setDialogOpen(true);
-  };
-
   const handleOpenFileBrowser = () => {
     fileInput.current?.click();
   };
@@ -69,7 +65,7 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
       <AnimalAvatar
         shape="circle"
         size="xlarge"
-        onClick={handleOpenDialog}
+        onClick={() => setDialogOpen(true)}
         className="tooltip-target"
         data-pr-tooltip="Changer la photo de profil"
         animal={props.animal}
@@ -118,7 +114,7 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
               />
             )}
           </ButtonWrapper>
-          <div>
+          <HelpWrapper>
             <InputHelp>
               Formats de fichier acceptés : {fileExtensions}
             </InputHelp>
@@ -126,7 +122,7 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
               Taille du fichier : min {fileMinLength / 1000}ko, max{' '}
               {fileMaxLength / 1000}ko
             </InputHelp>
-          </div>
+          </HelpWrapper>
         </DialogContent>
         <FileInput
           ref={fileInput}
@@ -148,11 +144,9 @@ const AvatarDialog = styled(Dialog)`
   min-width: 100%;
   padding: 0 20px;
   box-shadow: none;
-  text-align: center;
 
   @media screen and (${({ theme }) => theme.breakpoints.sm}) {
     min-width: unset;
-    width: 400px;
     padding: unset;
   }
 `;
@@ -172,6 +166,17 @@ const StyledAnimalAvatar = styled(AnimalAvatar)`
 const ButtonWrapper = styled.div`
   display: flex;
   gap: 15px;
+`;
+
+const HelpWrapper = styled.div`
+  width: 100%;
+  text-align: center;
+
+  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+    min-width: unset;
+    text-align: unset;
+    padding: unset;
+  }
 `;
 
 const FileInput = styled.input`
