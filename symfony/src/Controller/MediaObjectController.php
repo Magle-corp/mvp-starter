@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Animal;
 use App\Entity\AnimalAvatar;
+use App\Entity\AnimalDocument;
 use App\Enum\Medias;
 use App\Service\VoterService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class MediaObjectController extends AbstractController
 {
-    public function __invoke(Request $request, EntityManagerInterface $entityManager, VoterService $voterService): AnimalAvatar
+    public function __invoke(Request $request, EntityManagerInterface $entityManager, VoterService $voterService): AnimalDocument|AnimalAvatar|null
     {
         $uploadedFile = $request->files->get('file');
         $relatedEntityJsonData = $request->request->get('entity');
@@ -37,34 +38,40 @@ class MediaObjectController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        if ($relatedEntity->getAvatar()) {
+        if ($relatedEntityData['type'] === Medias::ANIMAL_AVATAR && $relatedEntity->getAvatar()) {
             $currentAvatar = $relatedEntity->getAvatar();
             $entityManager->remove($currentAvatar);
             $entityManager->flush();
             $entityManager->refresh($relatedEntity);
         }
 
-        return $this->createFileEntity($relatedEntity, $uploadedFile);
+        return $this->createFileEntity($relatedEntityData, $relatedEntity, $uploadedFile);
     }
 
-    public function getRelatedEntity(array $entity, EntityManagerInterface $entityManager): ?Animal
+    public function getRelatedEntity(array $entityData, EntityManagerInterface $entityManager): ?Animal
     {
-        switch ($entity['type']) {
-            case Medias::ANIMAL_AVATAR:
-                $animalRepository = $entityManager->getRepository(Animal::class);
-                return $animalRepository->find($entity['id']);
-            default:
-                return null;
+        if ($entityData['type'] === Medias::ANIMAL_AVATAR || $entityData['type'] === Medias::ANIMAL_DOCUMENT) {
+            $animalRepository = $entityManager->getRepository(Animal::class);
+            return $animalRepository->find($entityData['id']);
+        } else {
+            return null;
         }
     }
 
-    public function createFileEntity(mixed $relatedEntity, mixed $file): ?AnimalAvatar
+    public function createFileEntity(array $entityData, mixed $relatedEntity, mixed $file): AnimalDocument|AnimalAvatar|null
     {
-        if ($relatedEntity instanceof Animal) {
+        if ($entityData['type'] === Medias::ANIMAL_AVATAR) {
             $animalAvatar = new AnimalAvatar();
             $animalAvatar->file = $file;
             $animalAvatar->setAnimal($relatedEntity);
             return $animalAvatar;
+        }
+
+        if ($entityData['type'] === Medias::ANIMAL_DOCUMENT) {
+            $animalDocument = new AnimalDocument();
+            $animalDocument->file = $file;
+            $animalDocument->setAnimal($relatedEntity);
+            return $animalDocument;
         }
 
         return null;
