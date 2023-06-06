@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
@@ -8,11 +8,11 @@ import ApiIris from '@/cdn/enums/ApiIris';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import Medias from '@/cdn/enums/Medias';
+import { UseGetResult } from '@/cdn/types/Query';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import useDelete from '@/cdn/hooks/useDelete';
 import usePost from '@/cdn/hooks/usePost';
 import usePut from '@/cdn/hooks/usePut';
-import useGetAnimal from '@/cdn/queries/useGetAnimal';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { Animal } from '@/features/animals/types/Animal';
 import AnimalForm, {
@@ -23,34 +23,37 @@ import Button from '@/ui/atoms/Button';
 import Card from '@/ui/atoms/Card';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
 
-const UpdateAnimalCard = () => {
+type UpdateAnimalCard = {
+  animalQuery: UseGetResult<Animal>;
+};
+
+const UpdateAnimalCard = (props: UpdateAnimalCard) => {
   const [animalDefaultValues, setAnimalDefaultValues] =
     useState<AnimalFormSchema>();
 
+  useEffect(() => {
+    if (props.animalQuery.data?.data) {
+      setAnimalDefaultValues({
+        name: props.animalQuery.data?.data.name,
+        organization: props.animalQuery.data?.data.organization.id.toString(),
+        tempers: props.animalQuery.data?.data.tempers.map(
+          (temper) => temper.id
+        ),
+        race: props.animalQuery.data?.data.race.id,
+        sex: props.animalQuery.data?.data.sex.id,
+        registered: new Date(props.animalQuery.data?.data.registered),
+      });
+    }
+  }, [props.animalQuery]);
+
   const router = useRouter();
-  const { id: animalQueryId } = router.query;
   const { token } = useAuthContext();
   const { toast } = useAppContext();
 
-  const animalQuery = useGetAnimal({
-    entityId: parseInt(animalQueryId as string),
-    token: token?.token,
-    onSuccess: (data) =>
-      setAnimalDefaultValues({
-        name: data.name,
-        organization: data.organization.id.toString(),
-        tempers: data.tempers.map((temper) => temper.id),
-        race: data.race.id,
-        sex: data.sex.id,
-        registered: new Date(data.registered),
-      }),
-    onError: () => errorToast(),
-  });
-
   const animalUpdateMutation = usePut<AnimalFormSchema>({
-    url: ApiRoutes.ANIMALS + '/' + animalQueryId,
+    url: ApiRoutes.ANIMALS + '/' + props.animalQuery?.data?.data.id,
     token: token?.token ?? undefined,
-    key: QueryKeys.ANIMAL + animalQueryId,
+    key: QueryKeys.ANIMAL + props.animalQuery?.data?.data.id,
     onSuccess: () =>
       toast.current.show({
         severity: 'success',
@@ -75,7 +78,7 @@ const UpdateAnimalCard = () => {
     });
 
   const animalDeleteMutation = useDelete<Animal>({
-    url: ApiRoutes.ANIMALS + '/' + animalQueryId,
+    url: ApiRoutes.ANIMALS + '/' + props.animalQuery?.data?.data.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMALS,
     onSuccess: () => {
@@ -103,7 +106,7 @@ const UpdateAnimalCard = () => {
     token: token?.token,
     mediaObject: true,
     onSuccess: () => {
-      animalQuery.refetch();
+      props.animalQuery.refetch();
       toast.current.show({
         severity: 'success',
         summary: 'Animal',
@@ -117,7 +120,7 @@ const UpdateAnimalCard = () => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const animalData = JSON.stringify({
-        id: animalQueryId,
+        id: props.animalQuery?.data?.data.id,
         type: Medias.ANIMAL_AVATAR,
       });
 
@@ -133,10 +136,12 @@ const UpdateAnimalCard = () => {
     url:
       ApiRoutes.ANIMAL_AVATARS +
       '/' +
-      (animalQuery.data?.data.avatar ? animalQuery.data?.data.avatar.id : ''),
+      (props.animalQuery?.data?.data.avatar
+        ? props.animalQuery?.data?.data.avatar.id
+        : ''),
     token: token?.token,
     onSuccess: () => {
-      animalQuery.refetch();
+      props.animalQuery.refetch();
       toast.current.show({
         severity: 'success',
         summary: 'Animal',
@@ -169,10 +174,10 @@ const UpdateAnimalCard = () => {
 
   return (
     <Card title="Mettre à jour un animal" toolbar={Toolbar}>
-      {animalQuery.isSuccess && animalDefaultValues && (
+      {props.animalQuery.data?.data && animalDefaultValues && (
         <ContentWrapper>
           <AnimalAvatarUploader
-            animal={animalQuery.data.data}
+            animal={props.animalQuery.data?.data}
             onUpdate={onAvatarUpdateSubmit}
             updateLoading={avatarUpdateMutation.isLoading}
             onDelete={onAvatarDeleteSubmit}
@@ -193,7 +198,7 @@ const UpdateAnimalCard = () => {
           />
         </ContentWrapper>
       )}
-      {animalQuery.isLoading && <ProgressSpinner />}
+      {props.animalQuery.isLoading && <ProgressSpinner />}
     </Card>
   );
 };
