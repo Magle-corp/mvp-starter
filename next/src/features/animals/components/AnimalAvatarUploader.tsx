@@ -1,15 +1,11 @@
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  MouseEventHandler,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, MouseEventHandler, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { AvatarProps } from 'primereact/avatar';
 import { Dialog } from 'primereact/dialog';
 import { Tooltip } from 'primereact/tooltip';
+import { UseMutationResult } from '@/cdn/types/Query';
 import { Animal } from '@/features/animals/types/Animal';
+import { AnimalFormSchema } from '@/features/animals/forms/AnimalForm';
 import AnimalAvatar from '@/features/animals/components/AnimalAvatar';
 import Button from '@/ui/atoms/Button';
 import FormError from '@/ui/atoms/form/FormError';
@@ -17,11 +13,10 @@ import InputHelp from '@/ui/atoms/form/InputHelp';
 
 type AnimalAvatarUploader = {
   animal: Animal;
-  onUpdate: ChangeEventHandler<HTMLInputElement>;
-  updateLoading: boolean;
+  onUpdate: Function;
+  updateQuery: UseMutationResult<AnimalFormSchema>;
   onDelete: MouseEventHandler<HTMLButtonElement>;
-  deleteLoading: boolean;
-  submitError: string | undefined;
+  deleteQuery: UseMutationResult<AnimalFormSchema>;
 } & AvatarProps;
 
 const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
@@ -94,14 +89,23 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
             animal={props.animal}
           />
           {errorMessage && <FormError>{errorMessage}</FormError>}
-          {props.submitError && <FormError>{props.submitError}</FormError>}
+          {props.updateQuery.error?.response?.data.message && (
+            <FormError>
+              {props.updateQuery.error?.response?.data.message}
+            </FormError>
+          )}
+          {props.deleteQuery.error?.response?.data.message && (
+            <FormError>
+              {props.deleteQuery.error?.response?.data.message}
+            </FormError>
+          )}
           <ButtonWrapper>
             <Button
               label="Changer la photo de profil"
               onClick={handleOpenFileBrowser}
               size="small"
-              loading={props.updateLoading}
-              disabled={props.deleteLoading}
+              loading={props.updateQuery.isLoading}
+              disabled={props.deleteQuery.isLoading}
             />
             {props.animal.avatar && (
               <Button
@@ -109,8 +113,8 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
                 icon="pi pi-trash"
                 size="small"
                 onClick={props.onDelete}
-                loading={props.deleteLoading}
-                disabled={props.updateLoading}
+                loading={props.deleteQuery.isLoading}
+                disabled={props.updateQuery.isLoading}
               />
             )}
           </ButtonWrapper>
