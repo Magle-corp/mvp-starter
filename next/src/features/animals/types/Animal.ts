@@ -10,6 +10,7 @@ type Animal = {
   sex: AnimalSex;
   registered: string;
   avatar?: MediaObject;
+  documents?: MediaObject[];
 };
 
 type AnimalTemper = {

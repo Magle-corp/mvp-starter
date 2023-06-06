@@ -6,6 +6,7 @@ const colors = {
   gray: '#495057',
   warning: '#ffcc00',
   error: '#e93535',
+  success: '#22c55e',
   transparent: 'transparent',
 };
 
