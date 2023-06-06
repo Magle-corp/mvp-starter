@@ -21,7 +21,8 @@ trait MediaObject
 
     #[Vich\UploadableField(mapping: 'media_object', fileNameProperty: 'filePath')]
     #[Groups([
-        'animal_avatar_create'
+        'animal_avatar_create',
+        'animal_document_create'
     ])]
     public ?File $file = null;
 

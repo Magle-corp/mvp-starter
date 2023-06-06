@@ -3,6 +3,7 @@
 namespace App\Serializer;
 
 use App\Entity\AnimalAvatar;
+use App\Entity\AnimalDocument;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -34,6 +35,6 @@ final class MediaObjectNormalizer implements NormalizerInterface, NormalizerAwar
             return false;
         }
 
-        return $data instanceof AnimalAvatar;
+        return $data instanceof AnimalAvatar | $data instanceof AnimalDocument;
     }
 }

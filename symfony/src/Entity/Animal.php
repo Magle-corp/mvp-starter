@@ -119,9 +119,16 @@ class Animal
     ])]
     private ?AnimalAvatar $avatar = null;
 
+    #[ORM\OneToMany(mappedBy: 'animal', targetEntity: AnimalDocument::class, orphanRemoval: true)]
+    #[Groups([
+        'animal_read',
+    ])]
+    private Collection $documents;
+
     public function __construct()
     {
         $this->tempers = new ArrayCollection();
+        $this->documents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -226,6 +233,36 @@ class Animal
         }
 
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AnimalDocument>
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(AnimalDocument $document): self
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents->add($document);
+            $document->setAnimal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(AnimalDocument $document): self
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getAnimal() === $this) {
+                $document->setAnimal(null);
+            }
+        }
 
         return $this;
     }
