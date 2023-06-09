@@ -1,16 +1,14 @@
-import { ChangeEvent, useRef, useState } from 'react';
-import styled from 'styled-components';
-import { Dialog } from 'primereact/dialog';
-import { Avatar } from 'primereact/avatar';
-import { InputText } from 'primereact/inputtext';
-import { MdUploadFile, MdOutlineCancel } from 'react-icons/md';
+import { ChangeEvent, useState } from 'react';
+import { useAppContext } from '@/cdn/AppContext';
+import ApiRoutes from '@/cdn/enums/ApiRoutes';
+import Medias from '@/cdn/enums/Medias';
 import { UseGetResult } from '@/cdn/types/Query';
+import usePost from '@/cdn/hooks/usePost';
+import { useAuthContext } from '@/features/authentication/AuthContext';
 import { Animal } from '@/features/animals/types/Animal';
+import FileUploadDialog from '@/ui/molecules/FileUploadDialog';
 import Button from '@/ui/atoms/Button';
 import Card from '@/ui/atoms/Card';
-import FloatLabel from '@/ui/atoms/form/FloatLabel';
-import FormError from '@/ui/atoms/form/FormError';
-import InputHelp from '@/ui/atoms/form/InputHelp';
 
 type AnimalDocumentsCard = {
   animalQuery: UseGetResult<Animal>;
@@ -18,63 +16,46 @@ type AnimalDocumentsCard = {
 
 const AnimalDocumentsCard = (props: AnimalDocumentsCard) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const [inputEvent, setInputEvent] = useState<ChangeEvent<HTMLInputElement>>();
-  const fileInput = useRef<HTMLInputElement>(null);
-  const fileMaxLength = 500000;
-  const fileMinLength = 10000;
-  const fileTypes = [
-    'image/jpeg',
-    'image/png',
-    'image/jpeg',
-    'application/pdf',
-  ];
-  const fileExtensions = '.jpg, .png, .jpeg, .pdf';
 
-  const handleOpenFileBrowser = () => {
-    fileInput.current?.click();
-  };
+  const { token } = useAuthContext();
+  const { toast } = useAppContext();
 
-  const handleFileCancel = () => {
-    setErrorMessage(undefined);
-    setInputEvent(undefined);
-    if (fileInput.current) {
-      fileInput.current.value = '';
-    }
-  };
+  const fileMutation = usePost({
+    url: ApiRoutes.ANIMAL_DOCUMENTS,
+    token: token?.token,
+    mediaObject: true,
+    onSuccess: () => {
+      props.animalQuery.refetch();
+      toast.current.show({
+        severity: 'success',
+        summary: 'Animal',
+        detail: 'Document enregistré avec succès',
+      });
+    },
+    onError: () =>
+      toast.current.show({
+        severity: 'error',
+        summary: 'Animal',
+        detail: 'Un problème technique est survenu',
+      }),
+  });
 
-  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+  const onFileSubmit = (
+    event: ChangeEvent<HTMLInputElement>,
+    fileName: string
+  ) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      setInputEvent(undefined);
+      const animalData = JSON.stringify({
+        id: props.animalQuery?.data?.data.id,
+        type: Medias.ANIMAL_DOCUMENT,
+      });
 
-      if (file.size > fileMaxLength) {
-        setErrorMessage('Le fichier est trop lourd');
-        return;
-      }
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('entity', animalData);
 
-      if (file.size < fileMinLength) {
-        setErrorMessage('Le fichier est trop léger');
-        return;
-      }
-
-      if (!fileTypes.includes(file.type)) {
-        setErrorMessage('Type de fichier incorrect');
-        return;
-      }
-
-      if (errorMessage) {
-        setErrorMessage(undefined);
-      }
-
-      console.log('set inputEvent');
-      setInputEvent(event);
-    }
-  };
-
-  const handleFileSubmission = () => {
-    if (inputEvent?.target.files) {
-      console.log(inputEvent.target.files[0]);
+      fileMutation.mutate(formData);
     }
   };
 
@@ -84,120 +65,13 @@ const AnimalDocumentsCard = (props: AnimalDocumentsCard) => {
 
   return (
     <Card title="Documents" toolbar={Toolbar}>
-      <Dialog
-        visible={dialogOpen}
-        onHide={() => setDialogOpen(false)}
-        blockScroll
-      >
-        <DialogContent>
-          <DocumentInputWrapper>
-            {!inputEvent?.target.files && (
-              <AvatarIdle
-                template={<FileIconIdle onClick={handleOpenFileBrowser} />}
-              />
-            )}
-            {inputEvent?.target.files && (
-              <AvatarSuccess
-                template={<CancelIcon onClick={handleFileCancel} />}
-              />
-            )}
-            <StyledFloatLabel htmlFor="file_name" label="Nom du document">
-              <InputText
-                name="file_name"
-                value={
-                  inputEvent?.target.files
-                    ? inputEvent?.target.files[0].name
-                    : 'Sélectionner un document'
-                }
-                disabled={!inputEvent?.target.files}
-              />
-            </StyledFloatLabel>
-            {!inputEvent?.target.files && (
-              <Button
-                label="Télécharger un document"
-                size="small"
-                onClick={handleOpenFileBrowser}
-              />
-            )}
-            {inputEvent?.target.files && (
-              <Button
-                label="Sauvegarder le document"
-                size="small"
-                onClick={handleFileSubmission}
-              />
-            )}
-            <FileInput
-              ref={fileInput}
-              type="file"
-              name="animal_file"
-              onChange={(event) => {
-                handleFileSelect(event);
-              }}
-              accept={fileExtensions}
-              maxLength={fileMaxLength}
-              minLength={fileMinLength}
-            />
-          </DocumentInputWrapper>
-          {errorMessage && <FormError>{errorMessage}</FormError>}
-          <div>
-            <InputHelp>
-              Formats de fichier acceptés : {fileExtensions}
-            </InputHelp>
-            <InputHelp>
-              Taille du fichier : min {fileMinLength / 1000}ko, max{' '}
-              {fileMaxLength / 1000}ko
-            </InputHelp>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <FileUploadDialog
+        dialogOpen={dialogOpen}
+        setDialogOpen={setDialogOpen}
+        onCreate={onFileSubmit}
+      />
     </Card>
   );
 };
-
-const DialogContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 30px;
-  gap: 30px;
-`;
-
-const DocumentInputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
-
-const AvatarIdle = styled(Avatar)`
-  width: 39px !important;
-  height: 39px !important;
-`;
-
-const AvatarSuccess = styled(AvatarIdle)`
-  background-color: ${({ theme }) => theme.colors.error};
-`;
-
-const FileIconIdle = styled(MdUploadFile)`
-  width: 25px !important;
-  height: 25px !important;
-  cursor: pointer;
-`;
-
-const FileIconSuccess = styled(FileIconIdle)`
-  color: white !important;
-`;
-
-const CancelIcon = styled(MdOutlineCancel)`
-  width: 25px !important;
-  height: 25px !important;
-  color: white !important;
-`;
-
-const StyledFloatLabel = styled(FloatLabel)`
-  width: max-content;
-`;
-
-const FileInput = styled.input`
-  display: none;
-`;
 
 export default AnimalDocumentsCard;
