@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { Button } from 'primereact/button';
 import Colors from '@/theme/colors';
 
-type ButtonVariant = 'danger' | 'warning';
+type ButtonVariant = 'danger' | 'warning' | 'success' | 'idle';
 
 export default styled(Button)<{ variant?: ButtonVariant }>`
   ${({ variant }) => getVariant(variant)};
@@ -20,6 +20,14 @@ const getVariant = (variant?: ButtonVariant) => {
       break;
     case 'warning':
       variantColor = Colors.warning;
+      contentColor = Colors.black;
+      break;
+    case 'success':
+      variantColor = Colors.success;
+      contentColor = Colors.white;
+      break;
+    case 'idle':
+      variantColor = Colors.gray_light;
       contentColor = Colors.black;
       break;
     default:

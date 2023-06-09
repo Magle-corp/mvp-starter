@@ -26,8 +26,6 @@ final class ExceptionSubscriber implements EventSubscriberInterface
 
     public function customKernelEventExceptions(ExceptionEvent $event): void
     {
-        dd($event);
-
         if ($event->getThrowable() instanceof AccessDeniedHttpException) {
             $event->setResponse($this->responseService->forbidden());
             return;

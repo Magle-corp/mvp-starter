@@ -101,7 +101,7 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
       accept: () => animalDeleteMutation.mutate(),
     });
 
-  const avatarUpdateMutation = usePost({
+  const avatarUpdateMutation = usePost<FormData>({
     url: ApiRoutes.ANIMAL_AVATARS,
     token: token?.token,
     mediaObject: true,
@@ -178,10 +178,10 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
         <ContentWrapper>
           <AnimalAvatarUploader
             animal={props.animalQuery.data?.data}
-            updateQuery={animalUpdateMutation}
-            deleteQuery={animalUpdateMutation}
             onUpdate={onAvatarUpdateSubmit}
+            updateQuery={avatarUpdateMutation}
             onDelete={onAvatarDeleteSubmit}
+            deleteQuery={avatarDeleteMutation}
           />
           <AnimalForm
             defaultValues={animalDefaultValues}
