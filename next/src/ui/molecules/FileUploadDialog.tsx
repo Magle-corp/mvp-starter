@@ -1,9 +1,9 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Avatar } from 'primereact/avatar';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
-import { MdOutlineCancel, MdUploadFile } from 'react-icons/md';
+import { MdOutlineCancel, MdUploadFile, MdCheck } from 'react-icons/md';
+import { UseMutationResult } from '@/cdn/types/Query';
 import Button from '@/ui/atoms/Button';
 import FormError from '@/ui/atoms/form/FormError';
 import FloatLabel from '@/ui/atoms/form/FloatLabel';
@@ -13,6 +13,7 @@ type FileUploadDialog = {
   dialogOpen: boolean;
   setDialogOpen: Function;
   onCreate: (event: ChangeEvent<HTMLInputElement>, fileName: string) => void;
+  createQuery: UseMutationResult<FormData>;
 };
 
 const FileUploadDialog = (props: FileUploadDialog) => {
@@ -36,6 +37,7 @@ const FileUploadDialog = (props: FileUploadDialog) => {
   };
 
   const handleOpenFileBrowser = () => {
+    handleFileCancel();
     fileInput.current?.click();
   };
 
@@ -46,6 +48,7 @@ const FileUploadDialog = (props: FileUploadDialog) => {
     if (fileInput.current) {
       fileInput.current.value = '';
     }
+    props.createQuery.reset();
   };
 
   const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
@@ -72,17 +75,74 @@ const FileUploadDialog = (props: FileUploadDialog) => {
         setErrorMessage(undefined);
       }
 
-      console.log('set inputEvent and fileName');
       setFileName(file.name);
       setInputEvent(event);
     }
   };
 
   const handleFileSubmission = () => {
-    if (inputEvent?.target.files) {
+    if (inputEvent) {
       props.onCreate(inputEvent, fileName);
+    } else {
+      setErrorMessage('Veuillez sélectionner un fichier');
     }
   };
+
+  const UploadIconButton = () => (
+    <>
+      {!inputEvent?.target.files && !props.createQuery.isSuccess && (
+        <IconButton variant="idle" size="small" onClick={handleOpenFileBrowser}>
+          <FileIcon />
+        </IconButton>
+      )}
+      {inputEvent?.target.files && !props.createQuery.isSuccess && (
+        <IconButton
+          variant="danger"
+          size="small"
+          onClick={handleFileCancel}
+          disabled={props.createQuery.isLoading}
+        >
+          <CancelIcon />
+        </IconButton>
+      )}
+      {props.createQuery.isSuccess && (
+        <IconButton
+          variant="success"
+          size="small"
+          disabled={props.createQuery.isSuccess}
+        >
+          <CheckIcon />
+        </IconButton>
+      )}
+    </>
+  );
+
+  const UploadButton = () => (
+    <>
+      {!inputEvent?.target.files && !props.createQuery.isSuccess && (
+        <StyledButton
+          label="Télécharger un document"
+          size="small"
+          onClick={handleOpenFileBrowser}
+        />
+      )}
+      {inputEvent?.target.files && !props.createQuery.isSuccess && (
+        <StyledButton
+          label="Sauvegarder le document"
+          size="small"
+          onClick={handleFileSubmission}
+          loading={props.createQuery.isLoading}
+        />
+      )}
+      {props.createQuery.isSuccess && (
+        <StyledButton
+          label="Télécharger un nouveau document"
+          size="small"
+          onClick={handleOpenFileBrowser}
+        />
+      )}
+    </>
+  );
 
   return (
     <DocumentDialog
@@ -93,45 +153,32 @@ const FileUploadDialog = (props: FileUploadDialog) => {
       draggable={false}
     >
       <DialogContent>
+        {props.createQuery.error && props.createQuery.error.response && (
+          <SubmissionError>
+            {props.createQuery.error.response.data.message}
+          </SubmissionError>
+        )}
         <DocumentFieldWrapper>
           <DocumentInputWrapper>
-            {!inputEvent?.target.files && (
-              <AvatarIdle
-                template={<FileIconIdle onClick={handleOpenFileBrowser} />}
-              />
-            )}
-            {inputEvent?.target.files && (
-              <AvatarSuccess
-                template={<CancelIcon onClick={handleFileCancel} />}
-              />
-            )}
+            <UploadIconButton />
             <StyledFloatLabel htmlFor="file_name" label="Nom du document">
               <InputText
                 name="file_name"
                 value={fileName}
-                disabled={!inputEvent?.target.files}
+                disabled={
+                  !inputEvent?.target.files ||
+                  props.createQuery.isLoading ||
+                  props.createQuery.isSuccess
+                }
                 onChange={(event) => setFileName(event.target.value)}
               />
             </StyledFloatLabel>
           </DocumentInputWrapper>
-          {!inputEvent?.target.files && (
-            <StyledButton
-              label="Télécharger un document"
-              size="small"
-              onClick={handleOpenFileBrowser}
-            />
-          )}
-          {inputEvent?.target.files && (
-            <StyledButton
-              label="Sauvegarder le document"
-              size="small"
-              onClick={handleFileSubmission}
-            />
-          )}
+          <UploadButton />
           <FileInput
             ref={fileInput}
             type="file"
-            name="animal_file"
+            name="file"
             onChange={(event) => {
               handleFileSelect(event);
             }}
@@ -167,8 +214,19 @@ const DocumentDialog = styled(Dialog)`
 const DialogContent = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 30px;
+  align-items: center;
   gap: 30px;
+  padding-top: 10px;
+`;
+
+const SubmissionError = styled(FormError)`
+  text-align: center;
+  max-width: 282px;
+
+  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+    text-align: unset;
+    max-width: unset;
+  }
 `;
 
 const DocumentFieldWrapper = styled.div`
@@ -177,6 +235,7 @@ const DocumentFieldWrapper = styled.div`
   align-items: center;
   gap: 10px;
   width: 100%;
+  padding-top: 30px;
   margin: 0 auto;
 
   @media screen and (${({ theme }) => theme.breakpoints.sm}) {
@@ -191,26 +250,11 @@ const DocumentInputWrapper = styled.div`
   gap: 10px;
 `;
 
-const StyledButton = styled(Button)`
-  width: 100%;
-  max-width: 282px;
-
-  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
-    width: max-content;
-    max-width: max-content;
-  }
+const IconButton = styled(Button)`
+  padding: 0.47rem !important;
 `;
 
-const AvatarIdle = styled(Avatar)`
-  width: 39px !important;
-  height: 39px !important;
-`;
-
-const AvatarSuccess = styled(AvatarIdle)`
-  background-color: ${({ theme }) => theme.colors.error};
-`;
-
-const FileIconIdle = styled(MdUploadFile)`
+const FileIcon = styled(MdUploadFile)`
   width: 25px !important;
   height: 25px !important;
   cursor: pointer;
@@ -221,6 +265,22 @@ const CancelIcon = styled(MdOutlineCancel)`
   height: 25px !important;
   color: white !important;
   cursor: pointer;
+`;
+
+const CheckIcon = styled(MdCheck)`
+  width: 25px !important;
+  height: 25px !important;
+  color: white !important;
+`;
+
+const StyledButton = styled(Button)`
+  width: 100%;
+  max-width: 282px;
+
+  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+    width: max-content;
+    max-width: max-content;
+  }
 `;
 
 const StyledFloatLabel = styled(FloatLabel)`

@@ -5,7 +5,6 @@ import { Dialog } from 'primereact/dialog';
 import { Tooltip } from 'primereact/tooltip';
 import { UseMutationResult } from '@/cdn/types/Query';
 import { Animal } from '@/features/animals/types/Animal';
-import { AnimalFormSchema } from '@/features/animals/forms/AnimalForm';
 import AnimalAvatar from '@/features/animals/components/AnimalAvatar';
 import Button from '@/ui/atoms/Button';
 import FormError from '@/ui/atoms/form/FormError';
@@ -14,9 +13,9 @@ import InputHelp from '@/ui/atoms/form/InputHelp';
 type AnimalAvatarUploader = {
   animal: Animal;
   onUpdate: Function;
-  updateQuery: UseMutationResult<AnimalFormSchema>;
+  updateQuery: UseMutationResult<FormData>;
   onDelete: MouseEventHandler<HTMLButtonElement>;
-  deleteQuery: UseMutationResult<AnimalFormSchema>;
+  deleteQuery: UseMutationResult<any>;
 } & AvatarProps;
 
 const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
@@ -28,8 +27,26 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
   const fileTypes = ['image/jpeg', 'image/png', 'image/jpeg'];
   const fileExtensions = '.jpg, .png, .jpeg';
 
+  const handleCloseDialog = () => {
+    resetUploader();
+    setDialogOpen(false);
+  };
+
   const handleOpenFileBrowser = () => {
+    resetUploader();
     fileInput.current?.click();
+  };
+
+  const resetUploader = () => {
+    if (!props.updateQuery.isIdle) {
+      props.updateQuery.reset();
+    }
+    if (!props.deleteQuery.isIdle) {
+      props.deleteQuery.reset();
+    }
+    if (errorMessage) {
+      setErrorMessage(undefined);
+    }
   };
 
   const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +89,7 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
       />
       <AvatarDialog
         visible={dialogOpen}
-        onHide={() => setDialogOpen(false)}
+        onHide={handleCloseDialog}
         blockScroll
         draggable={false}
       >
@@ -85,17 +102,17 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
             data-pr-tooltip="Changer la photo de profil"
             animal={props.animal}
           />
-          {errorMessage && <FormError>{errorMessage}</FormError>}
-          {props.updateQuery.error?.response?.data.message && (
-            <FormError>
+          {props.updateQuery.error?.response && (
+            <SubmissionError>
               {props.updateQuery.error?.response?.data.message}
-            </FormError>
+            </SubmissionError>
           )}
           {props.deleteQuery.error?.response?.data.message && (
-            <FormError>
+            <SubmissionError>
               {props.deleteQuery.error?.response?.data.message}
-            </FormError>
+            </SubmissionError>
           )}
+          {errorMessage && <FormError>{errorMessage}</FormError>}
           <ButtonWrapper>
             <Button
               label="Changer la photo de profil"
@@ -142,12 +159,12 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
 };
 
 const AvatarDialog = styled(Dialog)`
-  min-width: 100%;
+  width: 100%;
   padding: 0 20px;
   box-shadow: none;
 
   @media screen and (${({ theme }) => theme.breakpoints.sm}) {
-    min-width: unset;
+    width: 330px;
     padding: unset;
   }
 `;
@@ -164,6 +181,15 @@ const StyledAnimalAvatar = styled(AnimalAvatar)`
   height: 150px !important;
 `;
 
+const SubmissionError = styled(FormError)`
+  text-align: center;
+  max-width: 282px;
+
+  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+    max-width: unset;
+  }
+`;
+
 const ButtonWrapper = styled.div`
   display: flex;
   gap: 15px;
@@ -172,12 +198,6 @@ const ButtonWrapper = styled.div`
 const HelpWrapper = styled.div`
   width: 100%;
   text-align: center;
-
-  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
-    min-width: unset;
-    text-align: unset;
-    padding: unset;
-  }
 `;
 
 const FileInput = styled.input`

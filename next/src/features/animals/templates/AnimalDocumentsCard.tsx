@@ -20,7 +20,7 @@ const AnimalDocumentsCard = (props: AnimalDocumentsCard) => {
   const { token } = useAuthContext();
   const { toast } = useAppContext();
 
-  const fileMutation = usePost({
+  const fileMutation = usePost<FormData>({
     url: ApiRoutes.ANIMAL_DOCUMENTS,
     token: token?.token,
     mediaObject: true,
@@ -70,6 +70,7 @@ const AnimalDocumentsCard = (props: AnimalDocumentsCard) => {
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
         onCreate={onFileSubmit}
+        createQuery={fileMutation}
       />
     </Card>
   );
