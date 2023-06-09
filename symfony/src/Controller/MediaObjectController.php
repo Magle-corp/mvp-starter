@@ -17,60 +17,67 @@ class MediaObjectController extends AbstractController
     public function __invoke(Request $request, EntityManagerInterface $entityManager, VoterService $voterService): AnimalDocument|AnimalAvatar|null
     {
         $uploadedFile = $request->files->get('file');
-        $relatedEntityJsonData = $request->request->get('entity');
+        $fileInformationJson = $request->request->get('file_information');
 
-        if (!$uploadedFile || !$relatedEntityJsonData) {
-            // TODO: add message or handle error
+        if (!$uploadedFile || !$fileInformationJson) {
             throw new BadRequestHttpException();
         }
 
-        $relatedEntityData = json_decode($relatedEntityJsonData, true);
+        $fileInformation = json_decode($fileInformationJson, true);
 
-        if (!array_key_exists('id', $relatedEntityData) || !array_key_exists('type', $relatedEntityData)) {
-            // TODO: add message or handle error
+        if (!array_key_exists('related_entity_id', $fileInformation) || !array_key_exists('file_entity_type', $fileInformation)) {
             throw new BadRequestHttpException();
         }
 
-        $relatedEntity = $this->getRelatedEntity($relatedEntityData, $entityManager);
+        $fileRelatedEntity = $this->getRelatedEntity($fileInformation, $entityManager);
 
-        if (!$relatedEntity || !$voterService->userHasOrganization($this->getUser(), $relatedEntity->getOrganization()->getId())) {
-            // TODO: add message or handle error
+        if (!$fileRelatedEntity || !$voterService->userHasOrganization($this->getUser(), $fileRelatedEntity->getOrganization()->getId())) {
             throw new BadRequestHttpException();
         }
 
-        if ($relatedEntityData['type'] === Medias::ANIMAL_AVATAR && $relatedEntity->getAvatar()) {
-            $currentAvatar = $relatedEntity->getAvatar();
-            $entityManager->remove($currentAvatar);
-            $entityManager->flush();
-            $entityManager->refresh($relatedEntity);
+        if ($fileInformation['file_entity_type'] === Medias::ANIMAL_AVATAR && $fileRelatedEntity->getAvatar()) {
+            $this->removeCurrentAvatar($fileRelatedEntity, $entityManager);
         }
 
-        return $this->createFileEntity($relatedEntityData, $relatedEntity, $uploadedFile);
+        return $this->createFileEntity($fileInformation, $fileRelatedEntity, $uploadedFile);
     }
 
-    public function getRelatedEntity(array $entityData, EntityManagerInterface $entityManager): ?Animal
+    public function getRelatedEntity(array $fileInformation, EntityManagerInterface $entityManager): ?Animal
     {
-        if ($entityData['type'] === Medias::ANIMAL_AVATAR || $entityData['type'] === Medias::ANIMAL_DOCUMENT) {
+        if ($fileInformation['file_entity_type'] === Medias::ANIMAL_AVATAR || $fileInformation['file_entity_type'] === Medias::ANIMAL_DOCUMENT) {
             $animalRepository = $entityManager->getRepository(Animal::class);
-            return $animalRepository->find($entityData['id']);
+            return $animalRepository->find($fileInformation['related_entity_id']);
         } else {
             return null;
         }
     }
 
-    public function createFileEntity(array $entityData, mixed $relatedEntity, mixed $file): AnimalDocument|AnimalAvatar|null
+    public function removeCurrentAvatar(mixed $fileRelatedEntity, EntityManagerInterface $entityManager): void
     {
-        if ($entityData['type'] === Medias::ANIMAL_AVATAR) {
+        $currentAvatar = $fileRelatedEntity->getAvatar();
+        $entityManager->remove($currentAvatar);
+        $entityManager->flush();
+        $entityManager->refresh($fileRelatedEntity);
+    }
+
+    public function createFileEntity(array $fileInformation, mixed $fileRelatedEntity, mixed $uploadedFile): AnimalDocument|AnimalAvatar|null
+    {
+        if ($fileInformation['file_entity_type'] === Medias::ANIMAL_AVATAR) {
             $animalAvatar = new AnimalAvatar();
-            $animalAvatar->file = $file;
-            $animalAvatar->setAnimal($relatedEntity);
+            $animalAvatar->file = $uploadedFile;
+            $animalAvatar->setAnimal($fileRelatedEntity);
             return $animalAvatar;
         }
 
-        if ($entityData['type'] === Medias::ANIMAL_DOCUMENT) {
+        if ($fileInformation['file_entity_type'] === Medias::ANIMAL_DOCUMENT) {
+            if (!array_key_exists('file_name', $fileInformation)) {
+                throw new BadRequestHttpException();
+            }
+
             $animalDocument = new AnimalDocument();
-            $animalDocument->file = $file;
-            $animalDocument->setAnimal($relatedEntity);
+            $animalDocument->file = $uploadedFile;
+            $animalDocument->setAnimal($fileRelatedEntity);
+            $animalDocument->setFileName($fileInformation['file_name']);
             return $animalDocument;
         }
 

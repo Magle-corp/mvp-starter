@@ -44,6 +44,9 @@ class AnimalDocument
     #[ORM\JoinColumn(nullable: false)]
     private ?Animal $animal = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $fileName = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -57,6 +60,18 @@ class AnimalDocument
     public function setAnimal(?Animal $animal): self
     {
         $this->animal = $animal;
+
+        return $this;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->fileName;
+    }
+
+    public function setFileName(string $fileName): self
+    {
+        $this->fileName = $fileName;
 
         return $this;
     }
