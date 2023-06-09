@@ -119,14 +119,14 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
   const onAvatarUpdateSubmit = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      const animalData = JSON.stringify({
-        id: props.animalQuery?.data?.data.id,
-        type: Medias.ANIMAL_AVATAR,
+      const fileInformation = JSON.stringify({
+        related_entity_id: props.animalQuery?.data?.data.id,
+        file_entity_type: Medias.ANIMAL_AVATAR,
       });
 
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('entity', animalData);
+      formData.append('file_information', fileInformation);
 
       avatarUpdateMutation.mutate(formData);
     }

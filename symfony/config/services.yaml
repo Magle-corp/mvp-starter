@@ -26,3 +26,6 @@ services:
     App\Serializer\MediaObjectNormalizer:
         tags:
             - { name: serializer.normalizer }
+
+    App\AppBundle\VichUploader\DocumentNamer:
+        public: true
