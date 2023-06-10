@@ -92,13 +92,13 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
     onError: () => errorToast(),
   });
 
-  const onAnimalDeleteSubmit = () =>
+  const onAnimalDeleteSubmit = (entityId: number) =>
     confirmDialog({
       message:
         'Cette action est irréversible, êtes-vous sûr de vouloir continuer ?',
       header: 'Supprimer un animal',
       icon: 'pi pi-exclamation-triangle',
-      accept: () => animalDeleteMutation.mutate(),
+      accept: () => animalDeleteMutation.mutate(entityId),
     });
 
   const avatarUpdateMutation = usePost<FormData>({
@@ -133,12 +133,7 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
   };
 
   const avatarDeleteMutation = useDelete({
-    url:
-      ApiRoutes.ANIMAL_AVATARS +
-      '/' +
-      (props.animalQuery?.data?.data.avatar
-        ? props.animalQuery?.data?.data.avatar.id
-        : ''),
+    url: ApiRoutes.ANIMAL_AVATARS,
     token: token?.token,
     onSuccess: () => {
       props.animalQuery.refetch();
@@ -151,8 +146,8 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
     onError: () => errorToast(),
   });
 
-  const onAvatarDeleteSubmit = () => {
-    avatarDeleteMutation.mutate();
+  const onAvatarDeleteSubmit = (entityId: number) => {
+    avatarDeleteMutation.mutate(entityId);
   };
 
   const errorToast = () =>
@@ -165,7 +160,7 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
   const Toolbar = (
     <Button
       icon="pi pi-trash"
-      onClick={onAnimalDeleteSubmit}
+      onClick={() => onAnimalDeleteSubmit(props.animalQuery.data?.data.id ?? 0)}
       variant="danger"
       loading={animalDeleteMutation.isLoading}
       size="small"

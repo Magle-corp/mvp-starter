@@ -10,8 +10,8 @@ const useDelete = <T,>(props: UseMutation<T>) => {
   }
 
   return useMutation([props.key], {
-    mutationFn: async () => {
-      return api.delete(props.url);
+    mutationFn: async (entityId: number) => {
+      return api.delete(props.url + '/' + entityId);
     },
     onSuccess: (data) => {
       props.onSuccess && props.onSuccess(data);

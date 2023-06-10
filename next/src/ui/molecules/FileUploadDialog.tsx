@@ -170,6 +170,7 @@ const FileUploadDialog = (props: FileUploadDialog) => {
                   props.createQuery.isSuccess
                 }
                 onChange={(event) => setFileName(event.target.value)}
+                maxLength={70}
               />
             </StyledFloatLabel>
           </DocumentInputWrapper>
@@ -186,11 +187,12 @@ const FileUploadDialog = (props: FileUploadDialog) => {
             minLength={fileMinLength}
           />
         </DocumentFieldWrapper>
-        {errorMessage && <FormError>{errorMessage}</FormError>}
+        {errorMessage && <StyledFormError>{errorMessage}</StyledFormError>}
         <HelpWrapper>
-          <InputHelp>Formats de fichier acceptés : {fileExtensions}</InputHelp>
+          <InputHelp>Nom du document : maximum 70 caractères</InputHelp>
+          <InputHelp>Formats acceptés : {fileExtensions}</InputHelp>
           <InputHelp>
-            Taille du fichier : min {fileMinLength / 1000}ko, max{' '}
+            Taille du document : min {fileMinLength / 1000}ko, max{' '}
             {fileMaxLength / 1000}ko
           </InputHelp>
         </HelpWrapper>
@@ -284,6 +286,12 @@ const StyledButton = styled(Button)`
 
 const StyledFloatLabel = styled(FloatLabel)`
   width: max-content;
+`;
+
+const StyledFormError = styled(FormError)`
+  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+    width: 100%;
+  }
 `;
 
 const HelpWrapper = styled.div`

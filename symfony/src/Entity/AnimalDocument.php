@@ -22,7 +22,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
             deserialize: false
         ),
         new Delete(
-            security: "is_granted('ANIMAL_AVATAR_DELETE', object)"
+            security: "is_granted('ANIMAL_DOCUMENT_DELETE', object)"
         )
     ],
     normalizationContext: ['groups' => ['animal_document_read']],

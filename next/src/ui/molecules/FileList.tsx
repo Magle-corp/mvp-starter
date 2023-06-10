@@ -4,6 +4,7 @@ import {
   MdOutlineInsertDriveFile,
   MdMoreVert,
 } from 'react-icons/md';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import { dateToString } from '@/cdn/utils/dateService';
 import { Animal } from '@/features/animals/types/Animal';
@@ -12,10 +13,12 @@ import LinkButton from '@/ui/atoms/LinkButton';
 
 type FileList = {
   documents: Animal['documents'];
+  onDelete: (entityId: number) => void;
 };
 
 const FileList = (props: FileList) => {
   const { breakpointSM } = useBreakpoints();
+  const { organizationMenuOpen } = useBackOfficeContext();
 
   const DocumentIcon = (fileExtension: string) => {
     if (fileExtension === 'pdf') {
@@ -31,10 +34,14 @@ const FileList = (props: FileList) => {
         <DocumentItem key={index}>
           <ItemLeft>
             {DocumentIcon(document.fileExtension)}
-            <p>{document.fileName}</p>
+            <ItemName organizationMenuOpen={organizationMenuOpen}>
+              {document.fileName}
+            </ItemName>
           </ItemLeft>
           <ItemRight>
-            <p>{dateToString(new Date(document.created))}</p>
+            <CreatedDate>
+              {dateToString(new Date(document.created))}
+            </CreatedDate>
             {breakpointSM && (
               <ActionWrapper>
                 <LinkButton
@@ -42,12 +49,12 @@ const FileList = (props: FileList) => {
                   icon="pi pi-search"
                   target="_blank"
                 />
-                <LinkButton
-                  href={'http://localhost:8080' + document.contentUrl}
-                  icon="pi pi-download"
-                  download
+                <Button
+                  icon="pi pi-trash"
+                  variant="danger"
+                  onClick={() => props.onDelete(document.id)}
+                  size="small"
                 />
-                <Button icon="pi pi-trash" variant="danger" size="small" />
               </ActionWrapper>
             )}
             {!breakpointSM && (
@@ -84,24 +91,26 @@ const ItemLeft = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+`;
 
-  p {
-    max-width: 170px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+const ItemName = styled.p<{ organizationMenuOpen: boolean }>`
+  max-width: 170px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
-    @media screen and (${({ theme }) => theme.breakpoints.sm}) {
-      max-width: 250px;
-    }
+  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+    max-width: 200px;
+  }
 
-    @media screen and (${({ theme }) => theme.breakpoints.md}) {
-      max-width: 400px;
-    }
+  @media screen and (${({ theme }) => theme.breakpoints.md}) {
+    max-width: ${({ organizationMenuOpen }) =>
+      organizationMenuOpen ? '190px' : '360px'};
+  }
 
-    @media screen and (${({ theme }) => theme.breakpoints.lg}) {
-      max-width: 550px;
-    }
+  @media screen and (${({ theme }) => theme.breakpoints.lg}) {
+    max-width: ${({ organizationMenuOpen }) =>
+      organizationMenuOpen ? '380px' : '550px'};
   }
 `;
 
@@ -118,7 +127,23 @@ const PdfIcon = styled(MdOutlineInsertDriveFile)`
 const ItemRight = styled.div`
   display: flex;
   align-items: center;
-  gap: 50px;
+  gap: 15px;
+
+  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+    gap: 30px;
+  }
+
+  @media screen and (${({ theme }) => theme.breakpoints.md}) {
+    gap: 50px;
+  }
+`;
+
+const CreatedDate = styled.p`
+  display: none;
+
+  @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+    display: flex;
+  }
 `;
 
 const ActionWrapper = styled.div`

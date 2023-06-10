@@ -127,7 +127,7 @@ const UpdateVocabularyCard = () => {
     });
 
   const typeDeleteMutation = useDelete<TypeFormSchema>({
-    url: ApiRoutes.ORGANIZATION_TYPES + '/' + queryVocabularyId,
+    url: ApiRoutes.ORGANIZATION_TYPES,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_TYPES,
     onSuccess: () => {
@@ -149,7 +149,7 @@ const UpdateVocabularyCard = () => {
   });
 
   const raceUpdateMutation = usePut<RaceFormSchema>({
-    url: ApiRoutes.ORGANIZATION_RACES + '/' + queryVocabularyId,
+    url: ApiRoutes.ORGANIZATION_RACES,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_RACES,
     onSuccess: () => {
@@ -169,7 +169,7 @@ const UpdateVocabularyCard = () => {
     });
 
   const raceDeleteMutation = useDelete<RaceFormSchema>({
-    url: ApiRoutes.ORGANIZATION_RACES + '/' + queryVocabularyId,
+    url: ApiRoutes.ORGANIZATION_RACES,
     token: token?.token ?? undefined,
     key: QueryKeys.ANIMAL_RACES,
     onSuccess: () => {
@@ -188,13 +188,13 @@ const UpdateVocabularyCard = () => {
       accept: () => {
         switch (queryVocabularyType) {
           case VocabularyTypes.RACE:
-            raceDeleteMutation.mutate();
+            raceDeleteMutation.mutate(parseInt(queryVocabularyId as string));
             break;
           case VocabularyTypes.TYPE:
-            typeDeleteMutation.mutate();
+            typeDeleteMutation.mutate(parseInt(queryVocabularyId as string));
             break;
           case VocabularyTypes.TEMPER:
-            temperDeleteMutation.mutate();
+            temperDeleteMutation.mutate(parseInt(queryVocabularyId as string));
             break;
         }
       },
