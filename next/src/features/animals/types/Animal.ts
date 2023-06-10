@@ -9,7 +9,7 @@ type Animal = {
   race: AnimalRace;
   sex: AnimalSex;
   registered: string;
-  avatar?: MediaObject;
+  avatar?: AnimalAvatar;
   documents: AnimalDocument[];
 };
 
@@ -37,9 +37,21 @@ type AnimalSex = {
   name: string;
 };
 
+type AnimalAvatar = {
+  animal: Animal;
+} & MediaObject;
+
 type AnimalDocument = {
+  animal: Animal;
   fileName: string;
   fileExtension: string;
 } & MediaObject;
 
-export type { Animal, AnimalTemper, AnimalType, AnimalRace, AnimalSex };
+export type {
+  Animal,
+  AnimalTemper,
+  AnimalType,
+  AnimalRace,
+  AnimalSex,
+  AnimalDocument,
+};

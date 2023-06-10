@@ -9,6 +9,7 @@ enum QueryKeys {
   ANIMAL_SEXES = 'animal_sexes',
   ANIMAL_TYPES = 'animal_types',
   ANIMAL_TYPE = 'animal_type_',
+  ANIMAL_DOCUMENTS = 'animal_documents',
 }
 
 export default QueryKeys;

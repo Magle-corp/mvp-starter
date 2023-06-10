@@ -33,7 +33,7 @@ type UseQuery<T> = {
 };
 
 type UseGet<T> = {
-  entityId?: number;
+  entityId: number;
   token?: UseQuery<T>['token'];
   onSuccess?: UseQuery<T>['onSuccess'];
   onError?: UseQuery<T>['onError'];
