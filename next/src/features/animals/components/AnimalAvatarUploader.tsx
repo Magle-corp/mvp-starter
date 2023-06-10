@@ -14,7 +14,7 @@ type AnimalAvatarUploader = {
   animal: Animal;
   onUpdate: Function;
   updateQuery: UseMutationResult<FormData>;
-  onDelete: MouseEventHandler<HTMLButtonElement>;
+  onDelete: (entityId: number) => void;
   deleteQuery: UseMutationResult<any>;
 } & AvatarProps;
 
@@ -125,7 +125,7 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
                 variant="danger"
                 icon="pi pi-trash"
                 size="small"
-                onClick={props.onDelete}
+                onClick={() => props.onDelete(props.animal.avatar?.id ?? 0)}
                 loading={props.deleteQuery.isLoading}
                 disabled={props.updateQuery.isLoading}
               />

@@ -19,7 +19,7 @@ const DeleteOrganizationCard = () => {
   };
 
   const organizationMutation = useDelete<OrganizationFormSchema>({
-    url: ApiRoutes.ORGANIZATIONS + '/' + organization?.id,
+    url: ApiRoutes.ORGANIZATIONS,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATION + organization?.id,
     onSuccess: () => getFreshToken(token),
@@ -37,7 +37,7 @@ const DeleteOrganizationCard = () => {
         'Cette action est irréversible, êtes-vous sûr de vouloir continuer ?',
       header: 'Supprimer mon organisation',
       icon: 'pi pi-exclamation-triangle',
-      accept: () => organizationMutation.mutate(),
+      accept: () => organizationMutation.mutate(organization?.id ?? 0),
     });
 
   const cardDescription = (
