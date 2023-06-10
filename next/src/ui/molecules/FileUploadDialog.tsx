@@ -2,7 +2,7 @@ import { ChangeEvent, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
-import { MdOutlineCancel, MdUploadFile, MdCheck } from 'react-icons/md';
+import { MdOutlineClose, MdUploadFile, MdCheck } from 'react-icons/md';
 import { UseMutationResult } from '@/cdn/types/Query';
 import Button from '@/ui/atoms/Button';
 import FormError from '@/ui/atoms/form/FormError';
@@ -149,7 +149,6 @@ const FileUploadDialog = (props: FileUploadDialog) => {
       visible={props.dialogOpen}
       onHide={handleDialogClose}
       header={<p>Ajouter un document</p>}
-      blockScroll
       draggable={false}
     >
       <DialogContent>
@@ -260,7 +259,7 @@ const FileIcon = styled(MdUploadFile)`
   cursor: pointer;
 `;
 
-const CancelIcon = styled(MdOutlineCancel)`
+const CancelIcon = styled(MdOutlineClose)`
   width: 25px !important;
   height: 25px !important;
   color: white !important;

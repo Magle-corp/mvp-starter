@@ -6,6 +6,7 @@ import { UseGetResult } from '@/cdn/types/Query';
 import usePost from '@/cdn/hooks/usePost';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { Animal } from '@/features/animals/types/Animal';
+import FileList from '@/ui/molecules/FileList';
 import FileUploadDialog from '@/ui/molecules/FileUploadDialog';
 import Button from '@/ui/atoms/Button';
 import Card from '@/ui/atoms/Card';
@@ -72,6 +73,9 @@ const AnimalDocumentsCard = (props: AnimalDocumentsCard) => {
         onCreate={onFileSubmit}
         createQuery={fileMutation}
       />
+      {props.animalQuery.data?.data.documents && (
+        <FileList documents={props.animalQuery.data.data.documents} />
+      )}
     </Card>
   );
 };

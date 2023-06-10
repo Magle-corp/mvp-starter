@@ -23,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
   }
     
   body {
-    background-color: #EFF3F8;
+    background-color: #eff3f8;
     font-family: var(--font-family);
     font-weight: normal;
     color: var(--text-color);

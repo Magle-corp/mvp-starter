@@ -45,7 +45,18 @@ class AnimalDocument
     private ?Animal $animal = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups([
+        'animal_document_read',
+        'animal_read'
+    ])]
     private ?string $fileName = null;
+
+    #[ORM\Column(length: 310)]
+    #[Groups([
+        'animal_document_read',
+        'animal_read'
+    ])]
+    private ?string $fileExtension = null;
 
     public function getId(): ?int
     {
@@ -72,6 +83,18 @@ class AnimalDocument
     public function setFileName(string $fileName): self
     {
         $this->fileName = $fileName;
+
+        return $this;
+    }
+
+    public function getFileExtension(): ?string
+    {
+        return $this->fileExtension;
+    }
+
+    public function setFileExtension(string $fileExtension): self
+    {
+        $this->fileExtension = $fileExtension;
 
         return $this;
     }

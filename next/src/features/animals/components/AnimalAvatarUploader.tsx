@@ -90,7 +90,6 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
       <AvatarDialog
         visible={dialogOpen}
         onHide={handleCloseDialog}
-        blockScroll
         draggable={false}
       >
         <DialogContent>
