@@ -10,7 +10,7 @@ type Animal = {
   sex: AnimalSex;
   registered: string;
   avatar?: MediaObject;
-  documents?: MediaObject[];
+  documents: AnimalDocument[];
 };
 
 type AnimalTemper = {
@@ -36,5 +36,10 @@ type AnimalSex = {
   id: number;
   name: string;
 };
+
+type AnimalDocument = {
+  fileName: string;
+  fileExtension: string;
+} & MediaObject;
 
 export type { Animal, AnimalTemper, AnimalType, AnimalRace, AnimalSex };

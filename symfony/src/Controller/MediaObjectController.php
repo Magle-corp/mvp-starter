@@ -9,6 +9,7 @@ use App\Enum\Medias;
 use App\Service\VoterService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -60,7 +61,7 @@ class MediaObjectController extends AbstractController
         $entityManager->refresh($fileRelatedEntity);
     }
 
-    public function createFileEntity(array $fileInformation, mixed $fileRelatedEntity, mixed $uploadedFile): AnimalDocument|AnimalAvatar|null
+    public function createFileEntity(array $fileInformation, mixed $fileRelatedEntity, UploadedFile $uploadedFile): AnimalDocument|AnimalAvatar|null
     {
         if ($fileInformation['file_entity_type'] === Medias::ANIMAL_AVATAR) {
             $animalAvatar = new AnimalAvatar();
@@ -78,6 +79,8 @@ class MediaObjectController extends AbstractController
             $animalDocument->file = $uploadedFile;
             $animalDocument->setAnimal($fileRelatedEntity);
             $animalDocument->setFileName($fileInformation['file_name']);
+            $animalDocument->setFileExtension($uploadedFile->guessExtension());
+
             return $animalDocument;
         }
 
