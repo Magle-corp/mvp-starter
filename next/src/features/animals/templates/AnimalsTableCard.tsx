@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { FilterMatchMode } from 'primereact/api';
 import { Column } from 'primereact/column';
 import { DataTableFilterMeta } from 'primereact/datatable';
@@ -10,10 +10,10 @@ import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import useGetAnimals from '@/cdn/queries/useGetAnimals';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { Animal } from '@/features/animals/types/Animal';
-import ActionColumn from '@/features/animals/components/ActionColumn';
-import NameColumn from '@/features/animals/components/NameColumn';
-import RaceColumn from '@/features/animals/components/RaceColumn';
-import RegisteredColumn from '@/features/animals/components/RegisteredColumn';
+import ActionColumn from '@/features/animals/components/table/ActionColumn';
+import NameColumn from '@/features/animals/components/table/NameColumn';
+import RaceColumn from '@/features/animals/components/table/RaceColumn';
+import RegisteredColumn from '@/features/animals/components/table/RegisteredColumn';
 import Card from '@/ui/atoms/Card';
 import LinkButton from '@/ui/atoms/LinkButton';
 import Table from '@/ui/atoms/Table';
@@ -81,7 +81,8 @@ const AnimalsTableCard = () => {
         {breakpointSM && (
           <Column field="race.name" header="Race" sortable body={RaceColumn} />
         )}
-        {breakpointMD && (
+        {(breakpointLG ||
+          (breakpointMD && !breakpointLG && !organizationMenuOpen)) && (
           <Column
             field="registered"
             header="Arrivé"

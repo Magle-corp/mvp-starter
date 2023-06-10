@@ -55,6 +55,7 @@ class AnimalType
         'org_animal_type_create',
         'org_animal_type_update',
         'org_animal_race_read',
+        'animal_documents_read'
     ])]
     private ?string $name = null;
 

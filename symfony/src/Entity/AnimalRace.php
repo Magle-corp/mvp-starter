@@ -63,6 +63,7 @@ class AnimalRace
         'org_animal_race_read',
         'org_animal_race_create',
         'org_animal_race_update',
+        'animal_documents_read'
     ])]
     private ?AnimalType $type = null;
 

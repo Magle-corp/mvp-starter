@@ -63,7 +63,8 @@ class Animal
         'animals_read',
         'animal_read',
         'animal_create',
-        'animal_update'
+        'animal_update',
+        'animal_documents_read'
     ])]
     private ?string $name = null;
 
@@ -89,7 +90,8 @@ class Animal
         'animals_read',
         'animal_read',
         'animal_create',
-        'animal_update'
+        'animal_update',
+        'animal_documents_read'
     ])]
     private ?AnimalRace $race = null;
 
