@@ -1,6 +1,7 @@
+import { MenuItem } from 'primereact/menuitem';
 import AppPages from '@/cdn/enums/AppPages';
 
-const menuAdmin = [
+const menuAdmin: MenuItem[] = [
   {
     label: 'Profil',
     icon: 'pi pi-user',

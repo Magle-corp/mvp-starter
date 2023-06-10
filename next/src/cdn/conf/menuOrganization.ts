@@ -1,6 +1,7 @@
+import { MenuItem } from 'primereact/menuitem';
 import AppPages from '@/cdn/enums/AppPages';
 
-const menuOrganization = [
+const menuOrganization: MenuItem[] = [
   { label: 'Accueil', icon: 'pi pi-home', url: AppPages.BO_DASHBOARD },
   {
     label: 'Animaux',
@@ -8,8 +9,13 @@ const menuOrganization = [
     url: AppPages.BO_ANIMALS,
   },
   {
+    label: 'Documents',
+    icon: 'pi pi-file',
+    url: AppPages.BO_DOCUMENTS,
+  },
+  {
     label: 'Dictionnaire',
-    icon: 'pi pi-bookmark',
+    icon: 'pi pi-book',
     url: AppPages.BO_DICTIONARY,
   },
 ];
