@@ -54,6 +54,20 @@ services:
     networks:
       - dev
 
+  next_latest:
+    build:
+      context: next_latest
+      args:
+        WAIT_VERSION: ${WAIT_VERSION}
+    volumes:
+      - ./next_latest:/app
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    networks:
+      - dev
+
   mailhog:
     image: mailhog/mailhog
     logging:
