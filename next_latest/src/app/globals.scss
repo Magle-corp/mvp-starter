@@ -1,0 +1,10 @@
+$primary-color: #64ff00;
+
+:export {
+  primaryColor: $primary-color;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
