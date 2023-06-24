@@ -136,6 +136,9 @@ const VocabularyTableCard = () => {
           stateKey="vocabulary_table"
         >
           <Column field="name" header="Nom" sortable />
+          {vocabularyType === VocabularyTypes.RACE && (
+            <Column field="type.name" header="Type" sortable />
+          )}
           <Column
             field="organization.id"
             header={(options) =>
