@@ -81,6 +81,14 @@ class Organization
     #[ORM\OneToMany(mappedBy: 'organization', targetEntity: OrganizationAnimalRace::class, orphanRemoval: true)]
     private Collection $animalRaces;
 
+    #[ORM\Column]
+    #[Groups([
+        'organization_read',
+        'organization_create',
+        'organization_update'
+    ])]
+    private ?bool $public = false;
+
     public function __construct()
     {
         $this->animals = new ArrayCollection();
@@ -234,6 +242,18 @@ class Organization
                 $animalRace->setOrganization(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isPublic(): ?bool
+    {
+        return $this->public;
+    }
+
+    public function setPublic(bool $public): self
+    {
+        $this->public = $public;
 
         return $this;
     }

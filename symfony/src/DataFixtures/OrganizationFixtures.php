@@ -16,6 +16,7 @@ class OrganizationFixtures extends AbstractFixtures implements DependentFixtureI
 
             $organization->setName($this->faker->company());
             $organization->setOwner($this->getReference(UserFixtures::REF_USER . '_' . $i));
+            $organization->setPublic($this->faker->boolean());
 
             $manager->persist($organization);
 
