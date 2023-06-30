@@ -20,7 +20,14 @@ const UpdateOrganizationCard = () => {
     url: ApiRoutes.ORGANIZATIONS + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATION + organization?.id,
-    onSuccess: () => getFreshToken(token),
+    onSuccess: () => {
+      getFreshToken(token);
+      toast.current.show({
+        severity: 'success',
+        summary: 'Organisation',
+        detail: 'Mis à jour avec succès',
+      });
+    },
     onError: () =>
       toast.current.show({
         severity: 'error',
