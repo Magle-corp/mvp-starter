@@ -71,10 +71,15 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
       });
     };
 
-    if (organization?.public && fieldValues.public) {
+    if (
+      organization?.public &&
+      !animalDefaultValues.public &&
+      fieldValues.public
+    ) {
       confirmDialog({
-        message: 'En choisissant de rendre cette fiche publique ...',
-        header: "Modifier la visibilité d'un animal",
+        message:
+          "Acceptez-vous que la fiche de l'animal soit visible sur le site public ?",
+        header: 'Mettre à jour la fiche animal',
         icon: 'pi pi-exclamation-triangle',
         accept() {
           startMutation();
@@ -166,7 +171,7 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
   );
 
   return (
-    <Card title="Mettre à jour un animal" toolbar={Toolbar}>
+    <Card title="Mettre à jour la fiche animal" toolbar={Toolbar}>
       {props.animalQuery.data?.data && animalDefaultValues && (
         <ContentWrapper>
           <AnimalAvatarUploader

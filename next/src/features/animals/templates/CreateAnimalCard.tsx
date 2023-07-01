@@ -67,8 +67,9 @@ const CreateAnimalCard = () => {
 
     if (organization?.public && fieldValues.public) {
       confirmDialog({
-        message: 'En choisissant de rendre cette fiche publique ...',
-        header: "Modifier la visibilité d'un animal",
+        message:
+          "Acceptez-vous que la fiche de l'animal soit visible sur le site public ?",
+        header: 'Créer une fiche animal',
         icon: 'pi pi-exclamation-triangle',
         accept() {
           startMutation();
@@ -80,7 +81,7 @@ const CreateAnimalCard = () => {
   };
 
   return (
-    <Card title="Enregister un animal">
+    <Card title="Créer une fiche animal">
       <AnimalForm
         defaultValues={animalDefaultValues}
         onSubmit={onSubmit}

@@ -13,7 +13,7 @@ import { Animal } from '@/features/animals/types/Animal';
 import ActionColumn from '@/features/animals/components/table/ActionColumn';
 import NameColumn from '@/features/animals/components/table/NameColumn';
 import RaceColumn from '@/features/animals/components/table/RaceColumn';
-import RegisteredColumn from '@/features/animals/components/table/RegisteredColumn';
+import PublicColumn from '@/features/animals/components/table/PublicColumn';
 import Card from '@/ui/atoms/Card';
 import LinkButton from '@/ui/atoms/LinkButton';
 import Table from '@/ui/atoms/Table';
@@ -84,10 +84,10 @@ const AnimalsTableCard = () => {
         {(breakpointLG ||
           (breakpointMD && !breakpointLG && !organizationMenuOpen)) && (
           <Column
-            field="registered"
-            header="Arrivé"
+            field="public"
+            header="Visibilité"
             sortable
-            body={RegisteredColumn}
+            body={PublicColumn}
           />
         )}
         <Column className="custom-row-actions" body={ActionColumn} />
