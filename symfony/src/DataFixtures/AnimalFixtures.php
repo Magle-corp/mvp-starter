@@ -24,6 +24,7 @@ class AnimalFixtures extends AbstractFixtures implements DependentFixtureInterfa
             $animal->setRace($this->getReference($animalRaceFixturesRef[$this->faker->numberBetween(0, count($animalRaceFixturesRef) - 1)]));
             $animal->setName($this->faker->firstName());
             $animal->setSex($this->getReference(AnimalSexFixtures::REF_SEX . '_' . $this->faker->numberBetween(0, 2)));
+            $animal->setPublic($this->faker->boolean());
 
             for ($o = 0; $o < $this->faker->numberBetween(1, 5); $o++) {
                 $animal->addTemper($this->getReference(AnimalTemperFixtures::REF_TEMPER . '_' . $this->faker->numberBetween(0, 9)));

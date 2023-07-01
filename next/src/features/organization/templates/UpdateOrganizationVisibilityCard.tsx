@@ -56,7 +56,7 @@ const UpdateOrganizationVisibilityCard = () => {
   const Toolbar = (
     <SwitchWrapper>
       <div>
-        <p>Organisation {switchDefaultValue ? 'public' : 'privée'}</p>
+        <p>Organisation {switchDefaultValue ? 'publique' : 'privée'}</p>
         {switchDefaultValue ? <TbEye /> : <TbEyeOff />}
       </div>
       <InputSwitch

@@ -84,7 +84,6 @@ class Organization
     #[ORM\Column]
     #[Groups([
         'organization_read',
-        'organization_create',
         'organization_update'
     ])]
     private ?bool $public = false;

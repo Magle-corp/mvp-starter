@@ -127,6 +127,14 @@ class Animal
     ])]
     private Collection $documents;
 
+    #[ORM\Column]
+    #[Groups([
+        'animal_read',
+        'animal_create',
+        'animal_update'
+    ])]
+    private ?bool $public = false;
+
     public function __construct()
     {
         $this->tempers = new ArrayCollection();
@@ -265,6 +273,18 @@ class Animal
                 $document->setAnimal(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isPublic(): ?bool
+    {
+        return $this->public;
+    }
+
+    public function setPublic(bool $public): self
+    {
+        $this->public = $public;
 
         return $this;
     }
