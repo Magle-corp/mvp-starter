@@ -68,9 +68,9 @@ const CreateAnimalCard = () => {
     if (organization?.public && fieldValues.public) {
       confirmDialog({
         message:
-          "Acceptez-vous que la fiche de l'animal soit visible sur le site public ?",
+          "Souhaitez-vous que la fiche de l'animal soit visible sur le site public ?",
         header: 'Créer une fiche animal',
-        icon: 'pi pi-exclamation-triangle',
+        icon: 'pi pi-question-circle',
         accept() {
           startMutation();
         },

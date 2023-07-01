@@ -6,7 +6,6 @@ import Colors from '@/theme/colors';
 type LinkButton = {
   variant?: 'danger';
   icon?: string;
-  download?: boolean;
   target?: '_blank';
 } & HTMLProps<HTMLAnchorElement> &
   LinkProps;
@@ -28,39 +27,20 @@ const LinkButton = (props: LinkButton) => {
   );
 
   return (
-    <>
-      {!props.download && (
-        <StyledNextLinkButton
-          href={props.href}
-          className={props.className ?? '' + 'p-button p-component p-button-sm'}
-          variant={props.variant}
-          target={props.target}
-        >
-          <LinkContent />
-        </StyledNextLinkButton>
-      )}
-      {props.download && (
-        <StyledLinkButton
-          href={props.href}
-          className={props.className ?? '' + 'p-button p-component p-button-sm'}
-          variant={props.variant}
-          download
-        >
-          <LinkContent />
-        </StyledLinkButton>
-      )}
-    </>
+    <StyledNextLinkButton
+      href={props.href}
+      className={props.className ?? '' + 'p-button p-component p-button-sm'}
+      variant={props.variant}
+      target={props.target}
+    >
+      <LinkContent />
+    </StyledNextLinkButton>
   );
 };
 
 const StyledNextLinkButton = styled(NextLink)<{
   variant?: LinkButton['variant'];
 }>`
-  ${({ variant }) => getVariant(variant)};
-  text-decoration: none;
-`;
-
-const StyledLinkButton = styled.a<{ variant?: LinkButton['variant'] }>`
   ${({ variant }) => getVariant(variant)};
   text-decoration: none;
 `;

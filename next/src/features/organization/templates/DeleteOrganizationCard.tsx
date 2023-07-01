@@ -41,11 +41,17 @@ const DeleteOrganizationCard = () => {
     });
 
   const cardDescription = (
-    <DescriptionWrapper>
-      <p>
-        action irréversible, toutes les données liées à cette organisation
-        seront définitivement effacées.
-      </p>
+    <p>
+      action irréversible, toutes les données liées à cette organisation seront
+      définitivement effacées.
+    </p>
+  );
+
+  return (
+    <StyledCard
+      title="Supprimer mon organisation"
+      description={cardDescription}
+    >
       <WarningWrapper>
         <p>
           Assurez-vous de sauvegarder toutes les informations importantes avant
@@ -60,14 +66,6 @@ const DeleteOrganizationCard = () => {
           <OrganisationName>{organization?.name}</OrganisationName>
         </p>
       </WarningWrapper>
-    </DescriptionWrapper>
-  );
-
-  return (
-    <StyledCard
-      title="Supprimer mon organisation"
-      description={cardDescription}
-    >
       <DeleteOrganizationForm
         defaultValues={formDefaultValues}
         onSubmit={onSubmit}
@@ -80,12 +78,6 @@ const DeleteOrganizationCard = () => {
 
 const StyledCard = styled(Card)`
   border-left: 3px solid ${({ theme }) => theme.colors.error};
-`;
-
-const DescriptionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
 `;
 
 const WarningWrapper = styled.div`
