@@ -115,7 +115,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
                 </>
               )}
               <FormFieldSwitch<AnimalFormSchema>
-                label="Profil public"
+                label="Fiche publique"
                 name="public"
                 checked={fieldPublicWatcher}
                 onChange={() =>

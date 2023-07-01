@@ -129,6 +129,7 @@ class Animal
 
     #[ORM\Column]
     #[Groups([
+        'animals_read',
         'animal_read',
         'animal_create',
         'animal_update'
