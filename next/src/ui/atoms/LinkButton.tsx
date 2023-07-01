@@ -1,10 +1,10 @@
 import { HTMLProps } from 'react';
 import NextLink, { LinkProps } from 'next/link';
-import styled, { css } from 'styled-components';
-import Colors from '@/theme/colors';
+import styled from 'styled-components';
+import getButtonVariant, { ButtonVariant } from '@/theme/getButtonVariant';
 
 type LinkButton = {
-  variant?: 'danger';
+  variant?: ButtonVariant;
   icon?: string;
   target?: '_blank';
 } & HTMLProps<HTMLAnchorElement> &
@@ -41,36 +41,8 @@ const LinkButton = (props: LinkButton) => {
 const StyledNextLinkButton = styled(NextLink)<{
   variant?: LinkButton['variant'];
 }>`
-  ${({ variant }) => getVariant(variant)};
+  ${({ variant }) => getButtonVariant(variant)};
   text-decoration: none;
 `;
-
-const getVariant = (variant?: LinkButton['variant']) => {
-  let variantColor: string;
-
-  switch (variant) {
-    case 'danger':
-      variantColor = Colors.error;
-      break;
-    default:
-      variantColor = Colors.primary;
-  }
-
-  return css`
-    background-color: ${variantColor};
-    border: 1px solid ${variantColor};
-
-    &:enabled:hover,
-    &:enabled:active {
-      background-color: ${variantColor};
-      border: 1px solid ${variantColor};
-    }
-
-    &:focus {
-      box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px ${variantColor},
-        0 1px 2px 0 black;
-    }
-  `;
-};
 
 export default LinkButton;
