@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import { confirmDialog } from 'primereact/confirmdialog';
+import { TbCircleArrowDown } from 'react-icons/tb';
 import { useAppContext } from '@/cdn/AppContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
@@ -9,8 +11,11 @@ import { useAuthContext } from '@/features/authentication/AuthContext';
 import { OrganizationFormSchema } from '@/features/organization/forms/DeleteOrganizationForm';
 import DeleteOrganizationForm from '@/features/organization/forms/DeleteOrganizationForm';
 import Card from '@/ui/atoms/Card';
+import IconButton from '@/ui/atoms/IconButton';
 
 const DeleteOrganizationCard = () => {
+  const [toggleCard, setToggleCard] = useState<boolean>(false);
+
   const { token, getFreshToken, organization } = useAuthContext();
   const { toast } = useAppContext();
 
@@ -41,10 +46,23 @@ const DeleteOrganizationCard = () => {
     });
 
   const cardDescription = (
-    <p>
-      action irréversible, toutes les données liées à cette organisation seront
-      définitivement effacées.
-    </p>
+    <DescriptionWrapper>
+      <p>
+        action irréversible, toutes les données liées à cette organisation
+        seront définitivement effacées.
+      </p>
+      {!toggleCard && (
+        <IconButton
+          variant="danger"
+          behaviour="button"
+          onClick={() => setToggleCard(!toggleCard)}
+          accessAlt="Afficher le contenu de la carte"
+          tooltip="Afficher le contenu de la carte"
+        >
+          <TbCircleArrowDown />
+        </IconButton>
+      )}
+    </DescriptionWrapper>
   );
 
   return (
@@ -52,26 +70,30 @@ const DeleteOrganizationCard = () => {
       title="Supprimer mon organisation"
       description={cardDescription}
     >
-      <WarningWrapper>
-        <p>
-          Assurez-vous de sauvegarder toutes les informations importantes avant
-          de procéder à la suppression.
-        </p>
-        <p>
-          <BoldInfo>
-            Pour confirmer la suppression veuillez saisir le nom de votre
-            organisation
-          </BoldInfo>
-          {' : '}
-          <OrganisationName>{organization?.name}</OrganisationName>
-        </p>
-      </WarningWrapper>
-      <DeleteOrganizationForm
-        defaultValues={formDefaultValues}
-        onSubmit={onSubmit}
-        submitLoading={organizationMutation.isLoading}
-        submitError={organizationMutation.error?.response?.data.message}
-      />
+      {toggleCard && (
+        <>
+          <WarningWrapper>
+            <p>
+              Assurez-vous de sauvegarder toutes les informations importantes
+              avant de procéder à la suppression.
+            </p>
+            <p>
+              <BoldInfo>
+                Pour confirmer la suppression veuillez saisir le nom de votre
+                organisation
+              </BoldInfo>
+              {' : '}
+              <OrganisationName>{organization?.name}</OrganisationName>
+            </p>
+          </WarningWrapper>
+          <DeleteOrganizationForm
+            defaultValues={formDefaultValues}
+            onSubmit={onSubmit}
+            submitLoading={organizationMutation.isLoading}
+            submitError={organizationMutation.error?.response?.data.message}
+          />
+        </>
+      )}
     </StyledCard>
   );
 };
@@ -95,6 +117,16 @@ const BoldInfo = styled.span`
 const OrganisationName = styled.span`
   font-weight: 700;
   color: ${({ theme }) => theme.colors.error};
+`;
+
+const DescriptionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  > button {
+    margin: 0 auto;
+  }
 `;
 
 export default DeleteOrganizationCard;

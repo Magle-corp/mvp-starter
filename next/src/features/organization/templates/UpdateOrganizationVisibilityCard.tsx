@@ -107,7 +107,7 @@ const UpdateOrganizationVisibilityCard = () => {
       {organization?.public && (
         <IconButtonWrapper>
           <IconButton
-            variant="button"
+            behaviour="button"
             onClick={handleCopyPublicUrl}
             accessAlt="Copier le lien vers la page public de votre organisation"
             tooltip="Copier le lien vers la page public de votre organisation"
@@ -115,7 +115,7 @@ const UpdateOrganizationVisibilityCard = () => {
             <TbCopy />
           </IconButton>
           <IconButton
-            variant="link"
+            behaviour="link"
             href="https://google.com"
             accessAlt="Ouvrir la page public de votre navigation dans un nouvel onglet"
             tooltip="Ouvrir la page public de votre navigation"

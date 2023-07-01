@@ -1,10 +1,12 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Tooltip } from 'primereact/tooltip';
+import getButtonVariant, { ButtonVariant } from '@/theme/getButtonVariant';
 
 type IconButton = {
   children: ReactNode;
-  variant: 'button' | 'link';
+  variant?: ButtonVariant;
+  behaviour: 'button' | 'link';
   onClick?: Function;
   href?: string;
   accessAlt: string;
@@ -23,12 +25,13 @@ const IconButton = (props: IconButton) => {
         mouseTrackLeft={20}
       />
       <StyledButton
-        as={props.variant === 'link' && props.href ? 'a' : 'button'}
-        href={props.variant === 'link' && props.href ? props.href : undefined}
-        target={props.variant === 'link' && props.href ? '_blank' : undefined}
+        variant={props.variant}
+        as={props.behaviour === 'link' && props.href ? 'a' : 'button'}
+        href={props.behaviour === 'link' && props.href ? props.href : undefined}
+        target={props.behaviour === 'link' && props.href ? '_blank' : undefined}
         className={props.tooltip ? 'tooltip_' + tooltipClassTarget : undefined}
         onClick={() =>
-          props.variant === 'button' && props.onClick
+          props.behaviour === 'button' && props.onClick
             ? props.onClick()
             : undefined
         }
@@ -43,7 +46,7 @@ const IconButton = (props: IconButton) => {
   );
 };
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ variant?: ButtonVariant }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,25 +54,9 @@ const StyledButton = styled.button`
   height: max-content;
   padding: 5px;
   font-size: 20px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  border: 2px solid ${({ theme }) => theme.colors.primary};
   border-radius: 50%;
   cursor: pointer;
-  transition: 250ms;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.white};
-    border: 2px solid ${({ theme }) => theme.colors.primary};
-
-    svg {
-      stroke: ${({ theme }) => theme.colors.primary};
-    }
-  }
-
-  svg {
-    stroke: ${({ theme }) => theme.colors.white};
-    transition: 250ms;
-  }
+  ${({ variant }) => getButtonVariant(variant)}
 `;
 
 const ScreenReaderAlt = styled.p`
