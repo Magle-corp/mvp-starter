@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import { array, date, object, Schema, string } from 'yup';
+import { array, boolean, date, object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Tooltip } from 'primereact/tooltip';
+import { TbInfoCircle } from 'react-icons/tb';
 import { useAppContext } from '@/cdn/AppContext';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
@@ -16,6 +18,7 @@ import FormFieldCalendar from '@/ui/atoms/formFields/FormFieldCalendar';
 import FormFieldDropdown from '@/ui/atoms/formFields/FormFieldDropdown';
 import FormFieldMultiSelect from '@/ui/atoms/formFields/FormFieldMultiSelect';
 import FormFieldText from '@/ui/atoms/formFields/FormFieldText';
+import FormFieldSwitch from '@/ui/atoms/formFields/FormFieldSwitch';
 import Button from '@/ui/atoms/Button';
 import Form from '@/ui/atoms/form/Form';
 import FormError from '@/ui/atoms/form/FormError';
@@ -28,6 +31,7 @@ export type AnimalFormSchema = {
   race: string | number;
   sex: string | number;
   registered: Date;
+  public: boolean;
 };
 
 const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
@@ -69,6 +73,7 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
     race: string().required('Champ requis'),
     sex: string().required('Champ requis'),
     registered: date().required('Champ requis'),
+    public: boolean().required('Champ requis'),
   });
 
   const form = useForm<AnimalFormSchema>({
@@ -76,6 +81,8 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
     resolver: yupResolver(schema),
     defaultValues: props.defaultValues,
   });
+
+  const fieldPublicWatcher = form.watch('public');
 
   return (
     <>
@@ -93,6 +100,35 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
               help="Minimum 2 caractères, maximum 50"
               required
             />
+            <PublicFieldWrapper>
+              {!organization?.public && (
+                <>
+                  <Tooltip target=".public_field_help" />
+                  <i
+                    className="public_field_help"
+                    data-pr-tooltip="Nécessite que votre organisation soit publique."
+                    data-pr-position="left"
+                    data-pr-my="right center-2"
+                  >
+                    <TbInfoCircle />
+                  </i>
+                </>
+              )}
+              <FormFieldSwitch<AnimalFormSchema>
+                label="Profil public"
+                name="public"
+                checked={fieldPublicWatcher}
+                onChange={() =>
+                  form.setValue('public', !form.getValues('public'), {
+                    shouldDirty: true,
+                  })
+                }
+                control={form.control}
+                error={form.formState.errors.public?.message}
+                disabled={!organization?.public}
+                required
+              />
+            </PublicFieldWrapper>
           </AdministrativeInputsWrapper>
           <IdentityInputsWrapper organizationMenuOpen={organizationMenuOpen}>
             <FormFieldDropdown<AnimalFormSchema>
@@ -161,22 +197,45 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
 };
 
 const AdministrativeInputsWrapper = styled(InputsWrapper)`
+  > div:nth-child(1) {
+    order: 1;
+  }
+
   @media screen and (${({ theme }) => theme.breakpoints.md}) {
-    > div {
+    > div:nth-child(1) {
       grid-column: 1/6;
+    }
+
+    > div:nth-child(2) {
+      grid-column: 9/12;
     }
   }
 
   @media screen and (${({ theme }) => theme.breakpoints.lg}) {
-    > div {
+    > div:nth-child(1) {
       grid-column: 1/5;
+      order: unset;
     }
   }
 
   @media screen and (${({ theme }) => theme.breakpoints.xl}) {
-    > div {
+    > div:nth-child(1) {
       grid-column: 1/4;
     }
+  }
+`;
+
+const PublicFieldWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 5px;
+
+  > i > svg {
+    margin-top: 2px;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
   }
 `;
 

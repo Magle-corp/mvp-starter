@@ -28,7 +28,7 @@ type UpdateAnimalCard = {
 
 const UpdateAnimalCard = (props: UpdateAnimalCard) => {
   const router = useRouter();
-  const { token } = useAuthContext();
+  const { token, organization } = useAuthContext();
   const { toast } = useAppContext();
 
   const animalDefaultValues = {
@@ -38,6 +38,7 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
     race: props.animal.race.id,
     sex: props.animal.sex.id,
     registered: new Date(props.animal.registered),
+    public: props.animal.public,
   };
 
   const animalUpdateMutation = usePut<AnimalFormSchema>({
@@ -55,17 +56,34 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
 
   const onAnimalUpdateSubmit: SubmitHandler<AnimalFormSchema> = (
     fieldValues: AnimalFormSchema
-  ) =>
-    animalUpdateMutation.mutate({
-      name: fieldValues.name,
-      organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
-      tempers: fieldValues.tempers?.map(
-        (temper) => ApiIris.ANIMAL_TEMPERS + temper.toString()
-      ),
-      race: ApiIris.ANIMAL_RACES + fieldValues.race,
-      sex: ApiIris.ANIMAL_SEXES + fieldValues.sex,
-      registered: fieldValues.registered,
-    });
+  ) => {
+    const startMutation = () => {
+      animalUpdateMutation.mutate({
+        name: fieldValues.name,
+        organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
+        tempers: fieldValues.tempers?.map(
+          (temper) => ApiIris.ANIMAL_TEMPERS + temper.toString()
+        ),
+        race: ApiIris.ANIMAL_RACES + fieldValues.race,
+        sex: ApiIris.ANIMAL_SEXES + fieldValues.sex,
+        registered: fieldValues.registered,
+        public: fieldValues.public,
+      });
+    };
+
+    if (organization?.public && fieldValues.public) {
+      confirmDialog({
+        message: 'En choisissant de rendre cette fiche publique ...',
+        header: "Modifier la visibilité d'un animal",
+        icon: 'pi pi-exclamation-triangle',
+        accept() {
+          startMutation();
+        },
+      });
+    } else {
+      startMutation();
+    }
+  };
 
   const animalDeleteMutation = useDelete<Animal>({
     url: ApiRoutes.ANIMALS,

@@ -11,6 +11,7 @@ type Animal = {
   registered: string;
   avatar?: AnimalAvatar;
   documents: AnimalDocument[];
+  public: boolean;
 };
 
 type AnimalTemper = {

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
+import { confirmDialog } from 'primereact/confirmdialog';
 import { useAppContext } from '@/cdn/AppContext';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiIris from '@/cdn/enums/ApiIris';
@@ -24,6 +25,7 @@ const CreateAnimalCard = () => {
     race: '',
     sex: '',
     registered: new Date(),
+    public: false,
   };
 
   const animalMutation = usePost<AnimalFormSchema>({
@@ -48,17 +50,34 @@ const CreateAnimalCard = () => {
 
   const onSubmit: SubmitHandler<AnimalFormSchema> = (
     fieldValues: AnimalFormSchema
-  ) =>
-    animalMutation.mutate({
-      name: fieldValues.name,
-      organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
-      tempers: fieldValues.tempers?.map(
-        (temper) => ApiIris.ANIMAL_TEMPERS + temper.toString()
-      ),
-      race: ApiIris.ANIMAL_RACES + fieldValues.race,
-      sex: ApiIris.ANIMAL_SEXES + fieldValues.sex,
-      registered: fieldValues.registered,
-    });
+  ) => {
+    const startMutation = () => {
+      animalMutation.mutate({
+        name: fieldValues.name,
+        organization: ApiIris.ORGANIZATIONS + fieldValues.organization,
+        tempers: fieldValues.tempers?.map(
+          (temper) => ApiIris.ANIMAL_TEMPERS + temper.toString()
+        ),
+        race: ApiIris.ANIMAL_RACES + fieldValues.race,
+        sex: ApiIris.ANIMAL_SEXES + fieldValues.sex,
+        registered: fieldValues.registered,
+        public: fieldValues.public,
+      });
+    };
+
+    if (organization?.public && fieldValues.public) {
+      confirmDialog({
+        message: 'En choisissant de rendre cette fiche publique ...',
+        header: "Modifier la visibilité d'un animal",
+        icon: 'pi pi-exclamation-triangle',
+        accept() {
+          startMutation();
+        },
+      });
+    } else {
+      startMutation();
+    }
+  };
 
   return (
     <Card title="Enregister un animal">
