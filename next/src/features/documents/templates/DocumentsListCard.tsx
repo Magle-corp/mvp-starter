@@ -93,6 +93,7 @@ const DocumentsListCard = <T,>(props: DocumentsListCard<T>) => {
             </ItemRight>
           </DocumentItem>
         ))}
+        {props.documents.length === 0 && <Info>Pas de données</Info>}
       </List>
     </Card>
   );
@@ -163,6 +164,11 @@ const CreatedDate = styled.p`
   @media screen and (${({ theme }) => theme.breakpoints.sm}) {
     display: flex;
   }
+`;
+
+const Info = styled.p`
+  font-weight: bold;
+  text-align: center;
 `;
 
 export default DocumentsListCard;
