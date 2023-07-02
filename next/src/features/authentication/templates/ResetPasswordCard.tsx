@@ -28,11 +28,7 @@ const ResetPasswordCard = () => {
   ) => resetPasswordMutation.mutate({ ...fieldValues, token: token as string });
 
   return (
-    <AuthCard
-      title="Changer mon mot de passe"
-      titleSize="large"
-      titlePosition="center"
-    >
+    <AuthCard title="Changer mon mot de passe">
       {token && (
         <>
           {!resetPasswordMutation.isSuccess && (

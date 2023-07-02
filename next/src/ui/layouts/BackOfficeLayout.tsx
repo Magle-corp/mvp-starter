@@ -7,7 +7,6 @@ import menuOrganization from '@/cdn/conf/menuOrganization';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import Menu from '@/ui/atoms/Menu';
-import Icon from '@/ui/atoms/Icon';
 import Button from '@/ui/atoms/Button';
 import SideBar from '@/ui/atoms/SideBar';
 
@@ -31,16 +30,12 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
         <HeaderLeftWrapper>
           {(!organizationMenuOpen || !breakpointMD) && (
             <Icon
-              size={20}
-              pointer={true}
               className="pi pi-bars"
               onClick={() => setOrganizationMenuOpen(!organizationMenuOpen)}
             />
           )}
           {organizationMenuOpen && breakpointMD && (
             <Icon
-              size={20}
-              pointer={true}
               className="pi pi-times"
               onClick={() => setOrganizationMenuOpen(!organizationMenuOpen)}
             />
@@ -156,6 +151,11 @@ const BodyItemsWrapper = styled.main`
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
+`;
+
+const Icon = styled.i`
+  font-size: 20px;
+  cursor: pointer;
 `;
 
 export default BackOfficeLayout;

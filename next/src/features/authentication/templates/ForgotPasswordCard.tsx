@@ -24,11 +24,7 @@ const ForgotPasswordCard = () => {
   ) => forgotPasswordMutation.mutate(fieldValues);
 
   return (
-    <AuthCard
-      title="Mot de passe oublié"
-      titleSize="large"
-      titlePosition="center"
-    >
+    <AuthCard title="Mot de passe oublié">
       {!forgotPasswordMutation.isSuccess && !forgotPasswordMutation.isError && (
         <>
           <Help>
