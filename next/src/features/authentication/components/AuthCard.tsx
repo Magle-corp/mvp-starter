@@ -5,6 +5,12 @@ export default styled(Card)`
   max-width: 360px;
   margin: 3rem auto 0;
 
+  h2 {
+    width: 100%;
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
   form {
     width: 90%;
     margin: 0 auto;

@@ -34,7 +34,7 @@ const SignInCard = () => {
   return (
     <>
       {!signInMutation.isSuccess && (
-        <AuthCard title="Connexion" titleSize="large" titlePosition="center">
+        <AuthCard title="Connexion">
           {!signInMutation.isSuccess && (
             <>
               <SignInForm

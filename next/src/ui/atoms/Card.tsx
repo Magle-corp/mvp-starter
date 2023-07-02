@@ -1,11 +1,9 @@
 import { ReactNode } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Card as PCard, CardProps } from 'primereact/card';
 
 type Card = {
-  title?: string;
-  titleSize?: 'large';
-  titlePosition?: 'center';
+  title: string;
   description?: ReactNode;
   toolbar?: ReactNode;
   children: ReactNode;
@@ -17,15 +15,7 @@ const Card = (props: Card) => {
       <Section>
         <Header>
           <TitleWrapper>
-            {props.title && (
-              <Title
-                as="h2"
-                titleSize={props.titleSize}
-                titlePosition={props.titlePosition}
-              >
-                {props.title}
-              </Title>
-            )}
+            <Title>{props.title}</Title>
             {props.description && <>{props.description}</>}
           </TitleWrapper>
           {props.toolbar && (
@@ -69,48 +59,10 @@ const TitleWrapper = styled.div`
   gap: 0.5rem;
 `;
 
-const Title = styled.h1<{
-  titleSize: Card['titleSize'];
-  titlePosition: Card['titlePosition'];
-}>`
-  ${({ titleSize, titlePosition }) =>
-    getTitleVariant(titleSize, titlePosition)};
+const Title = styled.h2`
   font-weight: 700;
   line-height: 1.25;
 `;
-
-const getTitleVariant = (
-  titleSize?: Card['titleSize'],
-  titlePosition?: Card['titlePosition']
-) => {
-  let variantWidth: string;
-  let variantSize: string;
-  let variantPosition: string;
-
-  switch (titleSize) {
-    case 'large':
-      variantSize = '2.5rem';
-      break;
-    default:
-      variantSize = '1.5rem';
-  }
-
-  switch (titlePosition) {
-    case 'center':
-      variantWidth = '100%';
-      variantPosition = 'center';
-      break;
-    default:
-      variantWidth = 'initial';
-      variantPosition = 'left';
-  }
-
-  return css`
-    width: ${variantWidth};
-    font-size: ${variantSize};
-    text-align: ${variantPosition};
-  `;
-};
 
 const ToolBar = styled.div`
   display: flex;

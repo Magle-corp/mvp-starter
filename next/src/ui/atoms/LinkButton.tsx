@@ -17,8 +17,8 @@ const LinkButton = (props: LinkButton) => {
         <span
           className={
             'p-button-icon p-c' +
-            (props.icon ? ' ' + props.icon : '') +
-            (props.label && props.icon ? ' ' + 'p-button-icon-left' : '')
+            (props.icon ? ` ${props.icon}` : '') +
+            (props.icon && props.label ? ' p-button-icon-left' : '')
           }
         />
       )}
@@ -29,7 +29,7 @@ const LinkButton = (props: LinkButton) => {
   return (
     <StyledNextLinkButton
       href={props.href}
-      className={props.className ?? '' + 'p-button p-component p-button-sm'}
+      className="p-button p-component p-button-sm"
       variant={props.variant}
       target={props.target}
     >
@@ -42,6 +42,7 @@ const StyledNextLinkButton = styled(NextLink)<{
   variant?: LinkButton['variant'];
 }>`
   ${({ variant }) => getButtonVariant(variant)};
+  width: max-content;
   text-decoration: none;
 `;
 

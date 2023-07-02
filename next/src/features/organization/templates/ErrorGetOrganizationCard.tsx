@@ -5,7 +5,7 @@ import Card from '@/ui/atoms/Card';
 
 const ErrorGetOrganizationCard = () => {
   return (
-    <StyledCard title="Oups..." titleSize="large" titlePosition="center">
+    <StyledCard title="Oups...">
       <ErrorWrapper>
         <p>Une erreur nous empêche de vous donner accès au back-office 🔌</p>
         <p>Veuillez nous excuser pour la gêne occasionnée</p>

@@ -124,7 +124,7 @@ const SignUpValidationCard = () => {
   };
 
   return (
-    <AuthCard title="Inscription" titleSize="large" titlePosition="center">
+    <AuthCard title="Inscription">
       {(reSendSignUpValidationEmailMutation.isIdle ||
         reSendSignUpValidationEmailMutation.isLoading) && (
         <>

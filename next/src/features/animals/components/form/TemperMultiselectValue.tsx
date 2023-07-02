@@ -1,5 +1,5 @@
+import { Chip } from 'primereact/chip';
 import { AnimalTemper } from '@/features/animals/types/Animal';
-import Chip from '@/ui/atoms/Chip';
 
 const TemperMultiselectValue = (
   valueTemperId: number,

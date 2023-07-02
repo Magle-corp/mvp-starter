@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { addLocale, locale } from 'primereact/api';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 import primeLocaleFr from '@/cdn/i18n/primeLocaleFr.json';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -13,10 +14,6 @@ import { AppContextWrapper } from '@/cdn/AppContext';
 
 const DynToast = dynamic(() =>
   import('@/ui/atoms/Toast').then((Toast) => Toast)
-);
-
-const DynConfirmDialog = dynamic(() =>
-  import('@/ui/atoms/ConfirmDialog').then((ConfirmDialog) => ConfirmDialog)
 );
 
 type NextPageWithLayout = NextPage & {
@@ -51,7 +48,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <AppContextWrapper>
           <Layout Component={Component} pageProps={pageProps} />
           <DynToast />
-          <DynConfirmDialog />
+          <ConfirmDialog />
         </AppContextWrapper>
       </ThemeWrapper>
     </QueryClientProvider>
