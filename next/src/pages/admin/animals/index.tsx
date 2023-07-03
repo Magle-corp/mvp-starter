@@ -1,24 +1,10 @@
 import { ReactElement } from 'react';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { AuthContextWrapper } from '@/features/authentication/AuthContext';
 import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
-
-const DynAuthGuard = dynamic(() =>
-  import('@/features/authentication/AuthGuard').then((AuthGuard) => AuthGuard)
-);
-
-const DynAnimalsTableCard = dynamic(() =>
-  import('@/features/animals/templates/AnimalsTableCard').then(
-    (AnimalsTableCard) => AnimalsTableCard
-  )
-);
-
-const DynBackOfficeLayout = dynamic(() =>
-  import('@/ui/layouts/BackOfficeLayout').then(
-    (BackOfficeLayout) => BackOfficeLayout
-  )
-);
+import { AuthContextWrapper } from '@/features/authentication/AuthContext';
+import AuthGuard from '@/features/authentication/AuthGuard';
+import AnimalsTableCard from '@/features/animals/templates/AnimalsTableCard';
+import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
 const Animals = (): JSX.Element => {
   return (
@@ -29,7 +15,7 @@ const Animals = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <DynAnimalsTableCard />
+      <AnimalsTableCard />
     </>
   );
 };
@@ -38,9 +24,9 @@ Animals.getLayout = function getLayout(page: ReactElement) {
   return (
     <BackOfficeContextWrapper>
       <AuthContextWrapper>
-        <DynAuthGuard>
-          <DynBackOfficeLayout>{page}</DynBackOfficeLayout>
-        </DynAuthGuard>
+        <AuthGuard>
+          <BackOfficeLayout>{page}</BackOfficeLayout>
+        </AuthGuard>
       </AuthContextWrapper>
     </BackOfficeContextWrapper>
   );

@@ -31,7 +31,7 @@ const removeLocalAuthToken = () => {
   localStorage.removeItem(LocalStorageKeys.AUTH);
 };
 
-const isValidToken = (token: AuthToken): boolean => {
+const tokenValidator = (token: AuthToken): boolean => {
   return token.hasOwnProperty('token') && token.hasOwnProperty('refresh_token');
 };
 
@@ -39,7 +39,7 @@ const getAuthTokenPayload = (token: AuthToken): AuthTokenPayload | null => {
   return jwt.decode(token.token) as AuthTokenPayload;
 };
 
-const isValidTokenPayload = (tokenPayload: AuthTokenPayload): boolean => {
+const tokenPayloadValidator = (tokenPayload: AuthTokenPayload): boolean => {
   return (
     tokenPayload.hasOwnProperty('email') &&
     tokenPayload.hasOwnProperty('user_id') &&
@@ -50,22 +50,24 @@ const isValidTokenPayload = (tokenPayload: AuthTokenPayload): boolean => {
   );
 };
 
-const isExpiredAuthToken = (tokenPayload: AuthTokenPayload): boolean => {
+const expirationAuthTokenValidator = (
+  tokenPayload: AuthTokenPayload
+): boolean => {
   const authTokenExpirationDate = fromUnixTime(tokenPayload.exp);
   return isBefore(authTokenExpirationDate, new Date());
 };
 
 const tokenCompleteCheck = (token: AuthToken): boolean => {
-  const validToken = isValidToken(token);
+  const validToken = tokenValidator(token);
 
   if (validToken) {
     const tokenPayload = getAuthTokenPayload(token);
 
     if (tokenPayload) {
-      const validPayload = isValidTokenPayload(tokenPayload);
+      const validPayload = tokenPayloadValidator(tokenPayload);
 
       if (validPayload) {
-        return !isExpiredAuthToken(tokenPayload);
+        return !expirationAuthTokenValidator(tokenPayload);
       }
     }
   }
@@ -86,16 +88,22 @@ const fetchRefreshToken = async (token: AuthToken): Promise<AuthToken> => {
   return res.data;
 };
 
+const logout = () => {
+  removeLocalAuthToken();
+  window.location.reload();
+};
+
 const authService = {
   getLocalAuthToken,
   setLocalAuthToken,
   removeLocalAuthToken,
-  isValidToken,
+  tokenValidator,
   getAuthTokenPayload,
-  isValidTokenPayload,
-  isExpiredAuthToken,
+  tokenPayloadValidator,
+  expirationAuthTokenValidator,
   tokenCompleteCheck,
   fetchRefreshToken,
+  logout,
 };
 
 export default authService;

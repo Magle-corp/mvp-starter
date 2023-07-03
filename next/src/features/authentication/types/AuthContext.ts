@@ -11,7 +11,6 @@ type AuthContext = {
   userId?: User['id'];
   getFreshToken: Function;
   login: Function;
-  logout: Function;
 };
 
 export default AuthContext;
