@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
+import { BackOfficeContextWrapper } from '@/ui/layouts/BackOfficeContext';
 import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
 const Dashboard = (): JSX.Element => {

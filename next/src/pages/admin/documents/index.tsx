@@ -1,13 +1,13 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
+import dynamic from 'next/dynamic';
 import Medias from '@/cdn/enums/Medias';
 import useGetAnimalDocuments from '@/cdn/queries/useGetAnimalDocuments';
 import {
   AuthContextWrapper,
   useAuthContext,
 } from '@/features/authentication/AuthContext';
-import DocumentsTableCard from '@/features/documents/templates/DocumentsTableCard';
+import { BackOfficeContextWrapper } from '@/ui/layouts/BackOfficeContext';
 import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
 const Documents = (): JSX.Element => {
@@ -27,7 +27,7 @@ const Documents = (): JSX.Element => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {animalDocumentsQuery.data?.data && (
-        <DocumentsTableCard
+        <DynDocumentsTableCard
           mediaType={Medias.ANIMAL_DOCUMENT}
           documents={animalDocumentsQuery.data.data['hydra:member']}
           documentsQuery={animalDocumentsQuery}
@@ -46,5 +46,11 @@ Documents.getLayout = function getLayout(page: ReactElement) {
     </BackOfficeContextWrapper>
   );
 };
+
+const DynDocumentsTableCard = dynamic(() =>
+  import('@/features/documents/templates/DocumentsTableCard').then(
+    (DocumentsTableCard) => DocumentsTableCard
+  )
+);
 
 export default Documents;

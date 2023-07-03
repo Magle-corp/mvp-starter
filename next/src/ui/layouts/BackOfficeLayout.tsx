@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import BackOfficeHeaderLeft from '@/ui/layouts/components/BackOfficeHeaderLeft';
 import BackOfficeHeaderRight from '@/ui/layouts/components/BackOfficeHeaderRight';

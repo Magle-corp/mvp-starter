@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
+import dynamic from 'next/dynamic';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
-import UpdatePasswordCard from '@/features/profile/templates/UpdatePasswordCard';
+import { BackOfficeContextWrapper } from '@/ui/layouts/BackOfficeContext';
 import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 import SettingsLayout from '@/ui/layouts/SettingsLayout';
 
@@ -15,7 +15,7 @@ const Profile = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <UpdatePasswordCard />
+      <DynUpdatePasswordCard />
     </>
   );
 };
@@ -31,5 +31,11 @@ Profile.getLayout = function getLayout(page: ReactElement) {
     </BackOfficeContextWrapper>
   );
 };
+
+const DynUpdatePasswordCard = dynamic(() =>
+  import('@/features/profile/templates/UpdatePasswordCard').then(
+    (UpdatePasswordCard) => UpdatePasswordCard
+  )
+);
 
 export default Profile;

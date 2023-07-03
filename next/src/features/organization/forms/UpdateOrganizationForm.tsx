@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
 import FormFieldText from '@/ui/atoms/formFields/FormFieldText';
 import Button from '@/ui/atoms/Button';

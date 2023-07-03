@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { DataTableFilterMeta } from 'primereact/datatable';
 import { FilterMatchMode } from 'primereact/api';
 import { Column } from 'primereact/column';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
 import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
 import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';

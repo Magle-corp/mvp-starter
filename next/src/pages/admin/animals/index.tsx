@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
+import dynamic from 'next/dynamic';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
-import AnimalsTableCard from '@/features/animals/templates/AnimalsTableCard';
+import { BackOfficeContextWrapper } from '@/ui/layouts/BackOfficeContext';
 import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
 const Animals = (): JSX.Element => {
@@ -14,7 +14,7 @@ const Animals = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AnimalsTableCard />
+      <DynAnimalsTableCard />
     </>
   );
 };
@@ -28,5 +28,11 @@ Animals.getLayout = function getLayout(page: ReactElement) {
     </BackOfficeContextWrapper>
   );
 };
+
+const DynAnimalsTableCard = dynamic(() =>
+  import('@/features/animals/templates/AnimalsTableCard').then(
+    (AnimalsTableCard) => AnimalsTableCard
+  )
+);
 
 export default Animals;

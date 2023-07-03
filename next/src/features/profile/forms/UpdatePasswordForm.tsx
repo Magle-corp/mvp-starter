@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { object, ref, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
 import { FormHandler } from '@/cdn/types/Form';
 import FormFieldPassword from '@/ui/atoms/formFields/FormFieldPassword';

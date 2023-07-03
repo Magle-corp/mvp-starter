@@ -1,5 +1,11 @@
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import SignInCard from '@/features/authentication/templates/SignInCard';
+
+const DynSignInCard = dynamic(() =>
+  import('@/features/authentication/templates/SignInCard').then(
+    (SignInCard) => SignInCard
+  )
+);
 
 const SignIn = (): JSX.Element => {
   return (
@@ -11,7 +17,7 @@ const SignIn = (): JSX.Element => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <SignInCard />
+        <DynSignInCard />
       </main>
     </>
   );

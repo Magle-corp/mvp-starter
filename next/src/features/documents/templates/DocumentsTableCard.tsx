@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FilterMatchMode } from 'primereact/api';
 import { Column } from 'primereact/column';
 import { DataTableFilterMeta } from 'primereact/datatable';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import Medias from '@/cdn/enums/Medias';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
 import { UseGetResult } from '@/cdn/types/Query';

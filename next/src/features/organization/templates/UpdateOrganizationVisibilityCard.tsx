@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { InputSwitch } from 'primereact/inputswitch';
 import { TbCopy, TbEyeOff, TbEye, TbLink } from 'react-icons/tb';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import usePut from '@/cdn/hooks/usePut';
