@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
+import dynamic from 'next/dynamic';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
-import CreateAnimalCard from '@/features/animals/templates/CreateAnimalCard';
+import { BackOfficeContextWrapper } from '@/ui/layouts/BackOfficeContext';
 import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
 const CreateAnimal = (): JSX.Element => {
@@ -14,19 +14,25 @@ const CreateAnimal = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <CreateAnimalCard />
+      <DynCreateAnimalCard />
     </>
   );
 };
 
 CreateAnimal.getLayout = function getLayout(page: ReactElement) {
   return (
-    <BackOfficeContextWrapper>
-      <AuthContextWrapper>
+    <AuthContextWrapper>
+      <BackOfficeContextWrapper>
         <BackOfficeLayout>{page}</BackOfficeLayout>
-      </AuthContextWrapper>
-    </BackOfficeContextWrapper>
+      </BackOfficeContextWrapper>
+    </AuthContextWrapper>
   );
 };
+
+const DynCreateAnimalCard = dynamic(() =>
+  import('@/features/animals/templates/CreateAnimalCard').then(
+    (CreateAnimalCard) => CreateAnimalCard
+  )
+);
 
 export default CreateAnimal;

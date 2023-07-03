@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
+import dynamic from 'next/dynamic';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
-import CreateVocabularyCard from '@/features/dictionary/templates/CreateVocabularyCard';
+import { BackOfficeContextWrapper } from '@/ui/layouts/BackOfficeContext';
 import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
 const CreateVocabulary = (): JSX.Element => {
@@ -14,7 +14,7 @@ const CreateVocabulary = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <CreateVocabularyCard />
+      <DynCreateVocabularyCard />
     </>
   );
 };
@@ -28,5 +28,11 @@ CreateVocabulary.getLayout = function getLayout(page: ReactElement) {
     </BackOfficeContextWrapper>
   );
 };
+
+const DynCreateVocabularyCard = dynamic(() =>
+  import('@/features/dictionary/templates/CreateVocabularyCard').then(
+    (CreateVocabularyCard) => CreateVocabularyCard
+  )
+);
 
 export default CreateVocabulary;

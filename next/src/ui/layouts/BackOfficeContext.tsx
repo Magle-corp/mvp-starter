@@ -5,6 +5,7 @@ import {
   useContext,
   useRef,
 } from 'react';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 import LocalStorageKeys from '@/cdn/enums/LocalStorageKeys';
 import useLocalStorage from '@/cdn/hooks/useLocalStorage';
 
@@ -33,7 +34,12 @@ export function BackOfficeContextWrapper({ children }: Props) {
     toast,
   };
 
-  return <Context.Provider value={sharedStates}>{children}</Context.Provider>;
+  return (
+    <Context.Provider value={sharedStates}>
+      <ConfirmDialog />
+      {children}
+    </Context.Provider>
+  );
 }
 
 export function useBackOfficeContext() {

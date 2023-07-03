@@ -1,15 +1,14 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
+import dynamic from 'next/dynamic';
 import Medias from '@/cdn/enums/Medias';
 import useGetAnimal from '@/cdn/queries/useGetAnimal';
 import {
   AuthContextWrapper,
   useAuthContext,
 } from '@/features/authentication/AuthContext';
-import DocumentsListCard from '@/features/documents/templates/DocumentsListCard';
-import UpdateAnimalCard from '@/features/animals/templates/UpdateAnimalCard';
+import { BackOfficeContextWrapper } from '@/ui/layouts/BackOfficeContext';
 import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
 const UpdateAnimal = (): JSX.Element => {
@@ -35,11 +34,11 @@ const UpdateAnimal = (): JSX.Element => {
       </Head>
       {animalQuery.data?.data && (
         <>
-          <UpdateAnimalCard
+          <DynUpdateAnimalCard
             animal={animalQuery.data?.data}
             animalQuery={animalQuery}
           />
-          <DocumentsListCard
+          <DynDocumentsListCard
             mediaType={Medias.ANIMAL_DOCUMENT}
             documents={animalQuery.data.data.documents}
             documentsQuery={animalQuery}
@@ -60,5 +59,17 @@ UpdateAnimal.getLayout = function getLayout(page: ReactElement) {
     </BackOfficeContextWrapper>
   );
 };
+
+const DynUpdateAnimalCard = dynamic(() =>
+  import('@/features/animals/templates/UpdateAnimalCard').then(
+    (UpdateAnimalCard) => UpdateAnimalCard
+  )
+);
+
+const DynDocumentsListCard = dynamic(() =>
+  import('@/features/documents/templates/DocumentsListCard').then(
+    (DocumentsListCard) => DocumentsListCard
+  )
+);
 
 export default UpdateAnimal;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import Medias from '@/cdn/enums/Medias';
 import { UseGetResult } from '@/cdn/types/Query';
 import { dateToString } from '@/cdn/utils/dateService';

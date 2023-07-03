@@ -4,7 +4,7 @@ import { array, boolean, date, object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Tooltip } from 'primereact/tooltip';
 import { TbInfoCircle } from 'react-icons/tb';
-import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
+import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
 import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
 import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
