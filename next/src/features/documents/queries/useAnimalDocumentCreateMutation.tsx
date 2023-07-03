@@ -1,4 +1,4 @@
-import { useAppContext } from '@/cdn/AppContext';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
 
@@ -6,7 +6,7 @@ const useAnimalDocumentCreateMutation = (
   onSuccess: Function,
   token?: string
 ) => {
-  const { toast } = useAppContext();
+  const { toast } = useBackOfficeContext();
 
   return usePost<FormData>({
     url: ApiRoutes.ANIMAL_DOCUMENTS,

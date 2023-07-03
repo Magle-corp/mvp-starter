@@ -1,4 +1,4 @@
-import { useAppContext } from '@/cdn/AppContext';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import useDelete from '@/cdn/hooks/useDelete';
 
@@ -6,7 +6,7 @@ const useAnimalDocumentDeleteMutation = (
   onSuccess: Function,
   token?: string
 ) => {
-  const { toast } = useAppContext();
+  const { toast } = useBackOfficeContext();
 
   return useDelete({
     url: ApiRoutes.ANIMAL_DOCUMENTS,

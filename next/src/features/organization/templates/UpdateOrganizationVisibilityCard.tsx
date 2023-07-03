@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { InputSwitch } from 'primereact/inputswitch';
 import { TbCopy, TbEyeOff, TbEye, TbLink } from 'react-icons/tb';
-import { useAppContext } from '@/cdn/AppContext';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import usePut from '@/cdn/hooks/usePut';
@@ -12,7 +12,7 @@ import IconButton from '@/ui/atoms/IconButton';
 
 const UpdateOrganizationVisibilityCard = () => {
   const { token, organization, getFreshToken } = useAuthContext();
-  const { toast } = useAppContext();
+  const { toast } = useBackOfficeContext();
   const publicOrganization = organization?.public ?? false;
 
   const organizationMutation = usePut({

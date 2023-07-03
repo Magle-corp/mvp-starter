@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 import { confirmDialog } from 'primereact/confirmdialog';
-import { useAppContext } from '@/cdn/AppContext';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiIris from '@/cdn/enums/ApiIris';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
@@ -39,7 +39,7 @@ const UpdateVocabularyCard = () => {
   const { vocabulary: queryVocabularyType, id: queryVocabularyId } =
     router.query;
   const { token } = useAuthContext();
-  const { toast } = useAppContext();
+  const { toast } = useBackOfficeContext();
 
   useEffect(() => {
     switch (queryVocabularyType) {

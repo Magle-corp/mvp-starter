@@ -1,8 +1,8 @@
 import { Toast, ToastProps } from 'primereact/toast';
-import { useAppContext } from '@/cdn/AppContext';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 
 const PToast = ({ ...props }: ToastProps) => {
-  const { toast } = useAppContext();
+  const { toast } = useBackOfficeContext();
 
   return <Toast {...props} ref={toast} />;
 };

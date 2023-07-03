@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { DataTableFilterMeta } from 'primereact/datatable';
 import { FilterMatchMode } from 'primereact/api';
 import { Column } from 'primereact/column';
-import { useAppContext } from '@/cdn/AppContext';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
 import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
 import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
@@ -39,7 +39,7 @@ const VocabularyTableCard = () => {
   const router = useRouter();
   const { vocabulary: queryVocabularyType } = router.query;
   const { token, organization } = useAuthContext();
-  const { toast } = useAppContext();
+  const { toast } = useBackOfficeContext();
 
   const fetchTableData = (vocabularyType: VocabularyTypes) => {
     setVocabularyType(vocabularyType);

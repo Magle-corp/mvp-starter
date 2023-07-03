@@ -1,6 +1,5 @@
 import { ReactElement, ReactNode } from 'react';
 import { NextPage } from 'next';
-import dynamic from 'next/dynamic';
 import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { addLocale, locale } from 'primereact/api';
@@ -10,11 +9,6 @@ import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { GlobalStyle, ThemeWrapper } from '@/theme';
-import { AppContextWrapper } from '@/cdn/AppContext';
-
-const DynToast = dynamic(() =>
-  import('@/ui/atoms/Toast').then((Toast) => Toast)
-);
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -45,11 +39,8 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ThemeWrapper>
         <GlobalStyle />
-        <AppContextWrapper>
-          <Layout Component={Component} pageProps={pageProps} />
-          <DynToast />
-          <ConfirmDialog />
-        </AppContextWrapper>
+        <Layout Component={Component} pageProps={pageProps} />
+        <ConfirmDialog />
       </ThemeWrapper>
     </QueryClientProvider>
   );
