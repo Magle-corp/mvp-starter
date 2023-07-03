@@ -31,10 +31,8 @@ const CreateOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
 
   return (
     <Form>
-      {props.submitError && (
-        <StyledFormError>{props.submitError}</StyledFormError>
-      )}
-      <StyledInputsWrappers>
+      {props.submitError && <FormError>{props.submitError}</FormError>}
+      <StyledInputsWrapper>
         <FormFieldText<OrganizationFormSchema>
           label="nom de l'organisation *"
           name="name"
@@ -43,8 +41,8 @@ const CreateOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
           help="Minimum 3 caractères, maximum 100"
           required
         />
-      </StyledInputsWrappers>
-      <StyledButton
+      </StyledInputsWrapper>
+      <Button
         label="Enregistrer"
         onClick={form.handleSubmit(props.onSubmit)}
         loading={props.submitLoading}
@@ -55,18 +53,24 @@ const CreateOrganizationForm = (props: FormHandler<OrganizationFormSchema>) => {
   );
 };
 
-const StyledInputsWrappers = styled(InputsWrapper)`
-  > div {
-    grid-column: 1/12;
+const StyledInputsWrapper = styled(InputsWrapper)`
+  @media screen and (${({ theme }) => theme.breakpoints.md}) {
+    > div {
+      grid-column: 1/8;
+    }
   }
-`;
 
-const StyledButton = styled(Button)`
-  margin: 0 auto;
-`;
+  @media screen and (${({ theme }) => theme.breakpoints.lg}) {
+    > div {
+      grid-column: 1/6;
+    }
+  }
 
-const StyledFormError = styled(FormError)`
-  margin: 0 auto;
+  @media screen and (${({ theme }) => theme.breakpoints.xl}) {
+    > div {
+      grid-column: 1/5;
+    }
+  }
 `;
 
 export default CreateOrganizationForm;
