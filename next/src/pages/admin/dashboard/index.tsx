@@ -3,15 +3,10 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
+import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
 const DynAuthGuard = dynamic(() =>
   import('@/features/authentication/AuthGuard').then((AuthGuard) => AuthGuard)
-);
-
-const DynBackOfficeLayout = dynamic(() =>
-  import('@/ui/layouts/BackOfficeLayout').then(
-    (BackOfficeLayout) => BackOfficeLayout
-  )
 );
 
 const Dashboard = (): JSX.Element => {
@@ -33,7 +28,7 @@ Dashboard.getLayout = function getLayout(page: ReactElement) {
     <BackOfficeContextWrapper>
       <AuthContextWrapper>
         <DynAuthGuard>
-          <DynBackOfficeLayout>{page}</DynBackOfficeLayout>
+          <BackOfficeLayout>{page}</BackOfficeLayout>
         </DynAuthGuard>
       </AuthContextWrapper>
     </BackOfficeContextWrapper>
