@@ -43,7 +43,7 @@ const CreateOrganizationCard = () => {
     "il est nécessaire de créer votre organisation pour profiter de l'application.";
 
   return (
-    <Card title="Créons votre organisation" description={cardDescription}>
+    <Card title="Créer votre organisation" description={cardDescription}>
       <CreateOrganizationForm
         defaultValues={organizationDefaultValues}
         onSubmit={onSubmit}

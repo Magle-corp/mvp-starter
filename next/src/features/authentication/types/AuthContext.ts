@@ -5,6 +5,7 @@ import User from '@/features/profile/types/User';
 type AuthContext = {
   loading: boolean;
   token?: AuthToken;
+  backOfficePublicPage: boolean;
   organization?: Organization;
   userId?: User['id'];
   getFreshToken: Function;
