@@ -56,14 +56,9 @@ const Layout = styled.div`
 
 const Header = styled.div`
   display: flex;
-
-  > div:nth-child(2) {
-    margin-left: auto;
-  }
 `;
 
 const Body = styled.div`
-  position: relative;
   display: flex;
   gap: 1.5rem;
   height: 100%;

@@ -32,6 +32,10 @@ export function AuthContextWrapper({ children }: Props) {
 
       if (validToken) {
         setToken(token);
+
+        if (!authService.getAuthTokenPayload(token)?.organizations[0]) {
+          router.push(AppPages.BO_SETTINGS_ORGANIZATION);
+        }
       }
 
       if (!validToken) {
@@ -55,6 +59,10 @@ export function AuthContextWrapper({ children }: Props) {
       if (validFreshToken) {
         setToken(freshToken);
         authService.setLocalAuthToken(freshToken);
+
+        if (!authService.getAuthTokenPayload(freshToken)?.organizations[0]) {
+          await router.push(AppPages.BO_SETTINGS_ORGANIZATION);
+        }
       }
 
       if (!validFreshToken) {

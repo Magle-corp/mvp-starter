@@ -15,6 +15,10 @@ const StyledMenu = styled(Menu)`
     position: relative;
     width: max-content;
     min-height: 90vh;
+
+    > ul > li > a {
+      padding: 0.75rem 2rem 0.75rem 1.25rem !important;
+    }
   }
 `;
 
