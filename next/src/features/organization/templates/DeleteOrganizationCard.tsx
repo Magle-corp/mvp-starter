@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import { confirmDialog } from 'primereact/confirmdialog';
-import { TbCircleArrowDown } from 'react-icons/tb';
+import { TbChevronDown } from 'react-icons/tb';
 import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
@@ -52,15 +52,17 @@ const DeleteOrganizationCard = () => {
         seront définitivement effacées.
       </p>
       {!toggleCard && (
-        <IconButton
-          variant="danger"
-          behaviour="button"
-          onClick={() => setToggleCard(!toggleCard)}
-          accessAlt="Afficher le contenu de la carte"
-          tooltip="Afficher le contenu de la carte"
-        >
-          <TbCircleArrowDown />
-        </IconButton>
+        <MoreButtonWrapper>
+          <p>Voir plus</p>
+          <IconButton
+            variant="idle"
+            behaviour="button"
+            onClick={() => setToggleCard(!toggleCard)}
+            accessAlt="Afficher le contenu de la carte"
+          >
+            <TbChevronDown />
+          </IconButton>
+        </MoreButtonWrapper>
       )}
     </DescriptionWrapper>
   );
@@ -122,11 +124,14 @@ const OrganisationName = styled.span`
 const DescriptionWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 4rem;
+`;
 
-  > button {
-    margin: 0 auto;
-  }
+const MoreButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto;
 `;
 
 export default DeleteOrganizationCard;

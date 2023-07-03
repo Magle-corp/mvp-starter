@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
-import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import { useAuthContext } from '@/features/authentication/AuthContext';
+import CreateOrganizationCard from '@/features/organization/templates/CreateOrganizationCard';
+import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import BackOfficeHeaderLeft from '@/ui/layouts/components/BackOfficeHeaderLeft';
 import BackOfficeHeaderRight from '@/ui/layouts/components/BackOfficeHeaderRight';
 import BackOfficeMenuLeft from '@/ui/layouts/components/BackOfficeMenuLeft';
@@ -13,7 +14,8 @@ type BackOfficeLayout = {
 };
 
 const BackOfficeLayout = (props: BackOfficeLayout) => {
-  const { loading, token, organization } = useAuthContext();
+  const { loading, token, backOfficePublicPage, organization } =
+    useAuthContext();
   const { organizationMenuOpen, setOrganizationMenuOpen } =
     useBackOfficeContext();
 
@@ -38,8 +40,18 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
             <BackOfficeHeaderRight />
           </Header>
           <Body>
-            {organization && organizationMenuOpen && <BackOfficeMenuLeft />}
-            <Main>{props.children}</Main>
+            {organization && (
+              <>
+                {organizationMenuOpen && <BackOfficeMenuLeft />}
+                <Main>{props.children}</Main>
+              </>
+            )}
+            {!organization && !backOfficePublicPage && (
+              <CreateOrganizationCard />
+            )}
+            {!organization && backOfficePublicPage && (
+              <Main>{props.children}</Main>
+            )}
           </Body>
         </Layout>
       )}

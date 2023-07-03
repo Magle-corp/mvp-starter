@@ -15,6 +15,8 @@ type Props = {
   children: ReactNode;
 };
 
+const backOfficePublicPages = ['/admin/settings/profile'];
+
 // @ts-ignore
 const Context = createContext<AuthContext>();
 
@@ -23,6 +25,7 @@ export function AuthContextWrapper({ children }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
+  const backOfficePublicPage = backOfficePublicPages.includes(router.asPath);
 
   useEffect(() => {
     const token = authService.getLocalAuthToken();
@@ -32,10 +35,6 @@ export function AuthContextWrapper({ children }: Props) {
 
       if (validToken) {
         setToken(token);
-
-        if (!authService.getAuthTokenPayload(token)?.organizations[0]) {
-          router.push(AppPages.BO_SETTINGS_ORGANIZATION);
-        }
       }
 
       if (!validToken) {
@@ -59,10 +58,6 @@ export function AuthContextWrapper({ children }: Props) {
       if (validFreshToken) {
         setToken(freshToken);
         authService.setLocalAuthToken(freshToken);
-
-        if (!authService.getAuthTokenPayload(freshToken)?.organizations[0]) {
-          await router.push(AppPages.BO_SETTINGS_ORGANIZATION);
-        }
       }
 
       if (!validFreshToken) {
@@ -78,6 +73,7 @@ export function AuthContextWrapper({ children }: Props) {
   const sharedStates: AuthContext = {
     loading,
     token,
+    backOfficePublicPage,
     getFreshToken,
   };
 
