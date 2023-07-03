@@ -19,34 +19,32 @@ type Props = {
 const Context = createContext<AuthContext>();
 
 export function AuthContextWrapper({ children }: Props) {
-  const [token, setToken] = useState<AuthToken | null>(null);
+  const [token, setToken] = useState<AuthToken>();
   const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
 
-  const publicPages: string[] = [AppPages.AUTH_SIGN_IN];
-  const publicPage = publicPages.includes(router.pathname);
-
-  const organizationPages: string[] = [AppPages.BO_SETTINGS_PROFILE];
-  const organizationPage = !organizationPages.includes(router.pathname);
-
   useEffect(() => {
-    if (!publicPage) {
-      const token = authService.getLocalAuthToken();
+    const token = authService.getLocalAuthToken();
 
-      if (token) {
-        const validToken = authService.tokenCompleteCheck(token);
+    if (token) {
+      const validToken = authService.tokenCompleteCheck(token);
 
-        if (validToken) {
-          setToken(token);
-        } else {
-          getFreshToken(token);
-        }
+      if (validToken) {
+        setToken(token);
+      }
+
+      if (!validToken) {
+        getFreshToken(token);
       }
     }
 
+    if (!token) {
+      router.push(AppPages.AUTH_SIGN_IN);
+    }
+
     setLoading(false);
-  }, [publicPage, setToken]);
+  }, []);
 
   const getFreshToken = async (authToken: AuthToken) => {
     const freshToken = await authService.fetchRefreshToken(authToken);
@@ -58,25 +56,21 @@ export function AuthContextWrapper({ children }: Props) {
         setToken(freshToken);
         authService.setLocalAuthToken(freshToken);
       }
+
+      if (!validFreshToken) {
+        await router.push(AppPages.AUTH_SIGN_IN);
+      }
     }
-  };
 
-  const login = (token: AuthToken) => {
-    const validToken = authService.tokenCompleteCheck(token);
-
-    if (validToken) {
-      setToken(token);
-      authService.setLocalAuthToken(token);
+    if (!freshToken) {
+      await router.push(AppPages.AUTH_SIGN_IN);
     }
   };
 
   const sharedStates: AuthContext = {
-    publicPage,
-    organizationPage,
     loading,
     token,
     getFreshToken,
-    login,
   };
 
   if (token) {

@@ -3,11 +3,11 @@ import jwt from 'jsonwebtoken';
 import { fromUnixTime, isBefore } from 'date-fns';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import LocalStorageKeys from '@/cdn/enums/LocalStorageKeys';
+import api from '@/cdn/utils/api';
 import {
   AuthToken,
   AuthTokenPayload,
 } from '@/features/authentication/types/AuthToken';
-import api from '@/cdn/utils/api';
 
 const getLocalAuthToken = (): AuthToken | null => {
   const localAuthToken = localStorage.getItem(LocalStorageKeys.AUTH);
@@ -50,9 +50,7 @@ const tokenPayloadValidator = (tokenPayload: AuthTokenPayload): boolean => {
   );
 };
 
-const expirationAuthTokenValidator = (
-  tokenPayload: AuthTokenPayload
-): boolean => {
+const expAuthTokenValidator = (tokenPayload: AuthTokenPayload): boolean => {
   const authTokenExpirationDate = fromUnixTime(tokenPayload.exp);
   return isBefore(authTokenExpirationDate, new Date());
 };
@@ -67,7 +65,7 @@ const tokenCompleteCheck = (token: AuthToken): boolean => {
       const validPayload = tokenPayloadValidator(tokenPayload);
 
       if (validPayload) {
-        return !expirationAuthTokenValidator(tokenPayload);
+        return !expAuthTokenValidator(tokenPayload);
       }
     }
   }
@@ -80,7 +78,6 @@ const fetchRefreshToken = async (token: AuthToken): Promise<AuthToken> => {
   const res: AxiosResponse<AuthToken> = await api
     .post(ApiRoutes.AUTH_REFRESH_TOKEN, token)
     .catch((err) => {
-      console.log(err);
       removeLocalAuthToken();
       return err;
     });
@@ -93,17 +90,22 @@ const logout = () => {
   window.location.reload();
 };
 
+const login = (token: any) => {
+  const validToken = authService.tokenCompleteCheck(token);
+
+  if (validToken) {
+    authService.setLocalAuthToken(token);
+  }
+};
+
 const authService = {
   getLocalAuthToken,
   setLocalAuthToken,
-  removeLocalAuthToken,
-  tokenValidator,
   getAuthTokenPayload,
-  tokenPayloadValidator,
-  expirationAuthTokenValidator,
   tokenCompleteCheck,
   fetchRefreshToken,
   logout,
+  login,
 };
 
 export default authService;

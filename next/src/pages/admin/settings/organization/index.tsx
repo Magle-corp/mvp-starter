@@ -1,42 +1,20 @@
 import { ReactElement } from 'react';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
-import { AuthContextWrapper } from '@/features/authentication/AuthContext';
-
-const DynAuthGuard = dynamic(() =>
-  import('@/features/authentication/AuthGuard').then((AuthGuard) => AuthGuard)
-);
-
-const DynUpdateOrganizationCard = dynamic(() =>
-  import('@/features/organization/templates/UpdateOrganizationCard').then(
-    (UpdateOrganizationCard) => UpdateOrganizationCard
-  )
-);
-
-const DynDeleteOrganizationCard = dynamic(() =>
-  import('@/features/organization/templates/DeleteOrganizationCard').then(
-    (DeleteOrganizationCard) => DeleteOrganizationCard
-  )
-);
-
-const DynUpdateOrganizationVisibilityCard = dynamic(() =>
-  import(
-    '@/features/organization/templates/UpdateOrganizationVisibilityCard'
-  ).then((UpdateOrganizationVisibilityCard) => UpdateOrganizationVisibilityCard)
-);
-
-const DynBackOfficeLayout = dynamic(() =>
-  import('@/ui/layouts/BackOfficeLayout').then(
-    (BackOfficeLayout) => BackOfficeLayout
-  )
-);
-
-const DynSettingsLayout = dynamic(() =>
-  import('@/ui/layouts/SettingsLayout').then((SettingsLayout) => SettingsLayout)
-);
+import {
+  AuthContextWrapper,
+  useAuthContext,
+} from '@/features/authentication/AuthContext';
+import CreateOrganizationCard from '@/features/organization/templates/CreateOrganizationCard';
+import DeleteOrganizationCard from '@/features/organization/templates/DeleteOrganizationCard';
+import UpdateOrganizationCard from '@/features/organization/templates/UpdateOrganizationCard';
+import UpdateOrganizationVisibilityCard from '@/features/organization/templates/UpdateOrganizationVisibilityCard';
+import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
+import SettingsLayout from '@/ui/layouts/SettingsLayout';
 
 const Organization = (): JSX.Element => {
+  const { organization } = useAuthContext();
+
   return (
     <>
       <Head>
@@ -45,9 +23,14 @@ const Organization = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <DynUpdateOrganizationCard />
-      <DynUpdateOrganizationVisibilityCard />
-      <DynDeleteOrganizationCard />
+      {!organization && <CreateOrganizationCard />}
+      {organization && (
+        <>
+          <UpdateOrganizationCard />
+          <UpdateOrganizationVisibilityCard />
+          <DeleteOrganizationCard />
+        </>
+      )}
     </>
   );
 };
@@ -56,11 +39,9 @@ Organization.getLayout = function getLayout(page: ReactElement) {
   return (
     <BackOfficeContextWrapper>
       <AuthContextWrapper>
-        <DynAuthGuard>
-          <DynBackOfficeLayout>
-            <DynSettingsLayout>{page}</DynSettingsLayout>
-          </DynBackOfficeLayout>
-        </DynAuthGuard>
+        <BackOfficeLayout>
+          <SettingsLayout>{page}</SettingsLayout>
+        </BackOfficeLayout>
       </AuthContextWrapper>
     </BackOfficeContextWrapper>
   );

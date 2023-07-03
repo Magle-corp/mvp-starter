@@ -40,23 +40,19 @@ const CreateOrganizationCard = () => {
       owner: ApiIris.USER + fieldValues.owner,
     });
 
+  const cardDescription =
+    "il est nécessaire de créer votre organisation pour profiter de l'application.";
+
   return (
-    <StyledCard title="Créons votre organisation">
+    <Card title="Créons votre organisation" description={cardDescription}>
       <CreateOrganizationForm
         defaultValues={organizationDefaultValues}
         onSubmit={onSubmit}
         submitLoading={organizationMutation.isLoading}
         submitError={organizationMutation.error?.response?.data.message}
       />
-    </StyledCard>
+    </Card>
   );
 };
-
-const StyledCard = styled(Card)`
-  @media screen and (${({ theme }) => theme.breakpoints.md}) {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-`;
 
 export default CreateOrganizationCard;
