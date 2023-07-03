@@ -1,7 +1,18 @@
-import { createContext, ReactNode, useContext } from 'react';
+import {
+  createContext,
+  MutableRefObject,
+  ReactNode,
+  useContext,
+  useRef,
+} from 'react';
 import LocalStorageKeys from '@/cdn/enums/LocalStorageKeys';
-import BackOfficeContext from '@/cdn/types/BackOfficeContext';
 import useLocalStorage from '@/cdn/hooks/useLocalStorage';
+
+type BackOfficeContext = {
+  organizationMenuOpen: boolean;
+  setOrganizationMenuOpen: Function;
+  toast: MutableRefObject<any>;
+};
 
 type Props = {
   children: ReactNode;
@@ -14,9 +25,12 @@ export function BackOfficeContextWrapper({ children }: Props) {
   const [organizationMenuOpen, setOrganizationMenuOpen] =
     useLocalStorage<boolean>(LocalStorageKeys.BO_ORGANIZATION_MENU, true);
 
+  const toast = useRef(null);
+
   const sharedStates: BackOfficeContext = {
     organizationMenuOpen,
     setOrganizationMenuOpen,
+    toast,
   };
 
   return <Context.Provider value={sharedStates}>{children}</Context.Provider>;

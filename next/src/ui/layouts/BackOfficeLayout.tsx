@@ -6,6 +6,7 @@ import BackOfficeHeaderLeft from '@/ui/layouts/components/BackOfficeHeaderLeft';
 import BackOfficeHeaderRight from '@/ui/layouts/components/BackOfficeHeaderRight';
 import BackOfficeMenuLeft from '@/ui/layouts/components/BackOfficeMenuLeft';
 import ProgressSpinner from '@/ui/atoms/ProgressSpinner';
+import Toast from '@/ui/atoms/Toast';
 
 type BackOfficeLayout = {
   children: ReactNode;
@@ -18,6 +19,7 @@ const BackOfficeLayout = (props: BackOfficeLayout) => {
 
   return (
     <>
+      <Toast />
       {loading && (
         <LoadingWrapper>
           <ProgressSpinner />

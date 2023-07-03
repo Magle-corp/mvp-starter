@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
-import { useAppContext } from '@/cdn/AppContext';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiIris from '@/cdn/enums/ApiIris';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import AppPages from '@/cdn/enums/AppPages';
@@ -33,7 +33,7 @@ const CreateVocabularyCard = () => {
   const router = useRouter();
   const { vocabulary: queryVocabularyType } = router.query;
   const { token, organization } = useAuthContext();
-  const { toast } = useAppContext();
+  const { toast } = useBackOfficeContext();
 
   useEffect(() => {
     if (

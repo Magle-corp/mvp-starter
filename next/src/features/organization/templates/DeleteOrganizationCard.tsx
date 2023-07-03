@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { TbCircleArrowDown } from 'react-icons/tb';
-import { useAppContext } from '@/cdn/AppContext';
+import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import useDelete from '@/cdn/hooks/useDelete';
@@ -17,7 +17,7 @@ const DeleteOrganizationCard = () => {
   const [toggleCard, setToggleCard] = useState<boolean>(false);
 
   const { token, getFreshToken, organization } = useAuthContext();
-  const { toast } = useAppContext();
+  const { toast } = useBackOfficeContext();
 
   const formDefaultValues: OrganizationFormSchema = {
     name: '',

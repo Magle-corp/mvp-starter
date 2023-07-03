@@ -4,7 +4,6 @@ import { array, boolean, date, object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Tooltip } from 'primereact/tooltip';
 import { TbInfoCircle } from 'react-icons/tb';
-import { useAppContext } from '@/cdn/AppContext';
 import { useBackOfficeContext } from '@/cdn/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
 import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
@@ -36,8 +35,7 @@ export type AnimalFormSchema = {
 
 const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
   const { token, organization } = useAuthContext();
-  const { toast } = useAppContext();
-  const { organizationMenuOpen } = useBackOfficeContext();
+  const { organizationMenuOpen, toast } = useBackOfficeContext();
 
   const tempersQuery = useGetAnimalTempers({
     organizationId: organization?.id,
