@@ -5,7 +5,7 @@ import { object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
-import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
+import useGetCollectionAnimalTemper from '@/cdn/queries/useGetCollectionAnimalTemper';
 import { stringStrictComparison } from '@/cdn/utils/autoComplete';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import FormFieldText from '@/ui/atoms/formFields/FormFieldText';
@@ -27,7 +27,7 @@ const TemperForm = (props: FormHandler<TemperFormSchema>) => {
     tempersQuery.refetch();
   }, []);
 
-  const tempersQuery = useGetAnimalTempers({
+  const tempersQuery = useGetCollectionAnimalTemper({
     organizationId: organization?.id,
     token: token?.token,
     enabled: false,

@@ -4,7 +4,7 @@ import { UseGetCollection } from '@/cdn/types/Query';
 import useGetCollection from '@/cdn/hooks/useGetCollection';
 import { Animal } from '@/features/animals/types/Animal';
 
-const useGetAnimals = (props: UseGetCollection<Animal[]>) => {
+const useGetCollectionAnimal = (props: UseGetCollection<Animal[]>) => {
   return useGetCollection<Animal[]>({
     url: ApiRoutes.ANIMALS_ORG + '/' + props.organizationId,
     key: QueryKeys.ANIMALS,
@@ -12,4 +12,4 @@ const useGetAnimals = (props: UseGetCollection<Animal[]>) => {
   });
 };
 
-export default useGetAnimals;
+export default useGetCollectionAnimal;

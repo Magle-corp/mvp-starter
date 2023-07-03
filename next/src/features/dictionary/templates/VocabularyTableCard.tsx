@@ -6,9 +6,9 @@ import { FilterMatchMode } from 'primereact/api';
 import { Column } from 'primereact/column';
 import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
-import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
-import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
-import useGetAnimalTypes from '@/cdn/queries/useGetAnimalTypes';
+import useGetCollectionAnimalTemper from '@/cdn/queries/useGetCollectionAnimalTemper';
+import useGetCollectionAnimalRace from '@/cdn/queries/useGetCollectionAnimalRace';
+import useGetAnimalTypes from '@/cdn/queries/useGetCollectionAnimalType';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import {
   AnimalRace,
@@ -68,7 +68,7 @@ const VocabularyTableCard = () => {
     }
   }, [queryVocabularyType, fetchTableData]);
 
-  const tempersQuery = useGetAnimalTempers({
+  const tempersQuery = useGetCollectionAnimalTemper({
     organizationId: organization?.id,
     token: token?.token,
     enabled: false,
@@ -76,7 +76,7 @@ const VocabularyTableCard = () => {
     onError: () => errorToast(toast),
   });
 
-  const racesQuery = useGetAnimalRaces({
+  const racesQuery = useGetCollectionAnimalRace({
     organizationId: organization?.id,
     token: token?.token,
     enabled: false,
