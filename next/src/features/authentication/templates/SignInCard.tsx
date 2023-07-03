@@ -3,7 +3,7 @@ import { SubmitHandler } from 'react-hook-form';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
 import usePost from '@/cdn/hooks/usePost';
-import { useAuthContext } from '@/features/authentication/AuthContext';
+import authService from '@/features/authentication/utils/AuthService';
 import { SignInFormSchema } from '@/features/authentication/forms/SignInForm';
 import SignInForm from '@/features/authentication/forms/SignInForm';
 import AuthCard from '@/features/authentication/components/AuthCard';
@@ -12,7 +12,6 @@ import Link from '@/ui/atoms/Link';
 
 const SignInCard = () => {
   const router = useRouter();
-  const { login } = useAuthContext();
 
   const signInDefaultValues: SignInFormSchema = {
     email: '',
@@ -22,7 +21,7 @@ const SignInCard = () => {
   const signInMutation = usePost<SignInFormSchema>({
     url: ApiRoutes.AUTH_SIGN_IN,
     onSuccess: ({ data }) => {
-      login(data);
+      authService.login(data);
       router.push(AppPages.BO_DASHBOARD);
     },
   });

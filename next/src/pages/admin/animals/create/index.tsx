@@ -1,24 +1,9 @@
 import { ReactElement } from 'react';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
-
-const DynAuthGuard = dynamic(() =>
-  import('@/features/authentication/AuthGuard').then((AuthGuard) => AuthGuard)
-);
-
-const DynCreateAnimalCard = dynamic(() =>
-  import('@/features/animals/templates/CreateAnimalCard').then(
-    (CreateAnimalCard) => CreateAnimalCard
-  )
-);
-
-const DynBackOfficeLayout = dynamic(() =>
-  import('@/ui/layouts/BackOfficeLayout').then(
-    (BackOfficeLayout) => BackOfficeLayout
-  )
-);
+import CreateAnimalCard from '@/features/animals/templates/CreateAnimalCard';
+import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
 const CreateAnimal = (): JSX.Element => {
   return (
@@ -29,7 +14,7 @@ const CreateAnimal = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <DynCreateAnimalCard />
+      <CreateAnimalCard />
     </>
   );
 };
@@ -38,9 +23,7 @@ CreateAnimal.getLayout = function getLayout(page: ReactElement) {
   return (
     <BackOfficeContextWrapper>
       <AuthContextWrapper>
-        <DynAuthGuard>
-          <DynBackOfficeLayout>{page}</DynBackOfficeLayout>
-        </DynAuthGuard>
+        <BackOfficeLayout>{page}</BackOfficeLayout>
       </AuthContextWrapper>
     </BackOfficeContextWrapper>
   );

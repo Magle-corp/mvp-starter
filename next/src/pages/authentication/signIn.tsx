@@ -1,17 +1,5 @@
-import { ReactElement } from 'react';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { AuthContextWrapper } from '@/features/authentication/AuthContext';
-
-const DynAuthGuard = dynamic(() =>
-  import('@/features/authentication/AuthGuard').then((AuthGuard) => AuthGuard)
-);
-
-const DynSignInCard = dynamic(() =>
-  import('@/features/authentication/templates/SignInCard').then(
-    (SignInCard) => SignInCard
-  )
-);
+import SignInCard from '@/features/authentication/templates/SignInCard';
 
 const SignIn = (): JSX.Element => {
   return (
@@ -23,17 +11,9 @@ const SignIn = (): JSX.Element => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <DynSignInCard />
+        <SignInCard />
       </main>
     </>
-  );
-};
-
-SignIn.getLayout = (page: ReactElement) => {
-  return (
-    <AuthContextWrapper>
-      <DynAuthGuard>{page}</DynAuthGuard>
-    </AuthContextWrapper>
   );
 };
 

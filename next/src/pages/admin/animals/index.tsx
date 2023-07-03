@@ -2,7 +2,6 @@ import { ReactElement } from 'react';
 import Head from 'next/head';
 import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
 import { AuthContextWrapper } from '@/features/authentication/AuthContext';
-import AuthGuard from '@/features/authentication/AuthGuard';
 import AnimalsTableCard from '@/features/animals/templates/AnimalsTableCard';
 import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
@@ -24,9 +23,7 @@ Animals.getLayout = function getLayout(page: ReactElement) {
   return (
     <BackOfficeContextWrapper>
       <AuthContextWrapper>
-        <AuthGuard>
-          <BackOfficeLayout>{page}</BackOfficeLayout>
-        </AuthGuard>
+        <BackOfficeLayout>{page}</BackOfficeLayout>
       </AuthContextWrapper>
     </BackOfficeContextWrapper>
   );

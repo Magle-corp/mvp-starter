@@ -1,5 +1,4 @@
 import { ReactElement } from 'react';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { BackOfficeContextWrapper } from '@/cdn/BackOfficeContext';
@@ -9,6 +8,9 @@ import {
   AuthContextWrapper,
   useAuthContext,
 } from '@/features/authentication/AuthContext';
+import DocumentsListCard from '@/features/documents/templates/DocumentsListCard';
+import UpdateAnimalCard from '@/features/animals/templates/UpdateAnimalCard';
+import BackOfficeLayout from '@/ui/layouts/BackOfficeLayout';
 
 const UpdateAnimal = (): JSX.Element => {
   const router = useRouter();
@@ -33,11 +35,11 @@ const UpdateAnimal = (): JSX.Element => {
       </Head>
       {animalQuery.data?.data && (
         <>
-          <DynUpdateAnimalCard
+          <UpdateAnimalCard
             animal={animalQuery.data?.data}
             animalQuery={animalQuery}
           />
-          <DynDocumentListCard
+          <DocumentsListCard
             mediaType={Medias.ANIMAL_DOCUMENT}
             documents={animalQuery.data.data.documents}
             documentsQuery={animalQuery}
@@ -53,34 +55,10 @@ UpdateAnimal.getLayout = function getLayout(page: ReactElement) {
   return (
     <BackOfficeContextWrapper>
       <AuthContextWrapper>
-        <DynAuthGuard>
-          <DynBackOfficeLayout>{page}</DynBackOfficeLayout>
-        </DynAuthGuard>
+        <BackOfficeLayout>{page}</BackOfficeLayout>
       </AuthContextWrapper>
     </BackOfficeContextWrapper>
   );
 };
-
-const DynAuthGuard = dynamic(() =>
-  import('@/features/authentication/AuthGuard').then((AuthGuard) => AuthGuard)
-);
-
-const DynUpdateAnimalCard = dynamic(() =>
-  import('@/features/animals/templates/UpdateAnimalCard').then(
-    (UpdateAnimalCard) => UpdateAnimalCard
-  )
-);
-
-const DynDocumentListCard = dynamic(() =>
-  import('@/features/documents/templates/DocumentsListCard').then(
-    (DocumentListCard) => DocumentListCard
-  )
-);
-
-const DynBackOfficeLayout = dynamic(() =>
-  import('@/ui/layouts/BackOfficeLayout').then(
-    (BackOfficeLayout) => BackOfficeLayout
-  )
-);
 
 export default UpdateAnimal;

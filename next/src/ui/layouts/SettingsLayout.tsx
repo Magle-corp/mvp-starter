@@ -11,12 +11,12 @@ const SettingsLayout = (props: SettingsLayout) => {
   return (
     <>
       <TabMenu model={menuSettings} />
-      <StyledMain>{props.children}</StyledMain>
+      <Cards>{props.children}</Cards>
     </>
   );
 };
 
-const StyledMain = styled.main`
+const Cards = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
