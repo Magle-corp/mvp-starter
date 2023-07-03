@@ -5,8 +5,8 @@ import { object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
-import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
-import useGetAnimalTypes from '@/cdn/queries/useGetAnimalTypes';
+import useGetCollectionAnimalRace from '@/cdn/queries/useGetCollectionAnimalRace';
+import useGetAnimalTypes from '@/cdn/queries/useGetCollectionAnimalType';
 import { stringStrictComparison } from '@/cdn/utils/autoComplete';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import FormFieldText from '@/ui/atoms/formFields/FormFieldText';
@@ -26,7 +26,7 @@ const RaceForm = (props: FormHandler<RaceFormSchema>) => {
   const { token, organization } = useAuthContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  const racesQuery = useGetAnimalRaces({
+  const racesQuery = useGetCollectionAnimalRace({
     organizationId: organization?.id,
     token: token?.token,
     enabled: false,

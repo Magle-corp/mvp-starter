@@ -5,7 +5,7 @@ import { object, Schema, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
-import useGetAnimalTypes from '@/cdn/queries/useGetAnimalTypes';
+import useGetAnimalTypes from '@/cdn/queries/useGetCollectionAnimalType';
 import { stringStrictComparison } from '@/cdn/utils/autoComplete';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import FormFieldText from '@/ui/atoms/formFields/FormFieldText';

@@ -6,7 +6,7 @@ import { DataTableFilterMeta } from 'primereact/datatable';
 import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import AppPages from '@/cdn/enums/AppPages';
 import useBreakpoints from '@/cdn/hooks/useBreakpoints';
-import useGetAnimals from '@/cdn/queries/useGetAnimals';
+import useGetCollectionAnimal from '@/cdn/queries/useGetCollectionAnimal';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { Animal } from '@/features/animals/types/Animal';
 import ActionColumn from '@/features/animals/components/table/ActionColumn';
@@ -29,7 +29,7 @@ const AnimalsTableCard = () => {
   const { token, organization } = useAuthContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  const animalsQuery = useGetAnimals({
+  const animalsQuery = useGetCollectionAnimal({
     organizationId: organization?.id,
     token: token?.token,
     onError: () =>

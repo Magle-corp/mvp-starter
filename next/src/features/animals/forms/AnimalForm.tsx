@@ -6,9 +6,9 @@ import { Tooltip } from 'primereact/tooltip';
 import { TbInfoCircle } from 'react-icons/tb';
 import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import { FormHandler } from '@/cdn/types/Form';
-import useGetAnimalTempers from '@/cdn/queries/useGetAnimalTempers';
-import useGetAnimalRaces from '@/cdn/queries/useGetAnimalRaces';
-import useGetAnimalSexes from '@/cdn/queries/useGetAnimalSexes';
+import useGetCollectionAnimalTemper from '@/cdn/queries/useGetCollectionAnimalTemper';
+import useGetCollectionAnimalRace from '@/cdn/queries/useGetCollectionAnimalRace';
+import useGetAnimalSexes from '@/cdn/queries/useGetCollectionAnimalSex';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import RaceDropdownItem from '@/features/animals/components/form/RaceDropdownItem';
 import SexDropdownItem from '@/features/animals/components/form/SexDropdownItem';
@@ -37,13 +37,13 @@ const AnimalForm = (props: FormHandler<AnimalFormSchema>) => {
   const { token, organization } = useAuthContext();
   const { organizationMenuOpen, toast } = useBackOfficeContext();
 
-  const tempersQuery = useGetAnimalTempers({
+  const tempersQuery = useGetCollectionAnimalTemper({
     organizationId: organization?.id,
     token: token?.token,
     onError: () => errorToast(),
   });
 
-  const racesQuery = useGetAnimalRaces({
+  const racesQuery = useGetCollectionAnimalRace({
     organizationId: organization?.id,
     token: token?.token,
     onError: () => errorToast(),
