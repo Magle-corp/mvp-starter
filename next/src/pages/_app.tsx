@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { addLocale, locale } from 'primereact/api';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 import primeLocaleFr from '@/cdn/i18n/primeLocaleFr.json';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
