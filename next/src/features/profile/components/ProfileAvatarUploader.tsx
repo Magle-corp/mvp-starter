@@ -6,26 +6,26 @@ import Medias from '@/cdn/enums/Medias';
 import { UseMutationResult } from '@/cdn/types/Query';
 import { avatarConstraints } from '@/features/documents/conf/fileConstraints';
 import AvatarUploadDialog from '@/features/documents/components/AvatarUploadDialog';
-import { Animal } from '@/features/animals/types/Animal';
-import AnimalAvatar from '@/features/animals/components/AnimalAvatar';
+import { User } from '@/features/profile/types/User';
+import ProfileAvatar from '@/features/profile/components/ProfileAvatar';
 
-type AnimalAvatarUploader = {
-  animal: Animal;
+type ProfileAvatarUploader = {
+  user: User;
   onCreate: (formData: FormData) => void;
   createQuery: UseMutationResult<FormData>;
   onDelete: Function;
   deleteQuery: UseMutationResult<any>;
 } & AvatarProps;
 
-const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
+const ProfileAvatarUploader = (props: ProfileAvatarUploader) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
-  const DialogAnimalAvatar = (
+  const DialogProfileAvatar = (
     <StyledDialogProfileAvatar
       shape="circle"
       className="tooltip-target"
       data-pr-tooltip="Changer la photo de profil"
-      animal={props.animal}
+      user={props.user}
     />
   );
 
@@ -38,12 +38,12 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
         onClick={() => setDialogOpen(true)}
         className="tooltip-target"
         data-pr-tooltip="Changer la photo de profil"
-        animal={props.animal}
+        user={props.user}
       />
       <AvatarUploadDialog
-        relatedEntityId={props.animal.id}
-        avatar={DialogAnimalAvatar}
-        avatarType={Medias.ANIMAL_AVATAR}
+        relatedEntityId={props.user.id}
+        avatar={DialogProfileAvatar}
+        avatarType={Medias.USER_AVATAR}
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
         fileConstraints={avatarConstraints}
@@ -56,7 +56,7 @@ const AnimalAvatarUploader = (props: AnimalAvatarUploader) => {
   );
 };
 
-const StyledProfileAvatar = styled(AnimalAvatar)`
+const StyledProfileAvatar = styled(ProfileAvatar)`
   width: 100px !important;
   height: 100px !important;
 
@@ -66,7 +66,7 @@ const StyledProfileAvatar = styled(AnimalAvatar)`
   }
 `;
 
-const StyledDialogProfileAvatar = styled(AnimalAvatar)`
+const StyledDialogProfileAvatar = styled(ProfileAvatar)`
   width: 150px !important;
   height: 150px !important;
 
@@ -76,4 +76,4 @@ const StyledDialogProfileAvatar = styled(AnimalAvatar)`
   }
 `;
 
-export default AnimalAvatarUploader;
+export default ProfileAvatarUploader;

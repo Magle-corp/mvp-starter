@@ -20,6 +20,7 @@ enum ApiRoutes {
   ANIMAL_RACES_ORG = '/animal_races/organization',
   ANIMAL_TYPES_ORG = '/animal_types/organization',
   ANIMAL_SEXES = '/animal_sexes',
+  USER_AVATARS = '/user_avatars',
 }
 
 export default ApiRoutes;

@@ -49,7 +49,7 @@ const DeleteOrganizationCard = () => {
     <DescriptionWrapper>
       <p>
         action irréversible, toutes les données liées à cette organisation
-        seront définitivement effacées.
+        seront définitivement effacées
       </p>
       {!toggleCard && (
         <MoreButtonWrapper>

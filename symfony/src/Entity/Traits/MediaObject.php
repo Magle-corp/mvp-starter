@@ -16,14 +16,16 @@ trait MediaObject
         'animal_avatar_read',
         'animals_read',
         'animal_read',
-        'animal_documents_read'
+        'animal_documents_read',
+        'user_avatar_read'
     ])]
     public ?string $contentUrl = null;
 
     #[Vich\UploadableField(mapping: 'media_object', fileNameProperty: 'filePath')]
     #[Groups([
         'animal_avatar_create',
-        'animal_document_create'
+        'animal_document_create',
+        'user_avatar_create'
     ])]
     public ?File $file = null;
 
@@ -36,7 +38,8 @@ trait MediaObject
         'animal_avatar_read',
         'animals_read',
         'animal_read',
-        'animal_documents_read'
+        'animal_documents_read',
+        'user_avatar_read'
     ])]
     private DateTime $created;
 

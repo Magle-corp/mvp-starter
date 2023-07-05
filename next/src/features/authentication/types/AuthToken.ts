@@ -1,3 +1,4 @@
+import { User } from '@/features/profile/types/User';
 import Organization from '@/features/organization/types/Organization';
 
 type AuthToken = {
@@ -10,7 +11,7 @@ type AuthTokenPayload = {
   exp: number;
   iat: number;
   roles: string[];
-  user_id: number;
+  user: User;
   organizations: Organization[];
 };
 

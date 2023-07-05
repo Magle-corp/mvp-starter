@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Avatar } from 'primereact/avatar';
 import { Sidebar } from 'primereact/sidebar';
 import menuAdmin from '@/cdn/conf/menuAdmin';
+import { useAuthContext } from '@/features/authentication/AuthContext';
 import authService from '@/features/authentication/utils/AuthService';
+import ProfileAvatar from '@/features/profile/components/ProfileAvatar';
 import Button from '@/ui/atoms/Button';
 import Menu from '@/ui/atoms/Menu';
 
 const BackOfficeHeaderRight = () => {
   const [adminMenuOpen, setAdminMenuOpen] = useState<boolean>(false);
 
+  const { user } = useAuthContext();
+
   return (
     <Wrapper>
-      <Avatar
-        icon="pi pi-user"
+      <ProfileAvatar
+        user={user}
         shape="circle"
         onClick={() => setAdminMenuOpen(!adminMenuOpen)}
       />

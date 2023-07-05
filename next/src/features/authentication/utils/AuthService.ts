@@ -42,7 +42,7 @@ const getAuthTokenPayload = (token: AuthToken): AuthTokenPayload | null => {
 const tokenPayloadValidator = (tokenPayload: AuthTokenPayload): boolean => {
   return (
     tokenPayload.hasOwnProperty('email') &&
-    tokenPayload.hasOwnProperty('user_id') &&
+    tokenPayload.hasOwnProperty('user') &&
     tokenPayload.hasOwnProperty('exp') &&
     tokenPayload.hasOwnProperty('iat') &&
     tokenPayload.hasOwnProperty('roles') &&

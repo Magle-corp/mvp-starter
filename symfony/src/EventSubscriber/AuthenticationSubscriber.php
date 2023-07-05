@@ -46,7 +46,17 @@ final class AuthenticationSubscriber implements EventSubscriberInterface
         $payload = $event->getData();
         $user = $event->getUser();
 
-        $payload['user_id'] = $user->getId();
+        $payload['user'] = [
+            'id' => $user->getId(),
+        ];
+
+        if ($user->getAvatar() !== null) {
+            $payload['user']['avatar'] = [
+                'id' => $user->getAvatar()->getId(),
+                'filePath' => $user->getAvatar()->getFilePath(),
+                'created' => $user->getAvatar()->getCreated()
+            ];
+        }
 
         $userOrganizations = $user->getOrganizations()->toArray();
         $organizations = [];

@@ -1,6 +1,7 @@
 import { ChangeEvent, ReactNode, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Dialog } from 'primereact/dialog';
+import Medias from '@/cdn/enums/Medias';
 import { UseMutationResult } from '@/cdn/types/Query';
 import documentService from '@/features/documents/utils/documentService';
 import { FileConstraints } from '@/features/documents/conf/fileConstraints';
@@ -11,6 +12,7 @@ import FormError from '@/ui/atoms/form/FormError';
 type AvatarUploadDialog = {
   relatedEntityId: number;
   avatar: ReactNode;
+  avatarType: Medias.ANIMAL_AVATAR | Medias.USER_AVATAR;
   dialogOpen: boolean;
   setDialogOpen: Function;
   fileConstraints: FileConstraints;
@@ -59,6 +61,7 @@ const AvatarUploadDialog = (props: AvatarUploadDialog) => {
         setErrorMessage(undefined);
 
         const formData = documentService.avatarCreateFormData(
+          props.avatarType,
           file,
           props.relatedEntityId
         );
