@@ -20,7 +20,6 @@ const Organization = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {!organization && <DynCreateOrganizationCard />}
       {organization && (
         <>
           <DynUpdateOrganizationCard />
@@ -43,12 +42,6 @@ Organization.getLayout = function getLayout(page: ReactElement) {
     </BackOfficeContextWrapper>
   );
 };
-
-const DynCreateOrganizationCard = dynamic(() =>
-  import('@/features/organization/templates/CreateOrganizationCard').then(
-    (CreateOrganizationCard) => CreateOrganizationCard
-  )
-);
 
 const DynDeleteOrganizationCard = dynamic(() =>
   import('@/features/organization/templates/DeleteOrganizationCard').then(
