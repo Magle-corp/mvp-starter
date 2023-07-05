@@ -17,9 +17,10 @@ const AnimalAvatar = (props: AnimalAvatar) => {
     }
   };
 
-  const avatarImage = props.animal.avatar
-    ? 'http://localhost:8080' + props.animal.avatar.contentUrl
-    : undefined;
+  const avatarImage =
+    props.animal.avatar && props.animal.avatar.contentUrl
+      ? 'http://localhost:8080' + props.animal.avatar.contentUrl
+      : undefined;
 
   return (
     <Avatar

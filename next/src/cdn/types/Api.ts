@@ -11,6 +11,7 @@ type Hydra<T> = {
 type MediaObject = {
   id: number;
   contentUrl: string;
+  filePath?: string;
   created: Date;
 };
 

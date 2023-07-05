@@ -15,6 +15,7 @@ const Profile = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <DynUpdateProfileCard />
       <DynUpdatePasswordCard />
     </>
   );
@@ -35,6 +36,12 @@ Profile.getLayout = function getLayout(page: ReactElement) {
 const DynUpdatePasswordCard = dynamic(() =>
   import('@/features/profile/templates/UpdatePasswordCard').then(
     (UpdatePasswordCard) => UpdatePasswordCard
+  )
+);
+
+const DynUpdateProfileCard = dynamic(() =>
+  import('@/features/profile/templates/UpdateProfileCard').then(
+    (UpdateProfileCard) => UpdateProfileCard
   )
 );
 

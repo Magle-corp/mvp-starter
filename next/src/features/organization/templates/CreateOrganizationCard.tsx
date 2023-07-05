@@ -10,12 +10,12 @@ import CreateOrganizationForm from '@/features/organization/forms/CreateOrganiza
 import Card from '@/ui/atoms/Card';
 
 const CreateOrganizationCard = () => {
-  const { token, userId, getFreshToken } = useAuthContext();
+  const { token, user, getFreshToken } = useAuthContext();
   const { toast } = useBackOfficeContext();
 
   const organizationDefaultValues: OrganizationFormSchema = {
     name: '',
-    owner: userId?.toString() ?? '',
+    owner: user?.id?.toString() ?? '',
   };
 
   const organizationMutation = usePost<OrganizationFormSchema>({
@@ -39,8 +39,12 @@ const CreateOrganizationCard = () => {
       owner: ApiIris.USER + fieldValues.owner,
     });
 
-  const cardDescription =
-    "il est nécessaire de créer votre organisation pour profiter de l'application.";
+  const cardDescription = (
+    <p>
+      il est nécessaire de créer votre organisation pour profiter de
+      l'application
+    </p>
+  );
 
   return (
     <Card title="Créer votre organisation" description={cardDescription}>

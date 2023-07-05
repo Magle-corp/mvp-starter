@@ -48,12 +48,13 @@ const fileConstraintsValidator = (
 };
 
 const avatarCreateFormData = (
+  avatarType: Medias.ANIMAL_AVATAR | Medias.USER_AVATAR,
   file: File,
   relatedEntityId: number
 ): FormData => {
   const fileInformationJson = {
     related_entity_id: relatedEntityId,
-    file_entity_type: Medias.ANIMAL_AVATAR,
+    file_entity_type: avatarType,
   };
   const fileInformation = JSON.stringify(fileInformationJson);
 

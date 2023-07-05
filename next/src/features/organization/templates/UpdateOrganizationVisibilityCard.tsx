@@ -86,7 +86,7 @@ const UpdateOrganizationVisibilityCard = () => {
     </SwitchWrapper>
   );
 
-  const CardDescription = <p>accroître la visibilité de votre organisation.</p>;
+  const CardDescription = <p>accroître la visibilité de votre organisation</p>;
 
   return (
     <Card

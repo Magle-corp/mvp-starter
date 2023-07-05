@@ -79,8 +79,11 @@ export function AuthContextWrapper({ children }: Props) {
 
   if (token) {
     const payload = authService.getAuthTokenPayload(token);
-    sharedStates.organization = payload?.organizations[0];
-    sharedStates.userId = payload?.user_id;
+
+    if (payload) {
+      sharedStates.organization = payload.organizations[0];
+      sharedStates.user = payload.user;
+    }
   }
 
   return <Context.Provider value={sharedStates}>{children}</Context.Provider>;

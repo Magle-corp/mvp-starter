@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
@@ -19,7 +19,14 @@ const UpdateAnimal = (): JSX.Element => {
   const animalQuery = useGetAnimal({
     entityId: parseInt(animalQueryId as string),
     token: token?.token,
+    enabled: false,
   });
+
+  useEffect(() => {
+    if (animalQueryId) {
+      animalQuery.refetch();
+    }
+  }, [animalQueryId]);
 
   return (
     <>
