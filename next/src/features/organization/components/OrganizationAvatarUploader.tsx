@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 import { AvatarProps } from 'primereact/avatar';
 import { Tooltip } from 'primereact/tooltip';
 import Medias from '@/cdn/enums/Medias';
@@ -20,7 +21,7 @@ const OrganizationAvatarUploader = (props: OrganizationAvatarUploader) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const DialogOrganizationAvatar = (
-    <OrganizationAvatar
+    <StyledDialogProfileAvatar
       className="tooltip-target"
       data-pr-tooltip="Changer la photo de l'organisation"
       organization={props.organization}
@@ -30,7 +31,7 @@ const OrganizationAvatarUploader = (props: OrganizationAvatarUploader) => {
   return (
     <div>
       <Tooltip target=".tooltip-target" mouseTrack mouseTrackLeft={20} />
-      <OrganizationAvatar
+      <StyledOrganizationAvatar
         size="xlarge"
         onClick={() => setDialogOpen(true)}
         className="tooltip-target"
@@ -54,5 +55,33 @@ const OrganizationAvatarUploader = (props: OrganizationAvatarUploader) => {
     </div>
   );
 };
+
+const StyledOrganizationAvatar = styled(OrganizationAvatar)`
+  width: 300px !important;
+  height: 200px !important;
+
+  img {
+    border-radius: 6px !important;
+  }
+
+  svg {
+    width: 80px !important;
+    height: 80px !important;
+  }
+`;
+
+const StyledDialogProfileAvatar = styled(OrganizationAvatar)`
+  width: 450px !important;
+  height: 300px !important;
+
+  img {
+    border-radius: 6px !important;
+  }
+
+  svg {
+    width: 150px !important;
+    height: 150px !important;
+  }
+`;
 
 export default OrganizationAvatarUploader;
