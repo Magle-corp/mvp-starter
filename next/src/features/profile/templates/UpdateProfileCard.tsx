@@ -64,15 +64,13 @@ const UpdateProfileCard = () => {
 
   return (
     <Card title="Mettre à jour mon profil" description={cardDescription}>
-      {user && (
-        <ProfileAvatarUploader
-          user={user}
-          onCreate={onAvatarPostSubmit}
-          createQuery={avatarPostMutation}
-          onDelete={onAvatarDeleteSubmit}
-          deleteQuery={avatarDeleteMutation}
-        />
-      )}
+      <ProfileAvatarUploader
+        user={user}
+        onCreate={onAvatarPostSubmit}
+        createQuery={avatarPostMutation}
+        onDelete={onAvatarDeleteSubmit}
+        deleteQuery={avatarDeleteMutation}
+      />
     </Card>
   );
 };

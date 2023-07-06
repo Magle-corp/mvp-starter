@@ -12,7 +12,10 @@ import FormError from '@/ui/atoms/form/FormError';
 type AvatarUploadDialog = {
   relatedEntityId: number;
   avatar: ReactNode;
-  avatarType: Medias.ANIMAL_AVATAR | Medias.USER_AVATAR;
+  avatarType:
+    | Medias.ANIMAL_AVATAR
+    | Medias.USER_AVATAR
+    | Medias.ORGANIZATION_AVATAR;
   dialogOpen: boolean;
   setDialogOpen: Function;
   fileConstraints: FileConstraints;
