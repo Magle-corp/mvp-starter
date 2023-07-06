@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
+import Medias from '@/cdn/enums/Medias';
 import QueryKeys from '@/cdn/enums/QueryKeys';
-import useDelete from '@/cdn/hooks/useDelete';
-import usePost from '@/cdn/hooks/usePost';
+import useAvatarCreateMutation from '@/features/documents/queries/useAvatarCreateMutation';
+import useAvatarDeleteMutation from '@/features/documents/queries/useAvatarDeleteMutation';
 import usePut from '@/cdn/hooks/usePut';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { OrganizationFormSchema } from '@/features/organization/forms/UpdateOrganizationForm';
@@ -42,38 +43,23 @@ const UpdateOrganizationCard = () => {
       name: fieldValues.name,
     });
 
-  const avatarPostMutation = usePost<FormData>({
-    url: ApiRoutes.ORGANIZATION_AVATARS,
-    token: token?.token,
-    mediaObject: true,
-    onSuccess: () => {
-      getFreshToken(token);
-      toast.current.show({
-        severity: 'success',
-        summary: 'Organisation',
-        detail: 'Avatar enregistré avec succès',
-      });
-    },
-    onError: () => errorToast(),
-  });
+  const avatarCreateMutation = useAvatarCreateMutation(
+    ApiRoutes.ORGANIZATION_AVATARS,
+    Medias.ORGANIZATION_AVATAR,
+    token?.token,
+    () => getFreshToken(token)
+  );
 
-  const onAvatarPostSubmit = (formData: FormData) => {
-    avatarPostMutation.mutate(formData);
+  const onAvatarCreateSubmit = (formData: FormData) => {
+    avatarCreateMutation.mutate(formData);
   };
 
-  const avatarDeleteMutation = useDelete({
-    url: ApiRoutes.ORGANIZATION_AVATARS,
-    token: token?.token,
-    onSuccess: () => {
-      getFreshToken(token);
-      toast.current.show({
-        severity: 'success',
-        summary: 'Organisation',
-        detail: 'Avatar supprimé avec succès',
-      });
-    },
-    onError: () => errorToast(),
-  });
+  const avatarDeleteMutation = useAvatarDeleteMutation(
+    ApiRoutes.ORGANIZATION_AVATARS,
+    Medias.ORGANIZATION_AVATAR,
+    token?.token,
+    () => getFreshToken(token)
+  );
 
   const onAvatarDeleteSubmit = () => {
     if (organization?.avatar?.id) {
@@ -93,8 +79,8 @@ const UpdateOrganizationCard = () => {
       <ContentWrapper>
         <OrganizationAvatarUploader
           organization={organization}
-          onCreate={onAvatarPostSubmit}
-          createQuery={avatarPostMutation}
+          onCreate={onAvatarCreateSubmit}
+          createQuery={avatarCreateMutation}
           onDelete={onAvatarDeleteSubmit}
           deleteQuery={avatarDeleteMutation}
         />

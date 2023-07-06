@@ -46,14 +46,15 @@ const DocumentsTableCard = <T,>(props: DocumentsTableCard<T>) => {
     props.documentsQuery.refetch,
     token?.token
   );
-  const animalDocumentDeleteMutation = useAnimalDocumentDeleteMutation(
-    props.documentsQuery.refetch,
-    token?.token
-  );
 
   const onDocumentCreateSubmit = (formData: FormData) => {
     animalDocumentCreateMutation.mutate(formData);
   };
+
+  const animalDocumentDeleteMutation = useAnimalDocumentDeleteMutation(
+    props.documentsQuery.refetch,
+    token?.token
+  );
 
   const onDocumentDeleteSubmit = (entityId: number) => {
     documentService.documentDeleteConfirmDialog(
