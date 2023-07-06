@@ -60,13 +60,25 @@ final class AuthenticationSubscriber implements EventSubscriberInterface
 
         $userOrganizations = $user->getOrganizations()->toArray();
         $organizations = [];
-        foreach ($userOrganizations as $organization) {
-            $organizations = [...$organizations, [
-                'id' => $organization->getId(),
-                'name' => $organization->getName(),
-                'public' => $organization->isPublic()
-            ]];
+
+        foreach ($userOrganizations as $userOrganization) {
+            $organization = [
+                'id' => $userOrganization->getId(),
+                'name' => $userOrganization->getName(),
+                'public' => $userOrganization->isPublic()
+            ];
+
+            if ($userOrganization->getAvatar() !== null) {
+                $organization['avatar'] = [
+                    'id' => $userOrganization->getAvatar()->getId(),
+                    'filePath' => $userOrganization->getAvatar()->getFilePath(),
+                    'created' => $userOrganization->getAvatar()->getCreated()
+                ];
+            }
+
+            $organizations = [...$organizations, $organization];
         }
+
         $payload['organizations'] = $organizations;
 
         $event->setData($payload);

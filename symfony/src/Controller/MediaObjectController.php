@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Animal;
 use App\Entity\AnimalAvatar;
 use App\Entity\AnimalDocument;
+use App\Entity\Organization;
+use App\Entity\OrganizationAvatar;
 use App\Entity\User;
 use App\Entity\UserAvatar;
 use App\Enum\Medias;
@@ -17,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class MediaObjectController extends AbstractController
 {
-    public function __invoke(Request $request, EntityManagerInterface $entityManager, VoterService $voterService): AnimalDocument|AnimalAvatar|UserAvatar|null
+    public function __invoke(Request $request, EntityManagerInterface $entityManager, VoterService $voterService): AnimalDocument|AnimalAvatar|UserAvatar|OrganizationAvatar|null
     {
         $uploadedFile = $request->files->get('file');
         $fileInformationJson = $request->request->get('file_information');
@@ -55,14 +57,25 @@ class MediaObjectController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        if (($fileType === Medias::ANIMAL_AVATAR || $fileType === Medias::USER_AVATAR) && $fileRelatedEntity->getAvatar() !== null) {
+        if ($fileType === Medias::ORGANIZATION_AVATAR) {
+            $userHasOrganization = $voterService->userHasOrganization($this->getUser(), $fileRelatedEntity->getId());
+
+            if (!$userHasOrganization) {
+                // TODO: add feedback msg
+                throw new BadRequestHttpException();
+            }
+        }
+
+        if (
+            ($fileType === Medias::ANIMAL_AVATAR || $fileType === Medias::USER_AVATAR || $fileType === Medias::ORGANIZATION_AVATAR) &&
+            $fileRelatedEntity->getAvatar() !== null) {
             $this->removeCurrentAvatar($fileRelatedEntity, $entityManager);
         }
 
         return $this->createFileEntity($fileInformation, $fileRelatedEntity, $uploadedFile);
     }
 
-    public function getRelatedEntity(array $fileInformation, EntityManagerInterface $entityManager): Animal|User|null
+    public function getRelatedEntity(array $fileInformation, EntityManagerInterface $entityManager): Animal|User|Organization|null
     {
         if ($fileInformation['file_entity_type'] === Medias::ANIMAL_AVATAR || $fileInformation['file_entity_type'] === Medias::ANIMAL_DOCUMENT) {
             $animalRepository = $entityManager->getRepository(Animal::class);
@@ -72,6 +85,11 @@ class MediaObjectController extends AbstractController
         if ($fileInformation['file_entity_type'] === Medias::USER_AVATAR) {
             $userRepository = $entityManager->getRepository(User::class);
             return $userRepository->find($fileInformation['related_entity_id']);
+        }
+
+        if ($fileInformation['file_entity_type'] === Medias::ORGANIZATION_AVATAR) {
+            $organizationRepository = $entityManager->getRepository(Organization::class);
+            return $organizationRepository->find($fileInformation['related_entity_id']);
         }
 
         return null;
@@ -85,7 +103,7 @@ class MediaObjectController extends AbstractController
         $entityManager->refresh($fileRelatedEntity);
     }
 
-    public function createFileEntity(array $fileInformation, mixed $fileRelatedEntity, UploadedFile $uploadedFile): AnimalDocument|AnimalAvatar|UserAvatar|null
+    public function createFileEntity(array $fileInformation, mixed $fileRelatedEntity, UploadedFile $uploadedFile): AnimalDocument|AnimalAvatar|UserAvatar|OrganizationAvatar|null
     {
         if ($fileInformation['file_entity_type'] === Medias::ANIMAL_AVATAR) {
             $animalAvatar = new AnimalAvatar();
@@ -113,6 +131,13 @@ class MediaObjectController extends AbstractController
             $userAvatar->file = $uploadedFile;
             $userAvatar->setUser($fileRelatedEntity);
             return $userAvatar;
+        }
+
+        if ($fileInformation['file_entity_type'] === Medias::ORGANIZATION_AVATAR) {
+            $organizationAvatar = new OrganizationAvatar();
+            $organizationAvatar->file = $uploadedFile;
+            $organizationAvatar->setOrganization($fileRelatedEntity);
+            return $organizationAvatar;
         }
 
         return null;

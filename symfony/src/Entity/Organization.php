@@ -88,6 +88,9 @@ class Organization
     ])]
     private ?bool $public = false;
 
+    #[ORM\OneToOne(mappedBy: 'organization', cascade: ['persist', 'remove'])]
+    private ?OrganizationAvatar $avatar = null;
+
     public function __construct()
     {
         $this->animals = new ArrayCollection();
@@ -253,6 +256,23 @@ class Organization
     public function setPublic(bool $public): self
     {
         $this->public = $public;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?OrganizationAvatar
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(OrganizationAvatar $avatar): self
+    {
+        // set the owning side of the relation if necessary
+        if ($avatar->getOrganization() !== $this) {
+            $avatar->setOrganization($this);
+        }
+
+        $this->avatar = $avatar;
 
         return $this;
     }
