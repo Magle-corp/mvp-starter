@@ -6,12 +6,14 @@ import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import ApiIris from '@/cdn/enums/ApiIris';
 import AppPages from '@/cdn/enums/AppPages';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
+import Medias from '@/cdn/enums/Medias';
 import QueryKeys from '@/cdn/enums/QueryKeys';
 import { UseGetResult } from '@/cdn/types/Query';
 import useDelete from '@/cdn/hooks/useDelete';
-import usePost from '@/cdn/hooks/usePost';
 import usePut from '@/cdn/hooks/usePut';
 import { useAuthContext } from '@/features/authentication/AuthContext';
+import useAvatarCreateMutation from '@/features/documents/queries/useAvatarCreateMutation';
+import useAvatarDeleteMutation from '@/features/documents/queries/useAvatarDeleteMutation';
 import { Animal } from '@/features/animals/types/Animal';
 import AnimalForm, {
   AnimalFormSchema,
@@ -114,38 +116,23 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
       accept: () => animalDeleteMutation.mutate(entityId),
     });
 
-  const avatarPostMutation = usePost<FormData>({
-    url: ApiRoutes.ANIMAL_AVATARS,
-    token: token?.token,
-    mediaObject: true,
-    onSuccess: () => {
-      props.animalQuery.refetch();
-      toast.current.show({
-        severity: 'success',
-        summary: 'Animal',
-        detail: 'Avatar enregistré avec succès',
-      });
-    },
-    onError: () => errorToast(),
-  });
+  const avatarCreateMutation = useAvatarCreateMutation(
+    ApiRoutes.ANIMAL_AVATARS,
+    Medias.ANIMAL_AVATAR,
+    token?.token,
+    () => props.animalQuery.refetch()
+  );
 
-  const onAvatarPostSubmit = (formData: FormData) => {
-    avatarPostMutation.mutate(formData);
+  const onAvatarCreateSubmit = (formData: FormData) => {
+    avatarCreateMutation.mutate(formData);
   };
 
-  const avatarDeleteMutation = useDelete({
-    url: ApiRoutes.ANIMAL_AVATARS,
-    token: token?.token,
-    onSuccess: () => {
-      props.animalQuery.refetch();
-      toast.current.show({
-        severity: 'success',
-        summary: 'Animal',
-        detail: 'Avatar supprimé avec succès',
-      });
-    },
-    onError: () => errorToast(),
-  });
+  const avatarDeleteMutation = useAvatarDeleteMutation(
+    ApiRoutes.ANIMAL_AVATARS,
+    Medias.ANIMAL_AVATAR,
+    token?.token,
+    () => props.animalQuery.refetch()
+  );
 
   const onAvatarDeleteSubmit = () => {
     if (props.animal.avatar?.id) {
@@ -176,8 +163,8 @@ const UpdateAnimalCard = (props: UpdateAnimalCard) => {
         <ContentWrapper>
           <AnimalAvatarUploader
             animal={props.animalQuery.data?.data}
-            onCreate={onAvatarPostSubmit}
-            createQuery={avatarPostMutation}
+            onCreate={onAvatarCreateSubmit}
+            createQuery={avatarCreateMutation}
             onDelete={onAvatarDeleteSubmit}
             deleteQuery={avatarDeleteMutation}
           />

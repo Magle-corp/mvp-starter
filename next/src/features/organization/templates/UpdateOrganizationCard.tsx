@@ -1,11 +1,16 @@
+import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
+import Medias from '@/cdn/enums/Medias';
 import QueryKeys from '@/cdn/enums/QueryKeys';
+import useAvatarCreateMutation from '@/features/documents/queries/useAvatarCreateMutation';
+import useAvatarDeleteMutation from '@/features/documents/queries/useAvatarDeleteMutation';
 import usePut from '@/cdn/hooks/usePut';
 import { useAuthContext } from '@/features/authentication/AuthContext';
 import { OrganizationFormSchema } from '@/features/organization/forms/UpdateOrganizationForm';
 import UpdateOrganizationForm from '@/features/organization/forms/UpdateOrganizationForm';
+import OrganizationAvatarUploader from '@/features/organization/components/OrganizationAvatarUploader';
 import Card from '@/ui/atoms/Card';
 
 const UpdateOrganizationCard = () => {
@@ -14,9 +19,14 @@ const UpdateOrganizationCard = () => {
 
   const organizationDefaultValue: OrganizationFormSchema = {
     name: organization?.name ?? '',
+    address: organization?.address ?? '',
+    city: organization?.city ?? '',
+    zipCode: organization?.zipCode ?? '',
+    phone: organization?.phone ?? '',
+    email: organization?.email ?? '',
   };
 
-  const organizationMutation = usePut<OrganizationFormSchema>({
+  const organizationUpdateMutation = usePut<OrganizationFormSchema>({
     url: ApiRoutes.ORGANIZATIONS + '/' + organization?.id,
     token: token?.token ?? undefined,
     key: QueryKeys.ORGANIZATION + organization?.id,
@@ -28,31 +38,86 @@ const UpdateOrganizationCard = () => {
         detail: 'Mis à jour avec succès',
       });
     },
-    onError: () =>
-      toast.current.show({
-        severity: 'error',
-        summary: 'Organisation',
-        detail: 'Un problème technique est survenu',
-      }),
+    onError: () => errorToast(),
   });
 
-  const onSubmit: SubmitHandler<OrganizationFormSchema> = (
+  const onOrganizationUpdateSubmit: SubmitHandler<OrganizationFormSchema> = (
     fieldValues: OrganizationFormSchema
   ) =>
-    organizationMutation.mutate({
+    organizationUpdateMutation.mutate({
       name: fieldValues.name,
+      address: fieldValues.address,
+      city: fieldValues.city,
+      zipCode: fieldValues.zipCode,
+      phone: fieldValues.phone,
+      email: fieldValues.email,
+    });
+
+  const avatarCreateMutation = useAvatarCreateMutation(
+    ApiRoutes.ORGANIZATION_AVATARS,
+    Medias.ORGANIZATION_AVATAR,
+    token?.token,
+    () => getFreshToken(token)
+  );
+
+  const onAvatarCreateSubmit = (formData: FormData) => {
+    avatarCreateMutation.mutate(formData);
+  };
+
+  const avatarDeleteMutation = useAvatarDeleteMutation(
+    ApiRoutes.ORGANIZATION_AVATARS,
+    Medias.ORGANIZATION_AVATAR,
+    token?.token,
+    () => getFreshToken(token)
+  );
+
+  const onAvatarDeleteSubmit = () => {
+    if (organization?.avatar?.id) {
+      avatarDeleteMutation.mutate(organization.avatar.id);
+    }
+  };
+
+  const errorToast = () =>
+    toast.current.show({
+      severity: 'error',
+      summary: 'Animal',
+      detail: 'Un problème technique est survenu',
     });
 
   return (
     <Card title="Mettre à jour mon organisation">
-      <UpdateOrganizationForm
-        defaultValues={organizationDefaultValue}
-        onSubmit={onSubmit}
-        submitLoading={organizationMutation.isLoading}
-        submitError={organizationMutation.error?.response?.data.message}
-      />
+      <ContentWrapper>
+        <OrganizationAvatarUploader
+          organization={organization}
+          onCreate={onAvatarCreateSubmit}
+          createQuery={avatarCreateMutation}
+          onDelete={onAvatarDeleteSubmit}
+          deleteQuery={avatarDeleteMutation}
+        />
+        <UpdateOrganizationForm
+          defaultValues={organizationDefaultValue}
+          onSubmit={onOrganizationUpdateSubmit}
+          submitLoading={organizationUpdateMutation.isLoading}
+          submitError={organizationUpdateMutation.error?.response?.data.message}
+        />
+      </ContentWrapper>
     </Card>
   );
 };
+
+const ContentWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 3rem;
+
+  @media screen and (${({ theme }) => theme.breakpoints.lg}) {
+    grid-template-columns: max-content 1fr;
+    grid-gap: 2rem;
+
+    > :nth-child(2) {
+      margin-top: 0.75rem;
+    }
+  }
+`;
 
 export default UpdateOrganizationCard;

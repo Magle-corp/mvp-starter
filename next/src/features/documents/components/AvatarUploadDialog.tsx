@@ -12,7 +12,10 @@ import FormError from '@/ui/atoms/form/FormError';
 type AvatarUploadDialog = {
   relatedEntityId: number;
   avatar: ReactNode;
-  avatarType: Medias.ANIMAL_AVATAR | Medias.USER_AVATAR;
+  avatarType:
+    | Medias.ANIMAL_AVATAR
+    | Medias.USER_AVATAR
+    | Medias.ORGANIZATION_AVATAR;
   dialogOpen: boolean;
   setDialogOpen: Function;
   fileConstraints: FileConstraints;
@@ -142,7 +145,8 @@ const AvatarDialog = styled(Dialog)`
   box-shadow: none;
 
   @media screen and (${({ theme }) => theme.breakpoints.sm}) {
-    width: 330px;
+    min-width: 330px;
+    max-width: max-content;
     padding: unset;
   }
 `;

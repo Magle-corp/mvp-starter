@@ -1,47 +1,31 @@
 import ApiRoutes from '@/cdn/enums/ApiRoutes';
-import usePost from '@/cdn/hooks/usePost';
-import useDelete from '@/cdn/hooks/useDelete';
+import Medias from '@/cdn/enums/Medias';
 import { useAuthContext } from '@/features/authentication/AuthContext';
+import useAvatarCreateMutation from '@/features/documents/queries/useAvatarCreateMutation';
+import useAvatarDeleteMutation from '@/features/documents/queries/useAvatarDeleteMutation';
 import ProfileAvatarUploader from '@/features/profile/components/ProfileAvatarUploader';
-import { useBackOfficeContext } from '@/ui/layouts/BackOfficeContext';
 import Card from '@/ui/atoms/Card';
 
 const UpdateProfileCard = () => {
   const { getFreshToken, token, user } = useAuthContext();
-  const { toast } = useBackOfficeContext();
 
-  const avatarPostMutation = usePost<FormData>({
-    url: ApiRoutes.USER_AVATARS,
-    token: token?.token,
-    mediaObject: true,
-    onSuccess: () => {
-      getFreshToken(token);
-      toast.current.show({
-        severity: 'success',
-        summary: 'Profil',
-        detail: 'Avatar enregistré avec succès',
-      });
-    },
-    onError: () => errorToast(),
-  });
+  const avatarCreateMutation = useAvatarCreateMutation(
+    ApiRoutes.USER_AVATARS,
+    Medias.USER_AVATAR,
+    token?.token,
+    () => getFreshToken(token)
+  );
 
-  const onAvatarPostSubmit = (formData: FormData) => {
-    avatarPostMutation.mutate(formData);
+  const onAvatarCreateSubmit = (formData: FormData) => {
+    avatarCreateMutation.mutate(formData);
   };
 
-  const avatarDeleteMutation = useDelete({
-    url: ApiRoutes.USER_AVATARS,
-    token: token?.token,
-    onSuccess: () => {
-      getFreshToken(token);
-      toast.current.show({
-        severity: 'success',
-        summary: 'Profil',
-        detail: 'Avatar supprimé avec succès',
-      });
-    },
-    onError: () => errorToast(),
-  });
+  const avatarDeleteMutation = useAvatarDeleteMutation(
+    ApiRoutes.USER_AVATARS,
+    Medias.USER_AVATAR,
+    token?.token,
+    () => getFreshToken(token)
+  );
 
   const onAvatarDeleteSubmit = () => {
     if (user?.avatar?.id) {
@@ -49,30 +33,19 @@ const UpdateProfileCard = () => {
     }
   };
 
-  const errorToast = () =>
-    toast.current.show({
-      severity: 'error',
-      summary: 'Animal',
-      detail: 'Un problème technique est survenu',
-    });
-
   const cardDescription = (
     <p>votre profil personnel n&apos;est jamais public</p>
   );
 
-  console.log(user);
-
   return (
     <Card title="Mettre à jour mon profil" description={cardDescription}>
-      {user && (
-        <ProfileAvatarUploader
-          user={user}
-          onCreate={onAvatarPostSubmit}
-          createQuery={avatarPostMutation}
-          onDelete={onAvatarDeleteSubmit}
-          deleteQuery={avatarDeleteMutation}
-        />
-      )}
+      <ProfileAvatarUploader
+        user={user}
+        onCreate={onAvatarCreateSubmit}
+        createQuery={avatarCreateMutation}
+        onDelete={onAvatarDeleteSubmit}
+        deleteQuery={avatarDeleteMutation}
+      />
     </Card>
   );
 };

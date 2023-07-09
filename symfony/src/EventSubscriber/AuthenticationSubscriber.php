@@ -54,19 +54,36 @@ final class AuthenticationSubscriber implements EventSubscriberInterface
             $payload['user']['avatar'] = [
                 'id' => $user->getAvatar()->getId(),
                 'filePath' => $user->getAvatar()->getFilePath(),
-                'created' => $user->getAvatar()->getCreated()
+                'created' => $user->getAvatar()->getCreated(),
             ];
         }
 
         $userOrganizations = $user->getOrganizations()->toArray();
         $organizations = [];
-        foreach ($userOrganizations as $organization) {
-            $organizations = [...$organizations, [
-                'id' => $organization->getId(),
-                'name' => $organization->getName(),
-                'public' => $organization->isPublic()
-            ]];
+
+        foreach ($userOrganizations as $userOrganization) {
+            $organization = [
+                'id' => $userOrganization->getId(),
+                'name' => $userOrganization->getName(),
+                'public' => $userOrganization->isPublic(),
+                'address' => $userOrganization->getAddress(),
+                'city' => $userOrganization->getCity(),
+                'zipCode' => $userOrganization->getZipCode(),
+                'phone' => $userOrganization->getPhone(),
+                'email' => $userOrganization->getEmail()
+            ];
+
+            if ($userOrganization->getAvatar() !== null) {
+                $organization['avatar'] = [
+                    'id' => $userOrganization->getAvatar()->getId(),
+                    'filePath' => $userOrganization->getAvatar()->getFilePath(),
+                    'created' => $userOrganization->getAvatar()->getCreated()
+                ];
+            }
+
+            $organizations = [...$organizations, $organization];
         }
+
         $payload['organizations'] = $organizations;
 
         $event->setData($payload);

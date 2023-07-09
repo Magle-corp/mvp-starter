@@ -17,7 +17,8 @@ trait MediaObject
         'animals_read',
         'animal_read',
         'animal_documents_read',
-        'user_avatar_read'
+        'user_avatar_read',
+        'organization_avatar_read'
     ])]
     public ?string $contentUrl = null;
 
@@ -25,7 +26,8 @@ trait MediaObject
     #[Groups([
         'animal_avatar_create',
         'animal_document_create',
-        'user_avatar_create'
+        'user_avatar_create',
+        'organization_avatar_create'
     ])]
     public ?File $file = null;
 
@@ -39,7 +41,8 @@ trait MediaObject
         'animals_read',
         'animal_read',
         'animal_documents_read',
-        'user_avatar_read'
+        'user_avatar_read',
+        'organization_avatar_read'
     ])]
     private DateTime $created;
 

@@ -18,6 +18,12 @@ class OrganizationFixtures extends AbstractFixtures implements DependentFixtureI
             $organization->setOwner($this->getReference(UserFixtures::REF_USER . '_' . $i));
             $organization->setPublic($this->faker->boolean());
 
+            if ($this->faker->boolean()) {
+                $organization->setAddress($this->faker->streetName());
+                $organization->setCity($this->faker->city());
+                $organization->setZipCode($this->faker->randomNumber(5, true));
+            }
+
             $manager->persist($organization);
 
             $this->setReference(self::REF_ORGANIZATION . '_' . $i, $organization);

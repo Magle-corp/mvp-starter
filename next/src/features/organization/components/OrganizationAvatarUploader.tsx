@@ -6,45 +6,43 @@ import Medias from '@/cdn/enums/Medias';
 import { UseMutationResult } from '@/cdn/types/Query';
 import { avatarConstraints } from '@/features/documents/conf/fileConstraints';
 import AvatarUploadDialog from '@/features/documents/components/AvatarUploadDialog';
-import { User } from '@/features/profile/types/User';
-import ProfileAvatar from '@/features/profile/components/ProfileAvatar';
+import Organization from '@/features/organization/types/Organization';
+import OrganizationAvatar from '@/features/organization/components/OrganizationAvatar';
 
-type ProfileAvatarUploader = {
-  user?: User;
+type OrganizationAvatarUploader = {
+  organization?: Organization;
   onCreate: (formData: FormData) => void;
   createQuery: UseMutationResult<FormData>;
   onDelete: Function;
   deleteQuery: UseMutationResult<any>;
 } & AvatarProps;
 
-const ProfileAvatarUploader = (props: ProfileAvatarUploader) => {
+const OrganizationAvatarUploader = (props: OrganizationAvatarUploader) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
-  const DialogProfileAvatar = (
+  const DialogOrganizationAvatar = (
     <StyledDialogProfileAvatar
-      shape="circle"
       className="tooltip-target"
-      data-pr-tooltip="Changer la photo de profil"
-      user={props.user}
+      data-pr-tooltip="Changer la photo de l'organisation"
+      organization={props.organization}
     />
   );
 
   return (
     <div>
       <Tooltip target=".tooltip-target" mouseTrack mouseTrackLeft={20} />
-      <StyledProfileAvatar
-        shape="circle"
+      <StyledOrganizationAvatar
         size="xlarge"
         onClick={() => setDialogOpen(true)}
         className="tooltip-target"
-        data-pr-tooltip="Changer la photo de profil"
-        user={props.user}
+        data-pr-tooltip="Changer la photo de l'organisation"
+        organization={props.organization}
       />
-      {props.user?.id && (
+      {props.organization?.id && (
         <AvatarUploadDialog
-          relatedEntityId={props.user.id}
-          avatar={DialogProfileAvatar}
-          avatarType={Medias.USER_AVATAR}
+          relatedEntityId={props.organization.id}
+          avatar={DialogOrganizationAvatar}
+          avatarType={Medias.ORGANIZATION_AVATAR}
           dialogOpen={dialogOpen}
           setDialogOpen={setDialogOpen}
           fileConstraints={avatarConstraints}
@@ -58,19 +56,13 @@ const ProfileAvatarUploader = (props: ProfileAvatarUploader) => {
   );
 };
 
-const StyledProfileAvatar = styled(ProfileAvatar)`
-  width: 100px !important;
-  height: 100px !important;
+const StyledOrganizationAvatar = styled(OrganizationAvatar)`
+  width: 300px !important;
+  height: 200px !important;
 
-  svg {
-    width: 50px !important;
-    height: 50px !important;
+  img {
+    border-radius: 6px !important;
   }
-`;
-
-const StyledDialogProfileAvatar = styled(ProfileAvatar)`
-  width: 150px !important;
-  height: 150px !important;
 
   svg {
     width: 80px !important;
@@ -78,4 +70,18 @@ const StyledDialogProfileAvatar = styled(ProfileAvatar)`
   }
 `;
 
-export default ProfileAvatarUploader;
+const StyledDialogProfileAvatar = styled(OrganizationAvatar)`
+  width: 450px !important;
+  height: 300px !important;
+
+  img {
+    border-radius: 6px !important;
+  }
+
+  svg {
+    width: 150px !important;
+    height: 150px !important;
+  }
+`;
+
+export default OrganizationAvatarUploader;

@@ -8,6 +8,7 @@ enum ApiRoutes {
   AUTH_REFRESH_TOKEN = '/auth/refresh_token',
   PROFILE_UPDATE_PASSWORD = '/profile/update_password',
   ORGANIZATIONS = '/organizations',
+  ORGANIZATION_AVATARS = '/organization_avatars',
   ORGANIZATION_TEMPERS = '/organization_animal_tempers',
   ORGANIZATION_TYPES = '/organization_animal_types',
   ORGANIZATION_RACES = '/organization_animal_races',

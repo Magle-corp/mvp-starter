@@ -88,6 +88,49 @@ class Organization
     ])]
     private ?bool $public = false;
 
+    #[ORM\OneToOne(mappedBy: 'organization', cascade: ['persist', 'remove'])]
+    private ?OrganizationAvatar $avatar = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    #[Groups([
+        'organization_read',
+        'organization_create',
+        'organization_update'
+    ])]
+    private ?string $address = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    #[Groups([
+        'organization_read',
+        'organization_create',
+        'organization_update'
+    ])]
+    private ?string $city = null;
+
+    #[ORM\Column(length: 5, nullable: true)]
+    #[Groups([
+        'organization_read',
+        'organization_create',
+        'organization_update'
+    ])]
+    private ?string $zipCode = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    #[Groups([
+        'organization_read',
+        'organization_create',
+        'organization_update'
+    ])]
+    private ?string $phone = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Groups([
+        'organization_read',
+        'organization_create',
+        'organization_update'
+    ])]
+    private ?string $email = null;
+
     public function __construct()
     {
         $this->animals = new ArrayCollection();
@@ -253,6 +296,83 @@ class Organization
     public function setPublic(bool $public): self
     {
         $this->public = $public;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?OrganizationAvatar
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(OrganizationAvatar $avatar): self
+    {
+        // set the owning side of the relation if necessary
+        if ($avatar->getOrganization() !== $this) {
+            $avatar->setOrganization($this);
+        }
+
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?string
+    {
+        return $this->zipCode;
+    }
+
+    public function setZipCode(?string $zipCode): self
+    {
+        $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }
