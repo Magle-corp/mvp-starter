@@ -54,7 +54,7 @@ final class AuthenticationSubscriber implements EventSubscriberInterface
             $payload['user']['avatar'] = [
                 'id' => $user->getAvatar()->getId(),
                 'filePath' => $user->getAvatar()->getFilePath(),
-                'created' => $user->getAvatar()->getCreated()
+                'created' => $user->getAvatar()->getCreated(),
             ];
         }
 
@@ -65,7 +65,12 @@ final class AuthenticationSubscriber implements EventSubscriberInterface
             $organization = [
                 'id' => $userOrganization->getId(),
                 'name' => $userOrganization->getName(),
-                'public' => $userOrganization->isPublic()
+                'public' => $userOrganization->isPublic(),
+                'address' => $userOrganization->getAddress(),
+                'city' => $userOrganization->getCity(),
+                'zipCode' => $userOrganization->getZipCode(),
+                'phone' => $userOrganization->getPhone(),
+                'email' => $userOrganization->getEmail()
             ];
 
             if ($userOrganization->getAvatar() !== null) {

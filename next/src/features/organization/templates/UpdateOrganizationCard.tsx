@@ -19,6 +19,11 @@ const UpdateOrganizationCard = () => {
 
   const organizationDefaultValue: OrganizationFormSchema = {
     name: organization?.name ?? '',
+    address: organization?.address ?? '',
+    city: organization?.city ?? '',
+    zipCode: organization?.zipCode ?? '',
+    phone: organization?.phone ?? '',
+    email: organization?.email ?? '',
   };
 
   const organizationUpdateMutation = usePut<OrganizationFormSchema>({
@@ -41,6 +46,11 @@ const UpdateOrganizationCard = () => {
   ) =>
     organizationUpdateMutation.mutate({
       name: fieldValues.name,
+      address: fieldValues.address,
+      city: fieldValues.city,
+      zipCode: fieldValues.zipCode,
+      phone: fieldValues.phone,
+      email: fieldValues.email,
     });
 
   const avatarCreateMutation = useAvatarCreateMutation(
@@ -100,7 +110,7 @@ const ContentWrapper = styled.div`
   grid-template-columns: 1fr;
   grid-gap: 3rem;
 
-  @media screen and (${({ theme }) => theme.breakpoints.md}) {
+  @media screen and (${({ theme }) => theme.breakpoints.lg}) {
     grid-template-columns: max-content 1fr;
     grid-gap: 2rem;
 

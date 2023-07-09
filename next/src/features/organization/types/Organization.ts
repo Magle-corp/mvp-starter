@@ -5,6 +5,11 @@ type Organization = {
   name: string;
   public: boolean;
   avatar?: OrganizationAvatar;
+  address?: string;
+  city?: string;
+  zipCode?: string;
+  phone?: string;
+  email?: string;
 };
 
 type OrganizationAvatar = {
